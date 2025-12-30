@@ -568,7 +568,7 @@ const Register = () => {
               </p>
             </div>
             <span className="text-lg font-semibold text-primary">
-              {Math.round((currentStep / steps.length) * 100)}%
+              {Math.round(((currentStep - 1) / steps.length) * 100)}%
             </span>
           </div>
           
@@ -577,7 +577,7 @@ const Register = () => {
             <motion.div 
               className="h-full bg-primary rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${(currentStep / steps.length) * 100}%` }}
+              animate={{ width: `${((currentStep - 1) / steps.length) * 100}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>

@@ -6,19 +6,19 @@
 
 @layer base {
   :root {
-    /* Primary Blue - Softer, cleaner blue */
-    --primary: 217 91% 60%;
+    /* Primary Blue - Softer but professional blue */
+    --primary: 217 85% 50%;
     --primary-foreground: 0 0% 100%;
     
     /* Primary Dark - Slightly deeper blue */
-    --primary-dark: 221 83% 53%;
+    --primary-dark: 221 80% 45%;
     
     /* Accent Orange - #F59E0B */
     --accent: 38 92% 50%;
     --accent-foreground: 0 0% 100%;
     
-    /* Secondary - matching softer blue */
-    --secondary: 217 91% 60%;
+    /* Secondary - matching professional blue */
+    --secondary: 217 85% 50%;
     --secondary-foreground: 0 0% 100%;
     
     /* Background - LOCKED: #FFFFFF */
@@ -39,16 +39,16 @@
     /* Borders & Inputs */
     --border: 220 13% 91%;
     --input: 220 13% 95%;
-    --ring: 217 91% 60%;
+    --ring: 217 85% 50%;
     
     /* Destructive */
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Custom Colors - Softer blue palette */
-    --navy: 217 91% 60%;
-    --navy-light: 217 85% 65%;
-    --navy-dark: 221 83% 53%;
+    /* Custom Colors - Professional blue palette */
+    --navy: 217 85% 50%;
+    --navy-light: 217 80% 55%;
+    --navy-dark: 221 80% 45%;
     --saffron: 38 92% 50%;
     --saffron-dark: 38 92% 45%;
     --teal: 190 70% 35%;
@@ -56,8 +56,8 @@
     --gold: 38 92% 50%;
     --cream: 40 30% 97%;
     
-    /* Gradients - Softer blue */
-    --gradient-hero: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+    /* Gradients - Professional blue */
+    --gradient-hero: linear-gradient(180deg, #2570EB 0%, #1D5FD3 100%);
     --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(38 92% 45%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 96%) 100%);
@@ -67,19 +67,19 @@
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.07), 0 2px 4px -2px hsl(0 0% 0% / 0.05);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.04);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.05);
-    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.25);
+    --shadow-glow: 0 0 20px hsl(217 85% 50% / 0.25);
     
     --radius: 0.5rem;
     
     /* Sidebar */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 12%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary: 217 85% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 95%;
     --sidebar-accent-foreground: 0 0% 12%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-ring: 217 85% 50%;
   }
 
   .dark {
