@@ -13,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { label: 'Home', href: '/', isActive: true },
+  { label: 'Home', href: '/' },
   {
     label: 'About Us',
     href: '/about',
@@ -66,7 +66,7 @@ const Navbar = () => {
                       <NavigationMenuTrigger 
                         className={cn(
                           "bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground",
-                          "data-[state=open]:bg-primary-foreground/10 h-12 px-4 text-sm font-medium rounded-none"
+                          "data-[state=open]:bg-primary-foreground/10 h-9 my-1.5 px-4 text-sm font-medium rounded-md"
                         )}
                       >
                         {item.label}
@@ -96,12 +96,7 @@ const Navbar = () => {
                     <NavigationMenuLink asChild>
                       <a
                         href={item.href}
-                        className={cn(
-                          "flex items-center h-12 px-4 text-sm font-medium transition-colors rounded-none",
-                          item.isActive 
-                            ? "bg-accent text-accent-foreground rounded-full mx-1" 
-                            : "text-primary-foreground hover:bg-primary-foreground/10"
-                        )}
+                        className="flex items-center h-9 my-1.5 px-4 text-sm font-medium transition-colors rounded-md text-primary-foreground hover:bg-primary-foreground/10"
                       >
                         {item.label}
                       </a>
@@ -194,12 +189,7 @@ const Navbar = () => {
                   ) : (
                     <a
                       href={item.href}
-                      className={cn(
-                        "block py-3 px-4 font-medium rounded-md transition-colors",
-                        item.isActive
-                          ? "bg-accent text-accent-foreground"
-                          : "text-primary-foreground hover:bg-primary-foreground/10"
-                      )}
+                      className="block py-3 px-4 font-medium rounded-md transition-colors text-primary-foreground hover:bg-primary-foreground/10"
                     >
                       {item.label}
                     </a>
