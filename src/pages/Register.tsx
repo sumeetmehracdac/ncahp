@@ -598,21 +598,23 @@ const Register = () => {
         </div>
 
         {/* Main Form Card */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-card border-2 border-primary/20 rounded-2xl shadow-xl overflow-hidden">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-card border-2 border-primary/15 rounded-3xl shadow-2xl overflow-hidden">
             {/* Form Content */}
-            <div className="p-10 md:p-14 bg-gradient-to-b from-primary/[0.02] to-transparent">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentStep}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  {renderStepContent()}
-                </motion.div>
-              </AnimatePresence>
+            <div className="p-12 md:p-16 lg:p-20 min-h-[400px] flex items-center justify-center">
+              <div className="w-full max-w-lg">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStep}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    {renderStepContent()}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Navigation Buttons */}
