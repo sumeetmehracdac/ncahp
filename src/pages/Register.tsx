@@ -96,7 +96,8 @@ const Register = () => {
   const verifyEmailOtp = () => {
     if (formData.emailOtp.length === 6) {
       setEmailVerified(true);
-      toast({ title: 'Email verified successfully!', description: 'You can proceed to the next step' });
+      toast({ title: 'Email verified!' });
+      setTimeout(() => setCurrentStep(3), 400);
     } else {
       toast({ title: 'Invalid OTP', variant: 'destructive' });
     }
@@ -114,7 +115,8 @@ const Register = () => {
   const verifyPhoneOtp = () => {
     if (formData.phoneOtp.length === 6) {
       setPhoneVerified(true);
-      toast({ title: 'Phone verified successfully!', description: 'You can proceed to the next step' });
+      toast({ title: 'Phone verified!' });
+      setTimeout(() => setCurrentStep(4), 400);
     } else {
       toast({ title: 'Invalid OTP', variant: 'destructive' });
     }
