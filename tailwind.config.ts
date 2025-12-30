@@ -54,6 +54,7 @@ export default {
         navy: {
           DEFAULT: "hsl(var(--navy))",
           light: "hsl(var(--navy-light))",
+          dark: "hsl(var(--navy-dark))",
         },
         saffron: {
           DEFAULT: "hsl(var(--saffron))",
@@ -65,6 +66,7 @@ export default {
         },
         gold: "hsl(var(--gold))",
         cream: "hsl(var(--cream))",
+        "primary-dark": "hsl(var(--primary-dark))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
