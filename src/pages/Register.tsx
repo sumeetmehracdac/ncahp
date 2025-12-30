@@ -147,6 +147,17 @@ const Register = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent, isLastField: boolean) => {
+    if (e.key === 'Enter' && isLastField && canProceed()) {
+      e.preventDefault();
+      if (currentStep === steps.length) {
+        handleSubmit();
+      } else {
+        nextStep();
+      }
+    }
+  };
+
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
@@ -164,33 +175,34 @@ const Register = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 What's your name?
               </h2>
-              <p className="text-sm text-muted-foreground">Let's start with the basics</p>
+              <p className="text-base text-muted-foreground">Let's start with the basics</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="space-y-2">
                 <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
                 <Input
                   id="firstName"
                   placeholder="Enter your first name"
                   value={formData.firstName}
                   onChange={(e) => updateFormData('firstName', e.target.value)}
-                  className="h-10 text-sm bg-background border-border"
+                  className="h-12 text-base bg-background border-border"
                   autoFocus
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
                 <Input
                   id="lastName"
                   placeholder="Enter your last name"
                   value={formData.lastName}
                   onChange={(e) => updateFormData('lastName', e.target.value)}
-                  className="h-10 text-sm bg-background border-border"
+                  onKeyDown={(e) => handleKeyDown(e, true)}
+                  className="h-12 text-base bg-background border-border"
                 />
               </div>
             </div>
@@ -199,30 +211,30 @@ const Register = () => {
 
       case 2:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 What's your email?
               </h2>
-              <p className="text-sm text-muted-foreground">We'll send you a verification code</p>
+              <p className="text-base text-muted-foreground">We'll send you a verification code</p>
             </div>
-            <div className="space-y-4">
-              <div className="space-y-1.5">
+            <div className="space-y-5">
+              <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <Input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) => updateFormData('email', e.target.value)}
-                    className="h-10 text-sm flex-1 bg-background border-border"
+                    className="h-12 text-base flex-1 bg-background border-border"
                     disabled={emailOtpSent}
                   />
                   <Button 
                     onClick={sendEmailOtp} 
                     disabled={emailOtpSent}
-                    className="h-10 px-4 text-sm bg-primary hover:bg-primary/90"
+                    className="h-12 px-5 text-sm bg-primary hover:bg-primary/90"
                   >
                     {emailOtpSent ? 'Sent' : 'Send OTP'}
                   </Button>
@@ -235,23 +247,24 @@ const Register = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="space-y-1.5"
+                    className="space-y-2"
                   >
                     <Label htmlFor="emailOtp" className="text-sm font-medium">Enter OTP</Label>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <Input
                         id="emailOtp"
                         placeholder="Enter 6-digit OTP"
                         value={formData.emailOtp}
                         onChange={(e) => updateFormData('emailOtp', e.target.value.slice(0, 6))}
-                        className="h-10 text-base tracking-[0.3em] text-center flex-1 bg-background border-border font-mono"
+                        onKeyDown={(e) => handleKeyDown(e, true)}
+                        className="h-12 text-lg tracking-[0.4em] text-center flex-1 bg-background border-border font-mono"
                         maxLength={6}
                         disabled={emailVerified}
                       />
                       <Button 
                         onClick={verifyEmailOtp}
                         disabled={emailVerified || formData.emailOtp.length !== 6}
-                        className={`h-10 px-4 text-sm ${emailVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
+                        className={`h-12 px-5 text-sm ${emailVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
                       >
                         {emailVerified ? <Check className="h-4 w-4" /> : 'Verify'}
                       </Button>
@@ -270,18 +283,18 @@ const Register = () => {
 
       case 3:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 What's your phone number?
               </h2>
-              <p className="text-sm text-muted-foreground">We'll verify it with an OTP</p>
+              <p className="text-base text-muted-foreground">We'll verify it with an OTP</p>
             </div>
-            <div className="space-y-4">
-              <div className="space-y-1.5">
+            <div className="space-y-5">
+              <div className="space-y-2">
                 <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
-                <div className="flex gap-2">
-                  <div className="flex items-center h-10 px-3 bg-muted rounded-md border border-border text-muted-foreground text-sm font-medium">
+                <div className="flex gap-3">
+                  <div className="flex items-center h-12 px-4 bg-muted rounded-md border border-border text-muted-foreground text-base font-medium">
                     +91
                   </div>
                   <Input
@@ -290,13 +303,13 @@ const Register = () => {
                     placeholder="Enter 10-digit number"
                     value={formData.phone}
                     onChange={(e) => updateFormData('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
-                    className="h-10 text-sm flex-1 bg-background border-border"
+                    className="h-12 text-base flex-1 bg-background border-border"
                     disabled={phoneOtpSent}
                   />
                   <Button 
                     onClick={sendPhoneOtp} 
                     disabled={phoneOtpSent}
-                    className="h-10 px-4 text-sm bg-primary hover:bg-primary/90"
+                    className="h-12 px-5 text-sm bg-primary hover:bg-primary/90"
                   >
                     {phoneOtpSent ? 'Sent' : 'Send OTP'}
                   </Button>
@@ -309,23 +322,24 @@ const Register = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="space-y-1.5"
+                    className="space-y-2"
                   >
                     <Label htmlFor="phoneOtp" className="text-sm font-medium">Enter OTP</Label>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <Input
                         id="phoneOtp"
                         placeholder="Enter 6-digit OTP"
                         value={formData.phoneOtp}
                         onChange={(e) => updateFormData('phoneOtp', e.target.value.slice(0, 6))}
-                        className="h-10 text-base tracking-[0.3em] text-center flex-1 bg-background border-border font-mono"
+                        onKeyDown={(e) => handleKeyDown(e, true)}
+                        className="h-12 text-lg tracking-[0.4em] text-center flex-1 bg-background border-border font-mono"
                         maxLength={6}
                         disabled={phoneVerified}
                       />
                       <Button 
                         onClick={verifyPhoneOtp}
                         disabled={phoneVerified || formData.phoneOtp.length !== 6}
-                        className={`h-10 px-4 text-sm ${phoneVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
+                        className={`h-12 px-5 text-sm ${phoneVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
                       >
                         {phoneVerified ? <Check className="h-4 w-4" /> : 'Verify'}
                       </Button>
@@ -344,30 +358,30 @@ const Register = () => {
 
       case 4:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 What's your gender?
               </h2>
-              <p className="text-sm text-muted-foreground">Select your gender identity</p>
+              <p className="text-base text-muted-foreground">Select your gender identity</p>
             </div>
             <RadioGroup
               value={formData.gender}
               onValueChange={(value) => updateFormData('gender', value)}
-              className="grid grid-cols-3 gap-3"
+              className="grid grid-cols-3 gap-4"
             >
               {['Male', 'Female', 'Other'].map((gender) => (
                 <Label
                   key={gender}
                   htmlFor={gender}
-                  className={`flex items-center justify-center p-4 rounded-lg border cursor-pointer transition-all ${
+                  className={`flex items-center justify-center p-6 rounded-xl border cursor-pointer transition-all ${
                     formData.gender === gender.toLowerCase()
                       ? 'border-primary bg-primary/5 text-primary'
                       : 'border-border bg-card hover:border-primary/50'
                   }`}
                 >
                   <RadioGroupItem value={gender.toLowerCase()} id={gender} className="sr-only" />
-                  <span className="text-sm font-medium">{gender}</span>
+                  <span className="text-base font-medium">{gender}</span>
                 </Label>
               ))}
             </RadioGroup>
@@ -376,21 +390,22 @@ const Register = () => {
 
       case 5:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 When were you born?
               </h2>
-              <p className="text-sm text-muted-foreground">Enter your date of birth</p>
+              <p className="text-base text-muted-foreground">Enter your date of birth</p>
             </div>
-            <div className="max-w-xs mx-auto space-y-1.5">
+            <div className="max-w-sm mx-auto space-y-2">
               <Label htmlFor="dob" className="text-sm font-medium">Date of Birth</Label>
               <Input
                 id="dob"
                 type="date"
                 value={formData.dateOfBirth}
                 onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
-                className="h-10 text-sm bg-background border-border"
+                onKeyDown={(e) => handleKeyDown(e, true)}
+                className="h-12 text-base bg-background border-border"
                 max={new Date().toISOString().split('T')[0]}
               />
             </div>
@@ -399,12 +414,12 @@ const Register = () => {
 
       case 6:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 Are you an Indian citizen?
               </h2>
-              <p className="text-sm text-muted-foreground">Select your nationality status</p>
+              <p className="text-base text-muted-foreground">Select your nationality status</p>
             </div>
             <RadioGroup
               value={formData.isIndian}
@@ -412,7 +427,7 @@ const Register = () => {
                 updateFormData('isIndian', value);
                 if (value === 'yes') updateFormData('country', '');
               }}
-              className="grid grid-cols-2 gap-3 max-w-sm mx-auto"
+              className="grid grid-cols-2 gap-4 max-w-md mx-auto"
             >
               {[
                 { value: 'yes', label: 'Yes, I am Indian' },
@@ -421,14 +436,14 @@ const Register = () => {
                 <Label
                   key={option.value}
                   htmlFor={option.value}
-                  className={`flex items-center justify-center p-4 rounded-lg border cursor-pointer transition-all ${
+                  className={`flex items-center justify-center p-6 rounded-xl border cursor-pointer transition-all ${
                     formData.isIndian === option.value
                       ? 'border-primary bg-primary/5 text-primary'
                       : 'border-border bg-card hover:border-primary/50'
                   }`}
                 >
                   <RadioGroupItem value={option.value} id={option.value} className="sr-only" />
-                  <span className="text-sm font-medium">{option.label}</span>
+                  <span className="text-base font-medium">{option.label}</span>
                 </Label>
               ))}
             </RadioGroup>
@@ -439,11 +454,11 @@ const Register = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="max-w-sm mx-auto space-y-1.5"
+                  className="max-w-md mx-auto space-y-2"
                 >
                   <Label className="text-sm font-medium">Select your country</Label>
                   <Select value={formData.country} onValueChange={(value) => updateFormData('country', value)}>
-                    <SelectTrigger className="h-10 text-sm bg-background border-border">
+                    <SelectTrigger className="h-12 text-base bg-background border-border">
                       <SelectValue placeholder="Choose your country" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border max-h-60">
@@ -462,15 +477,15 @@ const Register = () => {
 
       case 7:
         return (
-          <div className="space-y-4">
-            <div className="text-center mb-4">
-              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-medium text-foreground mb-2">
                 Create a secure password
               </h2>
-              <p className="text-sm text-muted-foreground">At least 8 characters long</p>
+              <p className="text-base text-muted-foreground">At least 8 characters long</p>
             </div>
-            <div className="space-y-4 max-w-sm mx-auto">
-              <div className="space-y-1.5">
+            <div className="space-y-5 max-w-md mx-auto">
+              <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
@@ -478,10 +493,10 @@ const Register = () => {
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={(e) => updateFormData('password', e.target.value)}
-                  className="h-10 text-sm bg-background border-border"
+                  className="h-12 text-base bg-background border-border"
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
@@ -489,7 +504,8 @@ const Register = () => {
                   placeholder="Re-enter your password"
                   value={formData.confirmPassword}
                   onChange={(e) => updateFormData('confirmPassword', e.target.value)}
-                  className="h-10 text-sm bg-background border-border"
+                  onKeyDown={(e) => handleKeyDown(e, true)}
+                  className="h-12 text-base bg-background border-border"
                 />
               </div>
               {formData.password && formData.confirmPassword && (
@@ -598,10 +614,10 @@ const Register = () => {
         </div>
 
         {/* Main Form Card */}
-        <div className="max-w-xl mx-auto">
-          <div className="bg-card border border-primary/15 rounded-xl shadow-lg overflow-hidden">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-card border border-primary/15 rounded-2xl shadow-lg overflow-hidden">
             {/* Form Content */}
-            <div className="p-6 md:p-8">
+            <div className="p-8 md:p-10">
               <div className="w-full max-w-lg">
                 <AnimatePresence mode="wait">
                   <motion.div
