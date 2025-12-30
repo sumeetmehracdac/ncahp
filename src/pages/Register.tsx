@@ -513,67 +513,53 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle flex">
-      {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-2/5 bg-gradient-hero p-12 flex-col justify-between relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-accent rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-foreground rounded-full blur-3xl" />
-        </div>
-        
-        <div className="relative z-10">
-          <Link to="/" className="inline-flex items-center gap-3 mb-12">
-            <img src={ncahpLogo} alt="NCAHP" className="h-16" />
-          </Link>
-          <h1 className="font-display text-4xl font-bold text-primary-foreground leading-tight mb-4">
-            Join the National Registry of Allied Healthcare Professionals
-          </h1>
-          <p className="text-primary-foreground/80 text-lg">
-            Register with NCAHP to practice and get recognized as a certified healthcare professional across India.
-          </p>
-        </div>
-        
-        <div className="relative z-10">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-10 h-10 rounded-full bg-primary-foreground/20 border-2 border-primary-foreground/30" />
-              ))}
-            </div>
-            <p className="text-primary-foreground/80 text-sm">
-              Join 50,000+ registered professionals
-            </p>
-          </div>
-          <p className="text-primary-foreground/60 text-sm">
-            Ministry of Health & Family Welfare, Government of India
-          </p>
-        </div>
-      </div>
-
-      {/* Right Panel - Form */}
-      <div className="flex-1 flex flex-col">
-        {/* Mobile Header */}
-        <div className="lg:hidden p-4 border-b border-border bg-card">
-          <Link to="/" className="inline-flex items-center gap-2">
+    <div className="min-h-screen bg-background">
+      {/* Top Header Bar */}
+      <header className="bg-primary text-primary-foreground py-3 px-4">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link to="/" className="inline-flex items-center gap-3">
             <img src={ncahpLogo} alt="NCAHP" className="h-10" />
-            <span className="font-display font-bold text-primary">NCAHP</span>
+            <div className="hidden sm:block">
+              <span className="font-display font-bold text-lg">NCAHP</span>
+              <p className="text-xs text-primary-foreground/70">Government of India</p>
+            </div>
           </Link>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="p-6 border-b border-border bg-card">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-sm text-muted-foreground">
-              Step {currentStep} of {steps.length}
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-primary-foreground/80 hidden md:inline">
+              Already registered?
             </span>
-            <span className="text-sm font-medium text-primary">
-              {Math.round((currentStep / steps.length) * 100)}% Complete
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="border-primary-foreground/30 text-primary-foreground bg-transparent hover:bg-primary-foreground/10"
+            >
+              Login
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        {/* Progress Section */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-display font-bold text-foreground">
+                Create Your Account
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                Step {currentStep} of {steps.length} — {steps[currentStep - 1].title}
+              </p>
+            </div>
+            <span className="text-lg font-semibold text-primary">
+              {Math.round((currentStep / steps.length) * 100)}%
             </span>
           </div>
+          
+          {/* Progress Bar */}
           <div className="h-2 bg-muted rounded-full overflow-hidden">
             <motion.div 
-              className="h-full bg-gradient-accent rounded-full"
+              className="h-full bg-primary rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(currentStep / steps.length) * 100}%` }}
               transition={{ duration: 0.3 }}
@@ -581,26 +567,28 @@ const Register = () => {
           </div>
           
           {/* Step Indicators */}
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between mt-6">
             {steps.map((step) => {
               const Icon = step.icon;
               const isCompleted = currentStep > step.id;
               const isCurrent = currentStep === step.id;
               
               return (
-                <div key={step.id} className="flex flex-col items-center">
+                <div key={step.id} className="flex flex-col items-center gap-2">
                   <div 
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border-2 ${
                       isCompleted 
-                        ? 'bg-accent text-accent-foreground' 
+                        ? 'bg-primary border-primary text-primary-foreground' 
                         : isCurrent 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted text-muted-foreground'
+                          ? 'border-primary text-primary bg-primary/10' 
+                          : 'border-border text-muted-foreground bg-muted'
                     }`}
                   >
-                    {isCompleted ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
+                    {isCompleted ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                   </div>
-                  <span className={`text-xs mt-1 hidden md:block ${isCurrent ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                  <span className={`text-xs text-center hidden lg:block max-w-[80px] ${
+                    isCurrent ? 'text-primary font-semibold' : isCompleted ? 'text-foreground' : 'text-muted-foreground'
+                  }`}>
                     {step.title}
                   </span>
                 </div>
@@ -609,53 +597,66 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Form Content */}
-        <div className="flex-1 flex items-center justify-center p-6 md:p-12">
-          <div className="w-full max-w-xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {renderStepContent()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+        {/* Main Form Card */}
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-card border border-border rounded-2xl shadow-lg overflow-hidden">
+            {/* Form Content */}
+            <div className="p-8 md:p-12">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {renderStepContent()}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-        {/* Navigation Buttons */}
-        <div className="p-6 border-t border-border bg-card">
-          <div className="max-w-xl mx-auto flex justify-between items-center">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={currentStep === 1}
-              className="gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" /> Back
-            </Button>
-            
-            {currentStep === steps.length ? (
-              <Button
-                onClick={handleSubmit}
-                disabled={!canProceed()}
-                className="gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8"
-              >
-                <Sparkles className="h-4 w-4" /> Complete Registration
-              </Button>
-            ) : (
-              <Button
-                onClick={nextStep}
-                disabled={!canProceed()}
-                className="gap-2 bg-primary hover:bg-primary/90 px-8"
-              >
-                Continue <ArrowRight className="h-4 w-4" />
-              </Button>
-            )}
+            {/* Navigation Buttons */}
+            <div className="px-8 md:px-12 py-6 bg-muted/50 border-t border-border">
+              <div className="flex justify-between items-center">
+                <Button
+                  variant="ghost"
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
+                  className="gap-2 text-muted-foreground hover:text-foreground"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Back
+                </Button>
+                
+                {currentStep === steps.length ? (
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={!canProceed()}
+                    size="lg"
+                    className="gap-2 bg-primary hover:bg-secondary text-primary-foreground px-8 shadow-md"
+                  >
+                    <Sparkles className="h-4 w-4" /> Complete Registration
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={nextStep}
+                    disabled={!canProceed()}
+                    size="lg"
+                    className="gap-2 bg-primary hover:bg-secondary text-primary-foreground px-8 shadow-md"
+                  >
+                    Continue <ArrowRight className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
+
+          {/* Helper Text */}
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            By registering, you agree to the NCAHP{' '}
+            <a href="#" className="text-primary hover:underline">Terms of Service</a>
+            {' '}and{' '}
+            <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+          </p>
         </div>
       </div>
     </div>
