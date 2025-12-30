@@ -1,4 +1,5 @@
-import { Globe, Accessibility, User, Volume2 } from 'lucide-react';
+import { Globe, Accessibility, User, Volume2, UserPlus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -45,7 +46,7 @@ const TopUtilityBar = () => {
                   <span className="hidden sm:inline">EN</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-card border-border">
                 <DropdownMenuItem>English</DropdownMenuItem>
                 <DropdownMenuItem>हिंदी</DropdownMenuItem>
               </DropdownMenuContent>
@@ -62,7 +63,7 @@ const TopUtilityBar = () => {
                   <Accessibility className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 bg-card border-border">
                 <DropdownMenuItem className="flex justify-between">
                   Text Size <span className="font-bold">A+</span>
                 </DropdownMenuItem>
@@ -84,11 +85,24 @@ const TopUtilityBar = () => {
               <Volume2 className="h-4 w-4" />
             </Button>
 
+            {/* Create Account */}
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="h-8 px-3 text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30 ml-2"
+            >
+              <Link to="/register">
+                <UserPlus className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Create Account</span>
+              </Link>
+            </Button>
+
             {/* Login */}
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 px-3 text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30 ml-2"
+              className="h-8 px-3 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20"
             >
               <User className="h-4 w-4 mr-1" />
               <span className="hidden sm:inline">Login</span>

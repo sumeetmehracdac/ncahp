@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
@@ -96,12 +97,22 @@ const HeroCarousel = () => {
                 {slide.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-accent hover:bg-saffron-dark text-accent-foreground font-semibold px-8 py-6 text-lg shadow-glow hover:shadow-lg transition-all"
-                >
-                  {slide.cta}
-                </Button>
+                {slide.ctaLink === '/register' ? (
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-accent hover:bg-saffron-dark text-accent-foreground font-semibold px-8 py-6 text-lg shadow-glow hover:shadow-lg transition-all"
+                  >
+                    <Link to={slide.ctaLink}>{slide.cta}</Link>
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="bg-accent hover:bg-saffron-dark text-accent-foreground font-semibold px-8 py-6 text-lg shadow-glow hover:shadow-lg transition-all"
+                  >
+                    {slide.cta}
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   size="lg"
