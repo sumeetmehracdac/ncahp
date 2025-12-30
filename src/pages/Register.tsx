@@ -164,33 +164,33 @@ const Register = () => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 What's your name?
               </h2>
-              <p className="text-lg text-muted-foreground">Let's start with the basics</p>
+              <p className="text-sm text-muted-foreground">Let's start with the basics</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <Label htmlFor="firstName" className="text-base font-medium">First Name</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
                 <Input
                   id="firstName"
                   placeholder="Enter your first name"
                   value={formData.firstName}
                   onChange={(e) => updateFormData('firstName', e.target.value)}
-                  className="h-14 text-lg bg-background border-border"
+                  className="h-10 text-sm bg-background border-border"
                   autoFocus
                 />
               </div>
-              <div className="space-y-3">
-                <Label htmlFor="lastName" className="text-base font-medium">Last Name</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
                 <Input
                   id="lastName"
                   placeholder="Enter your last name"
                   value={formData.lastName}
                   onChange={(e) => updateFormData('lastName', e.target.value)}
-                  className="h-14 text-lg bg-background border-border"
+                  className="h-10 text-sm bg-background border-border"
                 />
               </div>
             </div>
@@ -199,30 +199,30 @@ const Register = () => {
 
       case 2:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 What's your email?
               </h2>
-              <p className="text-lg text-muted-foreground">We'll send you a verification code</p>
+              <p className="text-sm text-muted-foreground">We'll send you a verification code</p>
             </div>
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <Label htmlFor="email" className="text-base font-medium">Email Address</Label>
-                <div className="flex gap-3">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                <div className="flex gap-2">
                   <Input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) => updateFormData('email', e.target.value)}
-                    className="h-14 text-lg flex-1 bg-background border-border"
+                    className="h-10 text-sm flex-1 bg-background border-border"
                     disabled={emailOtpSent}
                   />
                   <Button 
                     onClick={sendEmailOtp} 
                     disabled={emailOtpSent}
-                    className="h-14 px-6 text-base bg-primary hover:bg-primary/90"
+                    className="h-10 px-4 text-sm bg-primary hover:bg-primary/90"
                   >
                     {emailOtpSent ? 'Sent' : 'Send OTP'}
                   </Button>
@@ -235,30 +235,30 @@ const Register = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="space-y-3"
+                    className="space-y-1.5"
                   >
-                    <Label htmlFor="emailOtp" className="text-base font-medium">Enter OTP</Label>
-                    <div className="flex gap-3">
+                    <Label htmlFor="emailOtp" className="text-sm font-medium">Enter OTP</Label>
+                    <div className="flex gap-2">
                       <Input
                         id="emailOtp"
                         placeholder="Enter 6-digit OTP"
                         value={formData.emailOtp}
                         onChange={(e) => updateFormData('emailOtp', e.target.value.slice(0, 6))}
-                        className="h-14 text-xl tracking-[0.5em] text-center flex-1 bg-background border-border font-mono"
+                        className="h-10 text-base tracking-[0.3em] text-center flex-1 bg-background border-border font-mono"
                         maxLength={6}
                         disabled={emailVerified}
                       />
                       <Button 
                         onClick={verifyEmailOtp}
                         disabled={emailVerified || formData.emailOtp.length !== 6}
-                        className={`h-14 px-6 text-base ${emailVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
+                        className={`h-10 px-4 text-sm ${emailVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
                       >
-                        {emailVerified ? <Check className="h-5 w-5" /> : 'Verify'}
+                        {emailVerified ? <Check className="h-4 w-4" /> : 'Verify'}
                       </Button>
                     </div>
                     {emailVerified && (
-                      <p className="text-accent text-base flex items-center gap-2 mt-2">
-                        <Check className="h-5 w-5" /> Email verified successfully
+                      <p className="text-accent text-sm flex items-center gap-1.5 mt-1">
+                        <Check className="h-4 w-4" /> Email verified successfully
                       </p>
                     )}
                   </motion.div>
@@ -270,18 +270,18 @@ const Register = () => {
 
       case 3:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 What's your phone number?
               </h2>
-              <p className="text-lg text-muted-foreground">We'll verify it with an OTP</p>
+              <p className="text-sm text-muted-foreground">We'll verify it with an OTP</p>
             </div>
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <Label htmlFor="phone" className="text-base font-medium">Phone Number</Label>
-                <div className="flex gap-3">
-                  <div className="flex items-center h-14 px-5 bg-muted rounded-md border border-border text-muted-foreground text-lg font-medium">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="phone" className="text-sm font-medium">Phone Number</Label>
+                <div className="flex gap-2">
+                  <div className="flex items-center h-10 px-3 bg-muted rounded-md border border-border text-muted-foreground text-sm font-medium">
                     +91
                   </div>
                   <Input
@@ -290,13 +290,13 @@ const Register = () => {
                     placeholder="Enter 10-digit number"
                     value={formData.phone}
                     onChange={(e) => updateFormData('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
-                    className="h-14 text-lg flex-1 bg-background border-border"
+                    className="h-10 text-sm flex-1 bg-background border-border"
                     disabled={phoneOtpSent}
                   />
                   <Button 
                     onClick={sendPhoneOtp} 
                     disabled={phoneOtpSent}
-                    className="h-14 px-6 text-base bg-primary hover:bg-primary/90"
+                    className="h-10 px-4 text-sm bg-primary hover:bg-primary/90"
                   >
                     {phoneOtpSent ? 'Sent' : 'Send OTP'}
                   </Button>
@@ -309,30 +309,30 @@ const Register = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="space-y-3"
+                    className="space-y-1.5"
                   >
-                    <Label htmlFor="phoneOtp" className="text-base font-medium">Enter OTP</Label>
-                    <div className="flex gap-3">
+                    <Label htmlFor="phoneOtp" className="text-sm font-medium">Enter OTP</Label>
+                    <div className="flex gap-2">
                       <Input
                         id="phoneOtp"
                         placeholder="Enter 6-digit OTP"
                         value={formData.phoneOtp}
                         onChange={(e) => updateFormData('phoneOtp', e.target.value.slice(0, 6))}
-                        className="h-14 text-xl tracking-[0.5em] text-center flex-1 bg-background border-border font-mono"
+                        className="h-10 text-base tracking-[0.3em] text-center flex-1 bg-background border-border font-mono"
                         maxLength={6}
                         disabled={phoneVerified}
                       />
                       <Button 
                         onClick={verifyPhoneOtp}
                         disabled={phoneVerified || formData.phoneOtp.length !== 6}
-                        className={`h-14 px-6 text-base ${phoneVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
+                        className={`h-10 px-4 text-sm ${phoneVerified ? 'bg-accent' : 'bg-primary hover:bg-primary/90'}`}
                       >
-                        {phoneVerified ? <Check className="h-5 w-5" /> : 'Verify'}
+                        {phoneVerified ? <Check className="h-4 w-4" /> : 'Verify'}
                       </Button>
                     </div>
                     {phoneVerified && (
-                      <p className="text-accent text-base flex items-center gap-2 mt-2">
-                        <Check className="h-5 w-5" /> Phone verified successfully
+                      <p className="text-accent text-sm flex items-center gap-1.5 mt-1">
+                        <Check className="h-4 w-4" /> Phone verified successfully
                       </p>
                     )}
                   </motion.div>
@@ -344,30 +344,30 @@ const Register = () => {
 
       case 4:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 What's your gender?
               </h2>
-              <p className="text-lg text-muted-foreground">Select your gender identity</p>
+              <p className="text-sm text-muted-foreground">Select your gender identity</p>
             </div>
             <RadioGroup
               value={formData.gender}
               onValueChange={(value) => updateFormData('gender', value)}
-              className="grid grid-cols-1 md:grid-cols-3 gap-5"
+              className="grid grid-cols-3 gap-3"
             >
               {['Male', 'Female', 'Other'].map((gender) => (
                 <Label
                   key={gender}
                   htmlFor={gender}
-                  className={`flex items-center justify-center p-8 rounded-xl border-2 cursor-pointer transition-all ${
+                  className={`flex items-center justify-center p-4 rounded-lg border cursor-pointer transition-all ${
                     formData.gender === gender.toLowerCase()
                       ? 'border-primary bg-primary/5 text-primary'
                       : 'border-border bg-card hover:border-primary/50'
                   }`}
                 >
                   <RadioGroupItem value={gender.toLowerCase()} id={gender} className="sr-only" />
-                  <span className="text-xl font-medium">{gender}</span>
+                  <span className="text-sm font-medium">{gender}</span>
                 </Label>
               ))}
             </RadioGroup>
@@ -376,21 +376,21 @@ const Register = () => {
 
       case 5:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 When were you born?
               </h2>
-              <p className="text-lg text-muted-foreground">Enter your date of birth</p>
+              <p className="text-sm text-muted-foreground">Enter your date of birth</p>
             </div>
-            <div className="max-w-md mx-auto space-y-3">
-              <Label htmlFor="dob" className="text-base font-medium">Date of Birth</Label>
+            <div className="max-w-xs mx-auto space-y-1.5">
+              <Label htmlFor="dob" className="text-sm font-medium">Date of Birth</Label>
               <Input
                 id="dob"
                 type="date"
                 value={formData.dateOfBirth}
                 onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
-                className="h-16 text-xl bg-background border-border"
+                className="h-10 text-sm bg-background border-border"
                 max={new Date().toISOString().split('T')[0]}
               />
             </div>
@@ -399,12 +399,12 @@ const Register = () => {
 
       case 6:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 Are you an Indian citizen?
               </h2>
-              <p className="text-lg text-muted-foreground">Select your nationality status</p>
+              <p className="text-sm text-muted-foreground">Select your nationality status</p>
             </div>
             <RadioGroup
               value={formData.isIndian}
@@ -412,7 +412,7 @@ const Register = () => {
                 updateFormData('isIndian', value);
                 if (value === 'yes') updateFormData('country', '');
               }}
-              className="grid grid-cols-2 gap-5 max-w-lg mx-auto"
+              className="grid grid-cols-2 gap-3 max-w-sm mx-auto"
             >
               {[
                 { value: 'yes', label: 'Yes, I am Indian' },
@@ -421,14 +421,14 @@ const Register = () => {
                 <Label
                   key={option.value}
                   htmlFor={option.value}
-                  className={`flex items-center justify-center p-8 rounded-xl border-2 cursor-pointer transition-all ${
+                  className={`flex items-center justify-center p-4 rounded-lg border cursor-pointer transition-all ${
                     formData.isIndian === option.value
                       ? 'border-primary bg-primary/5 text-primary'
                       : 'border-border bg-card hover:border-primary/50'
                   }`}
                 >
                   <RadioGroupItem value={option.value} id={option.value} className="sr-only" />
-                  <span className="text-lg font-medium">{option.label}</span>
+                  <span className="text-sm font-medium">{option.label}</span>
                 </Label>
               ))}
             </RadioGroup>
@@ -439,16 +439,16 @@ const Register = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="max-w-lg mx-auto space-y-3"
+                  className="max-w-sm mx-auto space-y-1.5"
                 >
-                  <Label className="text-base font-medium">Select your country</Label>
+                  <Label className="text-sm font-medium">Select your country</Label>
                   <Select value={formData.country} onValueChange={(value) => updateFormData('country', value)}>
-                    <SelectTrigger className="h-16 text-lg bg-background border-border">
+                    <SelectTrigger className="h-10 text-sm bg-background border-border">
                       <SelectValue placeholder="Choose your country" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border max-h-60">
                       {countries.map((country) => (
-                        <SelectItem key={country} value={country} className="text-base py-3">
+                        <SelectItem key={country} value={country} className="text-sm py-2">
                           {country}
                         </SelectItem>
                       ))}
@@ -462,42 +462,42 @@ const Register = () => {
 
       case 7:
         return (
-          <div className="space-y-8">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+          <div className="space-y-4">
+            <div className="text-center mb-4">
+              <h2 className="text-xl md:text-2xl font-medium text-foreground mb-1">
                 Create a secure password
               </h2>
-              <p className="text-lg text-muted-foreground">At least 8 characters long</p>
+              <p className="text-sm text-muted-foreground">At least 8 characters long</p>
             </div>
-            <div className="space-y-6 max-w-lg mx-auto">
-              <div className="space-y-3">
-                <Label htmlFor="password" className="text-base font-medium">Password</Label>
+            <div className="space-y-4 max-w-sm mx-auto">
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={(e) => updateFormData('password', e.target.value)}
-                  className="h-14 text-lg bg-background border-border"
+                  className="h-10 text-sm bg-background border-border"
                 />
               </div>
-              <div className="space-y-3">
-                <Label htmlFor="confirmPassword" className="text-base font-medium">Confirm Password</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   placeholder="Re-enter your password"
                   value={formData.confirmPassword}
                   onChange={(e) => updateFormData('confirmPassword', e.target.value)}
-                  className="h-14 text-lg bg-background border-border"
+                  className="h-10 text-sm bg-background border-border"
                 />
               </div>
               {formData.password && formData.confirmPassword && (
-                <p className={`text-base flex items-center gap-2 ${
+                <p className={`text-sm flex items-center gap-1.5 ${
                   formData.password === formData.confirmPassword ? 'text-accent' : 'text-destructive'
                 }`}>
                   {formData.password === formData.confirmPassword ? (
-                    <><Check className="h-5 w-5" /> Passwords match</>
+                    <><Check className="h-4 w-4" /> Passwords match</>
                   ) : (
                     'Passwords do not match'
                   )}
@@ -598,10 +598,10 @@ const Register = () => {
         </div>
 
         {/* Main Form Card */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-card border-2 border-primary/15 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="max-w-xl mx-auto">
+          <div className="bg-card border border-primary/15 rounded-xl shadow-lg overflow-hidden">
             {/* Form Content */}
-            <div className="p-12 md:p-16 lg:p-20 min-h-[400px] flex items-center justify-center">
+            <div className="p-6 md:p-8">
               <div className="w-full max-w-lg">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -618,7 +618,7 @@ const Register = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="px-10 md:px-14 py-5 border-t border-border/50">
+            <div className="px-6 md:px-8 py-4 border-t border-border/50">
               <div className="flex justify-between items-center">
                 <button
                   onClick={prevStep}
