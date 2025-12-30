@@ -56,8 +56,8 @@
     --gold: 38 92% 50%;
     --cream: 40 30% 97%;
     
-    /* Gradients - Using locked palette */
-    --gradient-hero: linear-gradient(135deg, hsl(241 67% 49%) 0%, hsl(243 68% 41%) 100%);
+    /* Gradients - LOCKED: Only use #2E2BCF → #2519B8 */
+    --gradient-hero: linear-gradient(180deg, #2E2BCF 0%, #2519B8 100%);
     --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(38 92% 45%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 96%) 100%);
