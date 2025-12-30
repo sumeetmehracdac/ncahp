@@ -1,5 +1,6 @@
-import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Youtube, Linkedin, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Youtube, Linkedin } from 'lucide-react';
 import emblemOfIndia from '@/assets/emblem-of-india.png';
+import cdacLogo from '@/assets/cdac-logo.png';
 
 const quickLinks = [
   { label: 'About NCAHP', href: '/about' },
@@ -155,8 +156,19 @@ const Footer = () => {
               <a href="/sitemap" className="hover:text-accent transition-colors">Sitemap</a>
             </div>
             <div className="flex items-center gap-2">
-              <span>Designed by NIC</span>
-              <ExternalLink className="h-3 w-3" />
+              <span>Designed, Developed and Maintained by</span>
+              <a 
+                href="https://www.cdac.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+              >
+                <img 
+                  src={cdacLogo} 
+                  alt="C-DAC" 
+                  className="h-6 w-auto brightness-0 invert" 
+                />
+              </a>
             </div>
           </div>
         </div>
