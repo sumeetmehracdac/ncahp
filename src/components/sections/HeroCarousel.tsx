@@ -52,29 +52,23 @@ const HeroCarousel = () => {
 
   return (
     <section 
-      className="relative min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden"
+      className="relative min-h-[480px] md:min-h-[550px] flex items-center overflow-hidden"
       style={{ 
-        backgroundImage: `linear-gradient(135deg, hsla(210, 60%, 15%, 0.92) 0%, hsla(210, 50%, 25%, 0.88) 50%, hsla(180, 60%, 35%, 0.85) 100%), url(${heroBg})`,
+        backgroundImage: `linear-gradient(to right, hsl(228 55% 30% / 0.92) 0%, hsl(245 50% 45% / 0.85) 50%, hsl(245 45% 50% / 0.7) 75%, transparent 100%), url(${heroBg})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center right'
       }}
     >
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-72 h-72 bg-accent rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary-foreground rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
-      </div>
-
-      {/* Decorative Grid */}
+      {/* Subtle overlay pattern */}
       <div className="absolute inset-0 opacity-5" 
         style={{ 
-          backgroundImage: 'linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(white 1px, transparent 1px)',
-          backgroundSize: '60px 60px'
+          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+          backgroundSize: '40px 40px'
         }} 
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-2xl">
           {slides.map((slide, index) => (
             <div
               key={slide.id}
@@ -84,31 +78,25 @@ const HeroCarousel = () => {
                   : 'opacity-0 absolute inset-0 translate-y-8 pointer-events-none'
               }`}
             >
-              <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <span className="text-sm text-primary-foreground/90 font-medium">
-                  NCAHP - Government of India
-                </span>
-              </div>
-              <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
                 {slide.title}
               </h2>
-              <p className="text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+              <p className="text-base md:text-lg text-primary-foreground/80 mb-8 max-w-lg">
                 {slide.subtitle}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-wrap gap-3">
                 {slide.ctaLink === '/register' ? (
                   <Button
                     asChild
                     size="lg"
-                    className="bg-accent hover:bg-saffron-dark text-accent-foreground font-semibold px-8 py-6 text-lg shadow-glow hover:shadow-lg transition-all"
+                    className="bg-background text-primary hover:bg-background/90 font-semibold px-6 h-11"
                   >
-                    <Link to={slide.ctaLink}>{slide.cta}</Link>
+                    <Link to={slide.ctaLink}>Get Started</Link>
                   </Button>
                 ) : (
                   <Button
                     size="lg"
-                    className="bg-accent hover:bg-saffron-dark text-accent-foreground font-semibold px-8 py-6 text-lg shadow-glow hover:shadow-lg transition-all"
+                    className="bg-background text-primary hover:bg-background/90 font-semibold px-6 h-11"
                   >
                     {slide.cta}
                   </Button>
@@ -116,7 +104,7 @@ const HeroCarousel = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-primary-foreground/30 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 px-8 py-6 text-lg"
+                  className="border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 px-6 h-11"
                 >
                   Learn More
                 </Button>

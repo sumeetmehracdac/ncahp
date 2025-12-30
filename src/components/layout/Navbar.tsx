@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { label: 'Home', href: '/' },
+  { label: 'Home', href: '/', isActive: true },
   {
     label: 'About Us',
     href: '/about',
@@ -51,21 +52,27 @@ const Navbar = () => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   return (
-    <nav className="bg-primary sticky top-0 z-50 shadow-elegant">
+    <nav className="bg-primary sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4">
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center justify-center">
+        <div className="hidden lg:flex items-center justify-between">
+          {/* Left: Nav Links */}
           <NavigationMenu>
-            <NavigationMenuList className="gap-1">
+            <NavigationMenuList className="gap-0">
               {navItems.map((item) => (
                 <NavigationMenuItem key={item.label}>
                   {item.children ? (
                     <>
-                      <NavigationMenuTrigger className="bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground data-[state=open]:bg-primary-foreground/10 h-14 px-5 text-sm font-medium">
+                      <NavigationMenuTrigger 
+                        className={cn(
+                          "bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground",
+                          "data-[state=open]:bg-primary-foreground/10 h-12 px-4 text-sm font-medium rounded-none"
+                        )}
+                      >
                         {item.label}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[280px] gap-1 p-3">
+                        <ul className="grid w-[250px] gap-1 p-2 bg-card">
                           {item.children.map((child) => (
                             <li key={child.label}>
                               <NavigationMenuLink asChild>
@@ -73,8 +80,8 @@ const Navbar = () => {
                                   href={child.href}
                                   className={cn(
                                     'block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors',
-                                    'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-                                    'text-sm font-medium'
+                                    'hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary',
+                                    'text-sm font-medium text-foreground'
                                   )}
                                 >
                                   {child.label}
@@ -89,7 +96,12 @@ const Navbar = () => {
                     <NavigationMenuLink asChild>
                       <a
                         href={item.href}
-                        className="flex items-center h-14 px-5 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/10 transition-colors rounded-md"
+                        className={cn(
+                          "flex items-center h-12 px-4 text-sm font-medium transition-colors rounded-none",
+                          item.isActive 
+                            ? "bg-accent text-accent-foreground rounded-full mx-1" 
+                            : "text-primary-foreground hover:bg-primary-foreground/10"
+                        )}
                       >
                         {item.label}
                       </a>
@@ -99,20 +111,45 @@ const Navbar = () => {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
+
+          {/* Right: Action Buttons */}
+          <div className="flex items-center gap-3">
+            <Button
+              asChild
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-5 h-9 rounded-md"
+            >
+              <Link to="/register">Register Now</Link>
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-primary-foreground hover:bg-primary-foreground/10 font-medium px-4 h-9"
+            >
+              Track Status
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Navigation Toggle */}
         <div className="lg:hidden flex items-center justify-between py-3">
           <span className="text-primary-foreground font-semibold">NCAHP</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-primary-foreground hover:bg-primary-foreground/10"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              size="sm"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground"
+            >
+              <Link to="/register">Register</Link>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-primary-foreground hover:bg-primary-foreground/10"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -157,7 +194,12 @@ const Navbar = () => {
                   ) : (
                     <a
                       href={item.href}
-                      className="block py-3 px-4 text-primary-foreground font-medium hover:bg-primary-foreground/10 rounded-md transition-colors"
+                      className={cn(
+                        "block py-3 px-4 font-medium rounded-md transition-colors",
+                        item.isActive
+                          ? "bg-accent text-accent-foreground"
+                          : "text-primary-foreground hover:bg-primary-foreground/10"
+                      )}
                     >
                       {item.label}
                     </a>
