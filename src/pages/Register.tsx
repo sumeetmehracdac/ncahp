@@ -614,11 +614,12 @@ const Register = () => {
         </div>
 
         {/* Main Form Card */}
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <div className="bg-card border border-primary/15 rounded-2xl shadow-lg overflow-hidden">
             {/* Form Content */}
-            <div className="p-8 md:p-10">
-              <div className="w-full max-w-lg">
+            <div className="p-10 md:p-14">
+              <div className="w-full flex justify-center">
+                <div className="w-full max-w-xl">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentStep}
@@ -630,6 +631,7 @@ const Register = () => {
                     {renderStepContent()}
                   </motion.div>
                 </AnimatePresence>
+                </div>
               </div>
             </div>
 
