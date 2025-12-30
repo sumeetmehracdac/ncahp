@@ -599,9 +599,9 @@ const Register = () => {
 
         {/* Main Form Card */}
         <div className="max-w-2xl mx-auto">
-          <div className="bg-card border border-border rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-card border-2 border-primary/20 rounded-2xl shadow-xl overflow-hidden">
             {/* Form Content */}
-            <div className="p-8 md:p-12">
+            <div className="p-10 md:p-14 bg-gradient-to-b from-primary/[0.02] to-transparent">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStep}
@@ -616,35 +616,32 @@ const Register = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="px-8 md:px-12 py-6 bg-muted/50 border-t border-border">
+            <div className="px-10 md:px-14 py-5 border-t border-border/50">
               <div className="flex justify-between items-center">
-                <Button
-                  variant="ghost"
+                <button
                   onClick={prevStep}
                   disabled={currentStep === 1}
-                  className="gap-2 text-muted-foreground hover:text-foreground"
+                  className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
                 >
                   <ArrowLeft className="h-4 w-4" /> Back
-                </Button>
+                </button>
                 
                 {currentStep === steps.length ? (
-                  <Button
+                  <button
                     onClick={handleSubmit}
                     disabled={!canProceed()}
-                    size="lg"
-                    className="gap-2 bg-primary hover:bg-secondary text-primary-foreground px-8 shadow-md"
+                    className="text-sm font-medium text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
                   >
-                    <Sparkles className="h-4 w-4" /> Complete Registration
-                  </Button>
+                    Complete Registration <Sparkles className="h-4 w-4" />
+                  </button>
                 ) : (
-                  <Button
+                  <button
                     onClick={nextStep}
                     disabled={!canProceed()}
-                    size="lg"
-                    className="gap-2 bg-primary hover:bg-secondary text-primary-foreground px-8 shadow-md"
+                    className="text-sm font-medium text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors"
                   >
                     Continue <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  </button>
                 )}
               </div>
             </div>
