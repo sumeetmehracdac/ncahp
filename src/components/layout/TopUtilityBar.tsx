@@ -1,4 +1,4 @@
-import { Globe, Accessibility, User, Volume2, UserPlus } from 'lucide-react';
+import { Globe, Volume2, Eye, Search, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,20 +7,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import emblemOfIndia from '@/assets/emblem-of-india.png';
 
 const TopUtilityBar = () => {
   return (
-    <div className="bg-primary text-primary-foreground">
+    <div className="bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-2 text-sm">
           {/* Left: GoI Branding */}
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline font-medium">
+            <img
+              src={emblemOfIndia}
+              alt="Emblem of India"
+              className="h-6 w-auto"
+            />
+            <span className="text-foreground font-medium hidden sm:inline">
               Government of India
-            </span>
-            <span className="text-primary-foreground/60 hidden md:inline">|</span>
-            <span className="hidden md:inline text-primary-foreground/80">
-              Ministry of Health & Family Welfare
             </span>
           </div>
 
@@ -40,10 +42,10 @@ const TopUtilityBar = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 px-2 text-primary-foreground hover:bg-primary-foreground/10"
+                  className="h-8 px-2 text-foreground hover:bg-muted gap-1.5"
                 >
-                  <Globe className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">EN</span>
+                  <Globe className="h-4 w-4" />
+                  <span className="hidden sm:inline">English</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-card border-border">
@@ -52,60 +54,50 @@ const TopUtilityBar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Accessibility */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-2 text-primary-foreground hover:bg-primary-foreground/10"
-                >
-                  <Accessibility className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-card border-border">
-                <DropdownMenuItem className="flex justify-between">
-                  Text Size <span className="font-bold">A+</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="flex justify-between">
-                  Text Size <span className="font-bold">A-</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>High Contrast</DropdownMenuItem>
-                <DropdownMenuItem>Screen Reader</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Divider */}
+            <div className="h-4 w-px bg-border mx-1 hidden sm:block" />
 
-            {/* Screen Reader */}
+            {/* Audio */}
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 px-2 text-primary-foreground hover:bg-primary-foreground/10"
-              aria-label="Enable screen reader"
+              className="h-8 w-8 p-0 text-foreground hover:bg-muted"
+              aria-label="Audio"
             >
               <Volume2 className="h-4 w-4" />
             </Button>
 
-            {/* Create Account */}
+            {/* Accessibility */}
             <Button
-              asChild
               variant="ghost"
               size="sm"
-              className="h-8 px-3 text-primary-foreground hover:bg-primary-foreground/10 border border-primary-foreground/30 ml-2"
+              className="h-8 w-8 p-0 text-foreground hover:bg-muted"
+              aria-label="Accessibility"
             >
-              <Link to="/register">
-                <UserPlus className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">Create Account</span>
-              </Link>
+              <Eye className="h-4 w-4" />
+            </Button>
+
+            {/* Divider */}
+            <div className="h-4 w-px bg-border mx-1 hidden sm:block" />
+
+            {/* Search */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 text-foreground hover:bg-muted"
+              aria-label="Search"
+            >
+              <Search className="h-4 w-4" />
             </Button>
 
             {/* Login */}
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
-              className="h-8 px-3 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20"
+              className="h-8 px-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground ml-2"
             >
-              <User className="h-4 w-4 mr-1" />
-              <span className="hidden sm:inline">Login</span>
+              <User className="h-4 w-4 mr-1.5" />
+              Login
             </Button>
           </div>
         </div>
