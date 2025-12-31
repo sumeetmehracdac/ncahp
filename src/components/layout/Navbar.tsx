@@ -43,6 +43,7 @@ const navItems = [
       { label: 'Guidelines', href: '/regulation/guidelines' },
     ],
   },
+  { label: 'Profession Mapping', href: '/category-subcategory-profession-mapping' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Contact Us', href: '/contact' },
 ];
