@@ -90,15 +90,6 @@ const TopUtilityBar = () => {
               <Search className="h-4 w-4" />
             </Button>
 
-            {/* Login */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 px-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground ml-2"
-            >
-              <User className="h-4 w-4 mr-1.5" />
-              Login
-            </Button>
           </div>
         </div>
       </div>
