@@ -206,7 +206,7 @@ const NewsUpdatesSection = () => {
               ))}
             </div>
             <div className="text-center mt-8">
-              <Button className="bg-primary hover:bg-navy-light text-primary-foreground font-semibold">
+              <Button className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold">
                 View All Events
               </Button>
             </div>

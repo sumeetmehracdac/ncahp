@@ -53,7 +53,7 @@ const AboutSection = () => {
               ))}
             </ul>
 
-            <Button className="bg-primary hover:bg-navy-light text-primary-foreground px-6 py-5 font-semibold group">
+            <Button className="bg-primary hover:bg-primary-dark text-primary-foreground px-6 py-5 font-semibold group">
               Learn More About NCAHP
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>

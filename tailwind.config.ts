@@ -27,6 +27,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -36,6 +37,14 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -43,6 +52,7 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          light: "hsl(var(--accent-light))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -52,6 +62,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Legacy color mappings - now mapped to new palette
         navy: {
           DEFAULT: "hsl(var(--navy))",
           light: "hsl(var(--navy-light))",
@@ -87,8 +98,9 @@ export default {
       boxShadow: {
         'elegant': 'var(--shadow-lg)',
         'glow': 'var(--shadow-glow)',
-        'card': '0 4px 20px -4px hsl(210 60% 15% / 0.08)',
-        'card-hover': '0 12px 28px -8px hsl(210 60% 15% / 0.15)',
+        'primary': '0 6px 18px rgba(14, 122, 122, 0.12)',
+        'card': '0 4px 20px -4px hsl(180 30% 15% / 0.08)',
+        'card-hover': '0 12px 28px -8px hsl(180 30% 15% / 0.15)',
       },
       keyframes: {
         "accordion-down": {
