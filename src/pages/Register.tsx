@@ -547,11 +547,12 @@ const Register = () => {
               Already registered?
             </span>
             <Button 
+              asChild
               variant="outline" 
               size="sm"
               className="border-primary-foreground/30 text-primary-foreground bg-transparent hover:bg-primary-foreground/10"
             >
-              Login
+              <Link to="/login">Login</Link>
             </Button>
           </div>
         </div>
