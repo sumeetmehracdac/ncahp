@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-        sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['"Source Serif 4"', 'Georgia', 'serif'],
+        sans: ['"Noto Sans"', 'Helvetica', 'Arial', 'sans-serif'],
+        serif: ['"Source Serif 4"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
