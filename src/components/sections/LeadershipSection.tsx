@@ -99,7 +99,7 @@ const LeadershipSection = () => {
         <div className="text-center mt-10">
           <a
             href="/about/members"
-            className="inline-flex items-center gap-2 text-primary font-semibold hover:text-navy-light transition-colors link-underline"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:text-accent-light transition-colors link-underline"
           >
             View All Commission Members
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

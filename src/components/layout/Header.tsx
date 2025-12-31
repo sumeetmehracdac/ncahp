@@ -15,7 +15,7 @@ const Header = () => {
               className="h-12 md:h-16 w-auto"
             />
             <div className="hidden sm:block">
-              <p className="text-sm md:text-base font-semibold" style={{ color: 'hsl(190 70% 35%)' }}>
+              <p className="text-sm md:text-base font-semibold text-primary">
                 Ministry of Health and Family Welfare
               </p>
               <p className="text-xs md:text-sm text-muted-foreground">
