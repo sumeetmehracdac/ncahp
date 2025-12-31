@@ -6,24 +6,24 @@
 
 @layer base {
   :root {
-    /* ===== OFFICIAL TEAL-INDIGO COLOR SCHEME ===== */
+    /* ===== OFFICIAL TEAL-INDIGO COLOR SCHEME (REFINED) ===== */
     
-    /* Primary Brand Teal - #0E7A7A */
-    --primary: 180 79% 27%;
+    /* Primary Brand Teal - Softer, more approachable */
+    --primary: 175 55% 38%;
     --primary-foreground: 0 0% 100%;
     
-    /* Primary Dark - #064C4C */
-    --primary-dark: 180 85% 16%;
+    /* Primary Dark - For hover states */
+    --primary-dark: 175 60% 30%;
     
-    /* Accent Indigo - #3B2E86 */
-    --accent: 249 49% 35%;
+    /* Accent Indigo - Softer, harmonious with teal */
+    --accent: 250 45% 55%;
     --accent-foreground: 0 0% 100%;
     
-    /* Accent Light - #6C5AB6 (links, hover) */
-    --accent-light: 252 40% 53%;
+    /* Accent Light - Links, hover states */
+    --accent-light: 250 50% 62%;
     
     /* Secondary - Same as Primary for consistency */
-    --secondary: 180 79% 27%;
+    --secondary: 175 55% 38%;
     --secondary-foreground: 0 0% 100%;
     
     /* Surface / Card Background - #FFFFFF */
@@ -48,7 +48,7 @@
     /* Borders & Inputs (Neutral-300) - #D7E0E0 */
     --border: 180 12% 86%;
     --input: 180 12% 90%;
-    --ring: 252 40% 53%;
+    --ring: 250 50% 62%;
     
     /* Success - #2E7D32 */
     --success: 123 46% 34%;
@@ -63,19 +63,19 @@
     --destructive-foreground: 0 0% 100%;
     
     /* Legacy Custom Colors - Mapped to new palette */
-    --navy: 180 79% 27%;
-    --navy-light: 180 70% 35%;
-    --navy-dark: 180 85% 16%;
+    --navy: 175 55% 38%;
+    --navy-light: 175 50% 45%;
+    --navy-dark: 175 60% 30%;
     --saffron: 28 86% 62%;
     --saffron-dark: 28 86% 52%;
-    --teal: 180 79% 27%;
-    --teal-light: 180 70% 35%;
+    --teal: 175 55% 38%;
+    --teal-light: 175 50% 45%;
     --gold: 28 86% 62%;
     --cream: 210 25% 97%;
     
-    /* Hero Gradient: linear-gradient(90deg, #0E7A7A 0%, #3B2E86 100%) */
-    --gradient-hero: linear-gradient(90deg, #0E7A7A 0%, #3B2E86 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(252 40% 53%) 0%, hsl(249 49% 35%) 100%);
+    /* Hero Gradient: Softer teal to indigo */
+    --gradient-hero: linear-gradient(90deg, hsl(175 55% 38%) 0%, hsl(250 45% 55%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(250 50% 62%) 0%, hsl(250 45% 55%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 97%) 100%);
     
@@ -84,27 +84,27 @@
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.07), 0 2px 4px -2px hsl(0 0% 0% / 0.05);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.04);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.05);
-    --shadow-glow: 0 0 20px hsl(180 79% 27% / 0.25);
-    --shadow-primary: 0 6px 18px rgba(14, 122, 122, 0.12);
+    --shadow-glow: 0 0 20px hsl(175 55% 38% / 0.25);
+    --shadow-primary: 0 6px 18px hsl(175 55% 38% / 0.15);
     
     --radius: 0.5rem;
     
     /* Sidebar */
     --sidebar-background: 210 25% 97%;
     --sidebar-foreground: 200 19% 18%;
-    --sidebar-primary: 180 79% 27%;
+    --sidebar-primary: 175 55% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 95%;
     --sidebar-accent-foreground: 200 19% 18%;
     --sidebar-border: 180 12% 86%;
-    --sidebar-ring: 252 40% 53%;
+    --sidebar-ring: 250 50% 62%;
   }
 
   .dark {
-    /* Dark mode with Teal-Indigo palette */
-    --primary: 180 70% 40%;
+    /* Dark mode with Teal-Indigo palette (Refined) */
+    --primary: 175 50% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 180 79% 27%;
+    --primary-dark: 175 55% 38%;
     --background: 212 36% 9%;
     --foreground: 0 0% 95%;
     --card: 210 30% 12%;
@@ -115,18 +115,18 @@
     --muted-foreground: 0 0% 60%;
     --border: 210 25% 20%;
     --input: 210 25% 20%;
-    --accent: 252 50% 60%;
+    --accent: 250 50% 65%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 252 45% 65%;
-    --secondary: 180 70% 40%;
+    --accent-light: 250 55% 70%;
+    --secondary: 175 50% 45%;
     --secondary-foreground: 0 0% 100%;
     --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 252 50% 60%;
-    --teal: 180 70% 40%;
+    --ring: 250 50% 65%;
+    --teal: 175 50% 45%;
     --sidebar-background: 212 36% 9%;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 180 70% 40%;
+    --sidebar-primary: 175 50% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
