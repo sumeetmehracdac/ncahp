@@ -54,7 +54,7 @@ const HeroCarousel = () => {
     <section 
       className="relative min-h-[480px] md:min-h-[550px] flex items-center overflow-hidden"
       style={{ 
-        backgroundImage: `linear-gradient(to right, rgba(14, 122, 122, 0.95) 0%, rgba(59, 46, 134, 0.88) 50%, rgba(59, 46, 134, 0.75) 75%, transparent 100%), url(${heroBg})`,
+        backgroundImage: `linear-gradient(to right, hsla(175, 55%, 38%, 0.95) 0%, hsla(250, 45%, 55%, 0.88) 50%, hsla(250, 45%, 55%, 0.75) 75%, transparent 100%), url(${heroBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center right'
       }}
