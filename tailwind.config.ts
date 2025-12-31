@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Source Serif 4"', 'Georgia', 'serif'],
+        display: ['"IBM Plex Serif"', 'Georgia', 'serif'],
         sans: ['"Noto Sans"', 'Helvetica', 'Arial', 'sans-serif'],
-        serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+        serif: ['"IBM Plex Serif"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
