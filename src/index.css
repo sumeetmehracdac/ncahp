@@ -127,14 +127,14 @@
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
-    font-family: 'Source Serif 4', 'Georgia', serif;
+    font-family: 'IBM Plex Serif', 'Georgia', serif;
     font-weight: 600;
   }
 }
 
 @layer components {
   .font-display {
-    font-family: 'Source Serif 4', 'Georgia', serif;
+    font-family: 'IBM Plex Serif', 'Georgia', serif;
   }
   
   .font-body {
