@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Copy, Building2, MapPin } from 'lucide-react';
+import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Copy, Building2, MapPin, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import DocumentPreviewModal from './DocumentPreviewModal';
 
 export interface Announcement {
@@ -28,6 +28,28 @@ interface AnnouncementCardProps {
 const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [previewDoc, setPreviewDoc] = useState<Announcement['documents'][0] | null>(null);
+  const [showRightFade, setShowRightFade] = useState(false);
+
+  // Check if content overflows to show fade indicator
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const checkOverflow = () => {
+        setShowRightFade(container.scrollWidth > container.clientWidth);
+      };
+      checkOverflow();
+      window.addEventListener('resize', checkOverflow);
+      return () => window.removeEventListener('resize', checkOverflow);
+    }
+  }, [announcement.documents]);
+
+  const handleScroll = () => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+      setShowRightFade(!isAtEnd);
+    }
+  };
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-IN', {
@@ -143,41 +165,55 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
               </Button>
             </div>
 
-            {/* Documents section with horizontal scroll */}
+            {/* Documents section - clean hidden scrollbar with fade indicator */}
             {announcement.documents.length > 0 && (
               <div className="border-t border-border pt-3 mt-auto">
-                <div 
-                  ref={scrollContainerRef}
-                  className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
-                  style={{ scrollbarWidth: 'thin' }}
-                >
-                  {announcement.documents.map((doc, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-muted/50 hover:bg-muted border border-transparent hover:border-primary/20 transition-all duration-200 text-xs group/doc flex-shrink-0"
-                    >
-                      <FileText className={`h-3 w-3 ${getFileIconColor(doc.type)}`} />
-                      <span className="font-medium text-foreground truncate max-w-[80px] group-hover/doc:text-primary transition-colors">
-                        {doc.name.length > 15 ? `${doc.name.slice(0, 12)}...` : doc.name}
-                      </span>
-                      <button
-                        onClick={(e) => handlePreview(e, doc)}
-                        className="p-0.5 hover:bg-primary/10 rounded transition-colors"
-                        title="Preview"
+                <div className="relative">
+                  <div 
+                    ref={scrollContainerRef}
+                    onScroll={handleScroll}
+                    className="flex gap-2 overflow-x-auto"
+                    style={{ 
+                      scrollbarWidth: 'none', 
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch'
+                    }}
+                  >
+                    {announcement.documents.map((doc, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-muted/50 hover:bg-muted border border-transparent hover:border-primary/20 transition-all duration-200 text-xs group/doc flex-shrink-0"
                       >
-                        <Eye className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
-                      </button>
-                      <a 
-                        href={doc.url} 
-                        download 
-                        onClick={handleDownload}
-                        className="p-0.5 hover:bg-primary/10 rounded transition-colors"
-                        title="Download"
-                      >
-                        <Download className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
-                      </a>
+                        <FileText className={`h-3 w-3 ${getFileIconColor(doc.type)}`} />
+                        <span className="font-medium text-foreground truncate max-w-[80px] group-hover/doc:text-primary transition-colors">
+                          {doc.name.length > 15 ? `${doc.name.slice(0, 12)}...` : doc.name}
+                        </span>
+                        <button
+                          onClick={(e) => handlePreview(e, doc)}
+                          className="p-0.5 hover:bg-primary/10 rounded transition-colors"
+                          title="Preview"
+                        >
+                          <Eye className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
+                        </button>
+                        <a 
+                          href={doc.url} 
+                          download 
+                          onClick={handleDownload}
+                          className="p-0.5 hover:bg-primary/10 rounded transition-colors"
+                          title="Download"
+                        >
+                          <Download className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Fade indicator for more content */}
+                  {showRightFade && (
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card to-transparent pointer-events-none flex items-center justify-end pr-1">
+                      <ChevronRight className="h-3 w-3 text-muted-foreground animate-pulse" />
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             )}
