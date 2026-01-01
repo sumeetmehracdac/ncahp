@@ -346,12 +346,6 @@ const AnnouncementDetail = () => {
                     <Calendar className="h-4 w-4 text-primary" />
                     <span>Published {formatDate(announcement.createdAt)}</span>
                   </div>
-                  {!isNew && (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span>Expired on {formatDate(announcement.toDate)}</span>
-                    </div>
-                  )}
                 </div>
 
                 <h1 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3 leading-tight">
