@@ -112,14 +112,14 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <Button
               asChild
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-5 h-9 rounded-md"
+              className="bg-accent hover:bg-accent-light text-accent-foreground font-bold px-6 h-10 rounded-md shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
             >
               <Link to="/register">Register Now</Link>
             </Button>
             <Button
               asChild
               variant="ghost"
-              className="text-primary-foreground hover:bg-primary-foreground/10 font-medium px-4 h-9"
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 font-medium px-4 h-9"
             >
               <Link to="/login">Login</Link>
             </Button>
