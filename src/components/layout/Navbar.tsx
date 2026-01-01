@@ -56,18 +56,18 @@ const Navbar = () => {
     <nav className="bg-primary sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4">
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center justify-between">
+        <div className="hidden lg:flex items-center justify-between h-12">
           {/* Left: Nav Links */}
           <NavigationMenu>
-            <NavigationMenuList className="gap-0">
+            <NavigationMenuList className="gap-0 h-12">
               {navItems.map((item) => (
-                <NavigationMenuItem key={item.label}>
+                <NavigationMenuItem key={item.label} className="flex items-center h-12">
                   {item.children ? (
                     <>
                       <NavigationMenuTrigger 
                         className={cn(
                           "bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground",
-                          "data-[state=open]:bg-primary-foreground/10 h-9 my-1.5 px-4 text-sm font-medium rounded-md"
+                          "data-[state=open]:bg-primary-foreground/10 h-9 px-4 text-sm font-medium rounded-md"
                         )}
                       >
                         {item.label}
@@ -97,7 +97,7 @@ const Navbar = () => {
                     <NavigationMenuLink asChild>
                       <a
                         href={item.href}
-                        className="flex items-center h-9 my-1.5 px-4 text-sm font-medium transition-colors rounded-md text-primary-foreground hover:bg-primary-foreground/10"
+                        className="flex items-center h-9 px-4 text-sm font-medium transition-colors rounded-md text-primary-foreground hover:bg-primary-foreground/10"
                       >
                         {item.label}
                       </a>
@@ -108,11 +108,11 @@ const Navbar = () => {
             </NavigationMenuList>
           </NavigationMenu>
 
-          {/* Right: Action Buttons */}
-          <div className="flex items-center gap-3">
+          {/* Right: Action Buttons - aligned to same baseline */}
+          <div className="flex items-center gap-3 h-12">
             <Button
               asChild
-              className="bg-accent hover:bg-accent-light text-accent-foreground font-semibold px-5 h-9 rounded-md shadow-md transition-all duration-200"
+              className="bg-accent hover:bg-accent-light text-accent-foreground font-semibold px-5 h-9 rounded-md shadow-sm transition-all duration-200"
             >
               <Link to="/register">Register Now</Link>
             </Button>

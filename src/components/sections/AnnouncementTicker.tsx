@@ -20,10 +20,10 @@ const AnnouncementTicker = () => {
 
           {/* Ticker */}
           <div className="flex-1 overflow-hidden relative">
-            <div className="animate-marquee whitespace-nowrap flex gap-16">
+            <div className="animate-marquee whitespace-nowrap flex gap-20">
               {[...announcements, ...announcements].map((announcement, index) => (
-                <span key={index} className="inline-flex items-center gap-3 text-sm text-foreground">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span key={index} className="inline-flex items-center gap-4 text-sm text-foreground px-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
                   {announcement}
                 </span>
               ))}
