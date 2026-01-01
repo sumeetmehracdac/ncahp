@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Megaphone, Plus, ArrowRight, Bell, Calendar } from 'lucide-react';
+import { Megaphone, Plus, Bell } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -9,6 +9,21 @@ import ScrollToTop from '@/components/ui/ScrollToTop';
 import AnnouncementCard, { Announcement } from '@/components/announcements/AnnouncementCard';
 import AnnouncementFilters from '@/components/announcements/AnnouncementFilters';
 import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
+
+// TODO: Replace with actual admin check from auth system
+const useIsAdmin = () => {
+  // Simulating admin status - replace with real auth check
+  return true;
+};
 
 // Sample data - in production this would come from a database
 const sampleAnnouncements: Announcement[] = [
@@ -76,11 +91,27 @@ const sampleAnnouncements: Announcement[] = [
       { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB' },
     ],
   },
+  {
+    id: '6',
+    title: 'Guidelines for Continuing Professional Development',
+    punchline: 'Lifelong learning for healthcare excellence',
+    content: 'The Commission has released comprehensive guidelines for Continuing Professional Development (CPD) for all registered allied health professionals. These guidelines outline the mandatory CPD credit requirements, approved learning activities, and the documentation process for maintaining professional registration.',
+    fromDate: new Date('2024-09-15'),
+    toDate: new Date('2024-10-31'),
+    createdAt: new Date('2024-09-20'),
+    documents: [
+      { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB' },
+    ],
+  },
 ];
+
+const ITEMS_PER_PAGE = 6;
 
 const Announcements = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'new' | 'archived'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const isAdmin = useIsAdmin();
 
   const today = new Date();
 
@@ -110,82 +141,177 @@ const Announcements = () => {
     return announcements;
   }, [activeFilter, searchQuery, categorizedAnnouncements]);
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAnnouncements.length / ITEMS_PER_PAGE);
+  const paginatedAnnouncements = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAnnouncements.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAnnouncements, currentPage]);
+
+  // Reset to page 1 when filter changes
+  const handleFilterChange = (filter: 'all' | 'new' | 'archived') => {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
   const isNew = (announcement: Announcement) => announcement.toDate >= today;
+
+  const renderPaginationItems = () => {
+    const items = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => setCurrentPage(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    } else {
+      items.push(
+        <PaginationItem key={1}>
+          <PaginationLink
+            onClick={() => setCurrentPage(1)}
+            isActive={currentPage === 1}
+            className="cursor-pointer"
+          >
+            1
+          </PaginationLink>
+        </PaginationItem>
+      );
+
+      if (currentPage > 3) {
+        items.push(
+          <PaginationItem key="ellipsis-start">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = start; i <= end; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              onClick={() => setCurrentPage(i)}
+              isActive={currentPage === i}
+              className="cursor-pointer"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage < totalPages - 2) {
+        items.push(
+          <PaginationItem key="ellipsis-end">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            onClick={() => setCurrentPage(totalPages)}
+            isActive={currentPage === totalPages}
+            className="cursor-pointer"
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-muted">
       <Header />
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-accent py-16 lg:py-24">
+      {/* Compact Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-accent py-8 lg:py-10">
         {/* Abstract background pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl transform translate-x-1/3 translate-y-1/3" />
+          <div className="absolute top-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent rounded-full blur-3xl transform translate-x-1/3 translate-y-1/3" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20"
-            >
-              <Bell className="h-4 w-4 text-white" />
-              <span className="text-sm text-white/90 font-medium">
-                {categorizedAnnouncements.new.length} Active Announcements
-              </span>
-            </motion.div>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
-            >
-              Official Announcements
-            </motion.h1>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto"
-            >
-              Stay informed with the latest updates, notifications, and important circulars from the National Commission for Allied and Healthcare Professions.
-            </motion.p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 mb-3 border border-white/20"
+              >
+                <Bell className="h-3 w-3 text-white" />
+                <span className="text-xs text-white/90 font-medium">
+                  {categorizedAnnouncements.new.length} Active
+                </span>
+              </motion.div>
+              
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight"
+              >
+                Official Announcements
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="text-sm md:text-base text-white/80 mt-2 max-w-xl"
+              >
+                Latest updates, notifications, and circulars from NCAHP
+              </motion.p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <Link to="/announcements/submit">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold h-12 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                  <Plus className="h-5 w-5 mr-2" />
-                  Submit Announcement
-                </Button>
-              </Link>
-            </motion.div>
+            {isAdmin && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
+                <Link to="/announcements/submit">
+                  <Button size="default" className="bg-white text-primary hover:bg-white/90 font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Submit Announcement
+                  </Button>
+                </Link>
+              </motion.div>
+            )}
           </div>
-        </div>
-
-        {/* Decorative wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="hsl(var(--muted))"/>
-          </svg>
         </div>
       </section>
 
       {/* Filters */}
       <AnnouncementFilters
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
         activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
+        onFilterChange={handleFilterChange}
         counts={{
           all: categorizedAnnouncements.all.length,
           new: categorizedAnnouncements.new.length,
@@ -193,13 +319,13 @@ const Announcements = () => {
         }}
       />
 
-      {/* Announcements List */}
-      <main className="flex-1 py-12 lg:py-16">
+      {/* Announcements Grid */}
+      <main className="flex-1 py-8 lg:py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto lg:pl-8">
-            {filteredAnnouncements.length > 0 ? (
-              <div className="space-y-8">
-                {filteredAnnouncements.map((announcement, index) => (
+          {paginatedAnnouncements.length > 0 ? (
+            <>
+              <div className="grid md:grid-cols-2 gap-6">
+                {paginatedAnnouncements.map((announcement, index) => (
                   <AnnouncementCard
                     key={announcement.id}
                     announcement={announcement}
@@ -208,24 +334,49 @@ const Announcements = () => {
                   />
                 ))}
               </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-16"
-              >
-                <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
-                  <Megaphone className="h-10 w-10 text-muted-foreground" />
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-10">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                          className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
+                      </PaginationItem>
+                      
+                      {renderPaginationItems()}
+                      
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                          className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-                  No announcements found
-                </h3>
-                <p className="text-muted-foreground">
-                  {searchQuery ? 'Try adjusting your search terms' : 'Check back later for updates'}
-                </p>
-              </motion.div>
-            )}
-          </div>
+              )}
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-16"
+            >
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                <Megaphone className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                No announcements found
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {searchQuery ? 'Try adjusting your search terms' : 'Check back later for updates'}
+              </p>
+            </motion.div>
+          )}
         </div>
       </main>
 
