@@ -35,9 +35,10 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-12-20'),
     toDate: new Date('2025-02-28'),
     createdAt: new Date('2024-12-28'),
+    category: 'Head Office',
     documents: [
-      { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB' },
-      { name: 'User Manual - Portal Navigation.pdf', url: '#', size: '1.8 MB' },
+      { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB', type: 'pdf' },
+      { name: 'User Manual - Portal Navigation.pdf', url: '#', size: '1.8 MB', type: 'pdf' },
     ],
   },
   {
@@ -48,10 +49,11 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-12-25'),
     toDate: new Date('2025-03-15'),
     createdAt: new Date('2024-12-25'),
+    category: 'State Council',
     documents: [
-      { name: 'Election Schedule 2025.pdf', url: '#', size: '890 KB' },
-      { name: 'Nomination Form.docx', url: '#', size: '156 KB' },
-      { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB' },
+      { name: 'Election Schedule 2025.pdf', url: '#', size: '890 KB', type: 'pdf' },
+      { name: 'Nomination Form.docx', url: '#', size: '156 KB', type: 'docx' },
+      { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB', type: 'pdf' },
     ],
   },
   {
@@ -62,8 +64,9 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-12-22'),
     toDate: new Date('2025-01-15'),
     createdAt: new Date('2024-12-22'),
+    category: 'Head Office',
     documents: [
-      { name: 'Workshop Agenda.pdf', url: '#', size: '450 KB' },
+      { name: 'Workshop Agenda.pdf', url: '#', size: '450 KB', type: 'pdf' },
     ],
   },
   {
@@ -74,9 +77,10 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-11-01'),
     toDate: new Date('2024-12-15'),
     createdAt: new Date('2024-11-15'),
+    category: 'Head Office',
     documents: [
-      { name: 'Fee Structure 2025.pdf', url: '#', size: '320 KB' },
-      { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB' },
+      { name: 'Fee Structure 2025.pdf', url: '#', size: '320 KB', type: 'pdf' },
+      { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB', type: 'pdf' },
     ],
   },
   {
@@ -87,8 +91,9 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-10-01'),
     toDate: new Date('2024-11-30'),
     createdAt: new Date('2024-10-20'),
+    category: 'State Council',
     documents: [
-      { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB' },
+      { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB', type: 'pdf' },
     ],
   },
   {
@@ -99,32 +104,71 @@ const sampleAnnouncements: Announcement[] = [
     fromDate: new Date('2024-09-15'),
     toDate: new Date('2024-10-31'),
     createdAt: new Date('2024-09-20'),
+    category: 'Head Office',
     documents: [
-      { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB' },
+      { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB', type: 'pdf' },
+    ],
+  },
+  {
+    id: '7',
+    title: 'Emergency Response Protocol Updates',
+    punchline: 'Enhanced preparedness for healthcare emergencies',
+    content: 'New emergency response protocols have been issued for all allied health professionals. These protocols incorporate lessons learned from recent public health challenges and align with international best practices.',
+    fromDate: new Date('2024-12-01'),
+    toDate: new Date('2025-06-30'),
+    createdAt: new Date('2024-12-01'),
+    category: 'Head Office',
+    documents: [
+      { name: 'Emergency Protocol 2025.pdf', url: '#', size: '1.5 MB', type: 'pdf' },
+    ],
+  },
+  {
+    id: '8',
+    title: 'Regional Training Centers Announcement',
+    punchline: 'Skill development centers across states',
+    content: 'The commission announces the establishment of 15 new regional training centers for allied health professionals. These centers will provide hands-on training and certification programs.',
+    fromDate: new Date('2024-11-15'),
+    toDate: new Date('2025-04-30'),
+    createdAt: new Date('2024-11-20'),
+    category: 'State Council',
+    documents: [
+      { name: 'Training Center Details.pdf', url: '#', size: '2.1 MB', type: 'pdf' },
+      { name: 'Application Form.pdf', url: '#', size: '450 KB', type: 'pdf' },
     ],
   },
 ];
 
-const ITEMS_PER_PAGE = 6;
+// Optimal items per page for 2-column grid layout
+const ITEMS_PER_PAGE = 8;
 
 const Announcements = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'new' | 'archived'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'head-office' | 'state-council'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const isAdmin = useIsAdmin();
 
   const today = new Date();
 
   const categorizedAnnouncements = useMemo(() => {
-    const newAnnouncements = sampleAnnouncements.filter(a => a.toDate >= today);
-    const archivedAnnouncements = sampleAnnouncements.filter(a => a.toDate < today);
+    let announcements = [...sampleAnnouncements];
+    
+    // Apply category filter
+    if (categoryFilter === 'head-office') {
+      announcements = announcements.filter(a => a.category === 'Head Office');
+    } else if (categoryFilter === 'state-council') {
+      announcements = announcements.filter(a => a.category === 'State Council');
+    }
+
+    const newAnnouncements = announcements.filter(a => a.toDate >= today);
+    const archivedAnnouncements = announcements.filter(a => a.toDate < today);
     
     return {
       new: newAnnouncements.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
       archived: archivedAnnouncements.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
       all: [...newAnnouncements, ...archivedAnnouncements].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
     };
-  }, []);
+  }, [categoryFilter]);
 
   const filteredAnnouncements = useMemo(() => {
     let announcements = categorizedAnnouncements[activeFilter];
@@ -151,6 +195,11 @@ const Announcements = () => {
   // Reset to page 1 when filter changes
   const handleFilterChange = (filter: 'all' | 'new' | 'archived') => {
     setActiveFilter(filter);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryChange = (category: 'all' | 'head-office' | 'state-council') => {
+    setCategoryFilter(category);
     setCurrentPage(1);
   };
 
@@ -265,7 +314,7 @@ const Announcements = () => {
               >
                 <Bell className="h-3 w-3 text-white" />
                 <span className="text-xs text-white/90 font-medium">
-                  {categorizedAnnouncements.new.length} Active
+                  {categorizedAnnouncements.new.length} New
                 </span>
               </motion.div>
               
@@ -312,6 +361,8 @@ const Announcements = () => {
         onSearchChange={handleSearchChange}
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
+        categoryFilter={categoryFilter}
+        onCategoryChange={handleCategoryChange}
         counts={{
           all: categorizedAnnouncements.all.length,
           new: categorizedAnnouncements.new.length,
