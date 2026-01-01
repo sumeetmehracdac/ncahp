@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Copy, Building2, MapPin, ChevronRight } from 'lucide-react';
+import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Copy, Building2, MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -28,15 +28,18 @@ interface AnnouncementCardProps {
 const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [previewDoc, setPreviewDoc] = useState<Announcement['documents'][0] | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  // Check if content overflows to show scroll button
+  // Check if content overflows to show scroll buttons
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
       const checkOverflow = () => {
         const hasOverflow = container.scrollWidth > container.clientWidth;
+        const isAtStart = container.scrollLeft <= 5;
         const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+        setCanScrollLeft(hasOverflow && !isAtStart);
         setCanScrollRight(hasOverflow && !isAtEnd);
       };
       checkOverflow();
@@ -49,10 +52,10 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
     }
   }, [announcement.documents]);
 
-  const scrollRight = () => {
+  const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (container) {
-      container.scrollBy({ left: 140, behavior: 'smooth' });
+      container.scrollBy({ left: direction === 'right' ? 140 : -140, behavior: 'smooth' });
     }
   };
 
@@ -174,6 +177,17 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
             {announcement.documents.length > 0 && (
               <div className="border-t border-border pt-3 mt-auto">
                 <div className="relative flex items-center gap-1">
+                  {/* Left scroll button */}
+                  {canScrollLeft && (
+                    <button
+                      onClick={() => scroll('left')}
+                      className="flex-shrink-0 h-6 w-6 rounded-md bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
+                      title="Previous documents"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                  
                   <div 
                     ref={scrollContainerRef}
                     className="flex gap-2 overflow-x-auto flex-1"
@@ -212,11 +226,11 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
                     ))}
                   </div>
                   
-                  {/* Arrow button to scroll right */}
+                  {/* Right scroll button */}
                   {canScrollRight && (
                     <button
-                      onClick={scrollRight}
-                      className="flex-shrink-0 h-6 w-6 rounded-full bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
+                      onClick={() => scroll('right')}
+                      className="flex-shrink-0 h-6 w-6 rounded-md bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
                       title="More documents"
                     >
                       <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
