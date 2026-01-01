@@ -112,7 +112,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <Button
               asChild
-              className="bg-accent hover:bg-accent-light text-accent-foreground font-bold px-6 h-10 rounded-md shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"
+              className="bg-accent hover:bg-accent-light text-accent-foreground font-semibold px-5 h-9 rounded-md shadow-md transition-all duration-200"
             >
               <Link to="/register">Register Now</Link>
             </Button>
