@@ -353,32 +353,32 @@ const AnnouncementDetail = () => {
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-3 mt-6 print:hidden">
+                <div className="flex flex-wrap items-center gap-2 mt-6 print:hidden">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={handleCopyLink}
-                    className="gap-2"
+                    className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1.5"
                   >
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-3 w-3" />
                     Copy Link
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={handleShare}
-                    className="gap-2"
+                    className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1.5"
                   >
-                    <Share2 className="h-4 w-4" />
+                    <Share2 className="h-3 w-3" />
                     Share
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={handlePrint}
-                    className="gap-2"
+                    className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1.5"
                   >
-                    <Printer className="h-4 w-4" />
+                    <Printer className="h-3 w-3" />
                     Print
                   </Button>
                 </div>
