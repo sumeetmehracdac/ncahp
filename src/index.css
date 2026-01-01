@@ -140,14 +140,14 @@
     @apply border-border;
   }
   
-  /* Custom text selection highlight */
+  /* Custom text selection highlight - translucent teal */
   ::selection {
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.35), hsl(var(--accent) / 0.25));
+    background: hsl(var(--primary) / 0.3);
     color: hsl(var(--foreground));
   }
   
   ::-moz-selection {
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.35), hsl(var(--accent) / 0.25));
+    background: hsl(var(--primary) / 0.3);
     color: hsl(var(--foreground));
   }
 
