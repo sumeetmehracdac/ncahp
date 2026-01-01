@@ -162,7 +162,7 @@ const TextSelectionToolbar = ({ containerRef, onAskAI }: TextSelectionToolbarPro
                     transition-all duration-200 ease-out text-xs font-medium
                     hover:text-background
                     ${action.label === 'Ask AI' 
-                      ? 'bg-gradient-to-r from-accent/25 to-purple-500/20 text-background hover:from-accent/40 hover:to-purple-500/35 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]' 
+                      ? 'bg-gradient-to-r from-accent/25 to-accent-hover/20 text-background hover:from-accent/40 hover:to-accent-hover/35 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]' 
                       : 'hover:bg-gradient-to-r hover:from-background/10 hover:via-background/15 hover:to-background/10 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
                     }
                   `}

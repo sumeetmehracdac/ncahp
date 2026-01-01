@@ -53,6 +53,11 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
           light: "hsl(var(--accent-light))",
+          hover: "hsl(var(--accent-hover))",
+        },
+        disabled: {
+          DEFAULT: "hsl(var(--disabled))",
+          foreground: "hsl(var(--disabled-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -79,6 +84,13 @@ export default {
         gold: "hsl(var(--gold))",
         cream: "hsl(var(--cream))",
         "primary-dark": "hsl(var(--primary-dark))",
+        // Neutral slate colors for direct usage
+        slate: {
+          accent: "#4A5568",
+          hover: "#2F3A45",
+          border: "#CBD5E1",
+          disabled: "#E4E7EC",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
