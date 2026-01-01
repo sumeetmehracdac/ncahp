@@ -6,24 +6,27 @@
 
 @layer base {
   :root {
-    /* ===== OFFICIAL TEAL-INDIGO COLOR SCHEME (REFINED) ===== */
+    /* ===== TEAL PRIMARY + NEUTRAL SLATE ACCENT SCHEME ===== */
     
-    /* Primary Brand Teal - Softer, more approachable */
-    --primary: 175 55% 38%;
+    /* Primary Brand Teal - #0E7A7A */
+    --primary: 175 79% 27%;
     --primary-foreground: 0 0% 100%;
     
-    /* Primary Dark - For hover states */
-    --primary-dark: 175 60% 30%;
+    /* Primary Dark - For hover states #064C4C */
+    --primary-dark: 180 84% 16%;
     
-    /* Accent Indigo - Unified #6C5AB6, reduced saturation for softer CTA */
-    --accent: 252 22% 53%;
+    /* Accent Neutral Slate - #4A5568 */
+    --accent: 215 19% 35%;
     --accent-foreground: 0 0% 100%;
     
-    /* Accent Light - Links, hover states */
-    --accent-light: 252 26% 58%;
+    /* Accent Hover - #2F3A45 */
+    --accent-hover: 210 20% 23%;
+    
+    /* Accent Light - For subtle highlights */
+    --accent-light: 215 16% 47%;
     
     /* Secondary - Same as Primary for consistency */
-    --secondary: 175 55% 38%;
+    --secondary: 175 79% 27%;
     --secondary-foreground: 0 0% 100%;
     
     /* Surface / Card Background - #FFFFFF */
@@ -45,10 +48,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 200 19% 18%;
     
-    /* Borders & Inputs (Neutral-300) - #D7E0E0 */
-    --border: 180 12% 86%;
-    --input: 180 12% 90%;
-    --ring: 252 22% 53%;
+    /* Borders - #CBD5E1 */
+    --border: 213 27% 84%;
+    --input: 213 27% 88%;
+    
+    /* Ring - Using neutral accent */
+    --ring: 215 19% 35%;
+    
+    /* Disabled - #E4E7EC */
+    --disabled: 220 14% 91%;
+    --disabled-foreground: 215 16% 47%;
     
     /* Success - #2E7D32 */
     --success: 123 46% 34%;
@@ -63,48 +72,48 @@
     --destructive-foreground: 0 0% 100%;
     
     /* Legacy Custom Colors - Mapped to new palette */
-    --navy: 175 55% 38%;
-    --navy-light: 175 50% 45%;
-    --navy-dark: 175 60% 30%;
+    --navy: 175 79% 27%;
+    --navy-light: 175 65% 35%;
+    --navy-dark: 180 84% 16%;
     --saffron: 28 86% 62%;
     --saffron-dark: 28 86% 52%;
-    --teal: 175 55% 38%;
-    --teal-light: 175 50% 45%;
+    --teal: 175 79% 27%;
+    --teal-light: 175 65% 35%;
     --gold: 28 86% 62%;
     --cream: 210 25% 97%;
     
-    /* Hero Gradient: Teal to unified accent #6C5AB6 - slightly darkened for contrast */
-    --gradient-hero: linear-gradient(90deg, hsl(175 55% 32%) 0%, hsl(252 34% 48%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(252 40% 62%) 0%, hsl(252 34% 54%) 100%);
+    /* Hero Gradient: Teal to darker teal (no purple) */
+    --gradient-hero: linear-gradient(90deg, hsl(175 79% 27%) 0%, hsl(180 84% 16%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(215 19% 35%) 0%, hsl(210 20% 23%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 97%) 100%);
     
-    /* Shadows - Using new brand color */
+    /* Shadows - Using teal brand color */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.04);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.07), 0 2px 4px -2px hsl(0 0% 0% / 0.05);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.04);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.05);
-    --shadow-glow: 0 0 20px hsl(175 55% 38% / 0.25);
-    --shadow-primary: 0 6px 18px hsl(175 55% 38% / 0.15);
+    --shadow-glow: 0 0 20px hsl(175 79% 27% / 0.25);
+    --shadow-primary: 0 6px 18px hsl(175 79% 27% / 0.15);
     
     --radius: 0.5rem;
     
     /* Sidebar */
     --sidebar-background: 210 25% 97%;
     --sidebar-foreground: 200 19% 18%;
-    --sidebar-primary: 175 55% 38%;
+    --sidebar-primary: 175 79% 27%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 95%;
     --sidebar-accent-foreground: 200 19% 18%;
-    --sidebar-border: 180 12% 86%;
-    --sidebar-ring: 252 22% 53%;
+    --sidebar-border: 213 27% 84%;
+    --sidebar-ring: 215 19% 35%;
   }
 
   .dark {
-    /* Dark mode with Teal-Indigo palette (Refined) */
-    --primary: 175 50% 45%;
+    /* Dark mode with Teal + Neutral Slate palette */
+    --primary: 175 65% 35%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 175 55% 38%;
+    --primary-dark: 175 79% 27%;
     --background: 212 36% 9%;
     --foreground: 0 0% 95%;
     --card: 210 30% 12%;
@@ -115,23 +124,24 @@
     --muted-foreground: 0 0% 60%;
     --border: 210 25% 20%;
     --input: 210 25% 20%;
-    --accent: 252 34% 58%;
+    --accent: 215 16% 47%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 252 40% 65%;
-    --secondary: 175 50% 45%;
+    --accent-hover: 215 19% 35%;
+    --accent-light: 215 14% 55%;
+    --secondary: 175 65% 35%;
     --secondary-foreground: 0 0% 100%;
     --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 252 28% 58%;
-    --teal: 175 50% 45%;
+    --ring: 215 16% 47%;
+    --teal: 175 65% 35%;
     --sidebar-background: 212 36% 9%;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 175 50% 45%;
+    --sidebar-primary: 175 65% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 210 25% 18%;
-    --sidebar-ring: 252 28% 58%;
+    --sidebar-ring: 215 16% 47%;
   }
 }
 
@@ -201,14 +211,14 @@
   }
   
   .text-gradient {
-    background: linear-gradient(135deg, hsl(252 34% 54%) 0%, hsl(252 40% 45%) 100%);
+    background: linear-gradient(135deg, hsl(175 79% 27%) 0%, hsl(180 84% 16%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .border-accent-gradient {
-    border-image: linear-gradient(135deg, hsl(252 34% 54%), hsl(252 40% 45%)) 1;
+    border-image: linear-gradient(135deg, hsl(175 79% 27%), hsl(180 84% 16%)) 1;
   }
   
   /* Primary Button Style */
@@ -233,10 +243,10 @@
 }
 
 @layer components {
-  /* ===== PREMIUM REGISTER BUTTON ===== */
+  /* ===== PREMIUM REGISTER BUTTON - Now using neutral slate ===== */
   .btn-register {
-    --btn-bg: linear-gradient(135deg, hsl(252 32% 56%) 0%, hsl(252 28% 48%) 100%);
-    --btn-bg-hover: linear-gradient(135deg, hsl(252 32% 52%) 0%, hsl(252 28% 44%) 100%);
+    --btn-bg: linear-gradient(135deg, hsl(215 19% 38%) 0%, hsl(210 20% 28%) 100%);
+    --btn-bg-hover: linear-gradient(135deg, hsl(215 19% 32%) 0%, hsl(210 20% 22%) 100%);
     
     position: relative;
     display: inline-flex;
@@ -254,8 +264,8 @@
     isolation: isolate;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
-      0 1px 3px hsl(252 40% 30% / 0.2),
-      0 4px 12px hsl(252 40% 35% / 0.15),
+      0 1px 3px hsl(215 20% 25% / 0.2),
+      0 4px 12px hsl(215 20% 25% / 0.15),
       inset 0 1px 0 hsl(0 0% 100% / 0.12);
   }
   
@@ -286,9 +296,9 @@
     inset: -1px;
     background: linear-gradient(
       135deg,
-      hsl(252 45% 65%) 0%,
-      hsl(270 40% 62%) 50%,
-      hsl(252 45% 60%) 100%
+      hsl(215 22% 50%) 0%,
+      hsl(210 20% 40%) 50%,
+      hsl(215 22% 45%) 100%
     );
     border-radius: 0.5625rem;
     z-index: -1;
@@ -300,8 +310,8 @@
     background: var(--btn-bg-hover);
     transform: translateY(-2px);
     box-shadow: 
-      0 4px 8px hsl(252 40% 30% / 0.2),
-      0 8px 24px hsl(252 40% 35% / 0.25),
+      0 4px 8px hsl(215 20% 25% / 0.2),
+      0 8px 24px hsl(215 20% 25% / 0.25),
       inset 0 1px 0 hsl(0 0% 100% / 0.15);
   }
   
@@ -318,7 +328,7 @@
     transform: translateY(-1px);
     transition-duration: 0.1s;
     box-shadow: 
-      0 2px 6px hsl(252 40% 30% / 0.25),
+      0 2px 6px hsl(215 20% 25% / 0.25),
       inset 0 1px 2px hsl(0 0% 0% / 0.08);
   }
   
@@ -421,7 +431,7 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid hsl(252 28% 54%);
+    outline: 2px solid hsl(215 19% 35%);
     outline-offset: 2px;
   }
 }
@@ -506,6 +516,6 @@
     transform: translateX(0);
   }
   50% {
-    transform: translateX(4px);
+    transform: translateX(3px);
   }
 }

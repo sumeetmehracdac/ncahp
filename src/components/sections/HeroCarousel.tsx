@@ -63,9 +63,9 @@ const HeroCarousel = () => {
       <div 
         className="absolute inset-0"
         style={{ 
-          background: `linear-gradient(to right, hsla(175, 55%, 32%, 0.94) 0%, hsla(252, 22%, 48%, 0.92) 50%, hsla(252, 22%, 48%, 0.78) 75%, rgba(4, 20, 30, 0.20) 100%),
+          background: `linear-gradient(to right, hsla(175, 79%, 27%, 0.94) 0%, hsla(180, 84%, 16%, 0.92) 50%, hsla(180, 84%, 16%, 0.78) 75%, rgba(4, 20, 30, 0.20) 100%),
                        linear-gradient(rgba(4, 20, 30, 0.12), rgba(4, 20, 30, 0.12))`
-        }} 
+        }}
       />
       
       {/* Subtle overlay pattern */}
