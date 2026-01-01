@@ -114,13 +114,6 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 flex-wrap pr-16">
               <Calendar className="h-3 w-3 text-primary flex-shrink-0" />
               <span>{formatDate(announcement.createdAt)}</span>
-              {isNew && (
-                <>
-                  <span className="text-border">•</span>
-                  <Clock className="h-3 w-3 text-accent flex-shrink-0" />
-                  <span className="text-accent">Until {formatDate(announcement.toDate)}</span>
-                </>
-              )}
               {announcement.category && (
                 <>
                   <span className="text-border">•</span>
