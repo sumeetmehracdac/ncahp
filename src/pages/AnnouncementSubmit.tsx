@@ -11,9 +11,9 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import FileUploadZone from '@/components/announcements/FileUploadZone';
+import RichTextEditor from '@/components/announcements/RichTextEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -281,15 +281,13 @@ const AnnouncementSubmit = () => {
                       <FormItem>
                         <FormLabel>Main Content</FormLabel>
                         <FormControl>
-                          <Textarea
+                          <RichTextEditor
+                            value={field.value}
+                            onChange={field.onChange}
                             placeholder="Write the full announcement content here. Include all relevant details, instructions, and important information..."
-                            className="min-h-[200px] rounded-xl resize-none"
-                            {...field}
+                            maxLength={2000}
                           />
                         </FormControl>
-                        <FormDescription>
-                          {field.value.length}/2000 characters
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
