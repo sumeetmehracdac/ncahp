@@ -48,7 +48,7 @@
     /* Borders & Inputs (Neutral-300) - #D7E0E0 */
     --border: 180 12% 86%;
     --input: 180 12% 90%;
-    --ring: 250 50% 62%;
+    --ring: 252 34% 54%;
     
     /* Success - #2E7D32 */
     --success: 123 46% 34%;
@@ -73,8 +73,8 @@
     --gold: 28 86% 62%;
     --cream: 210 25% 97%;
     
-    /* Hero Gradient: Teal to unified accent #6C5AB6 */
-    --gradient-hero: linear-gradient(90deg, hsl(175 55% 38%) 0%, hsl(252 34% 54%) 100%);
+    /* Hero Gradient: Teal to unified accent #6C5AB6 - slightly darkened for contrast */
+    --gradient-hero: linear-gradient(90deg, hsl(175 55% 32%) 0%, hsl(252 34% 48%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(252 40% 62%) 0%, hsl(252 34% 54%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 97%) 100%);
@@ -97,7 +97,7 @@
     --sidebar-accent: 210 25% 95%;
     --sidebar-accent-foreground: 200 19% 18%;
     --sidebar-border: 180 12% 86%;
-    --sidebar-ring: 250 50% 62%;
+    --sidebar-ring: 252 34% 54%;
   }
 
   .dark {
@@ -115,14 +115,14 @@
     --muted-foreground: 0 0% 60%;
     --border: 210 25% 20%;
     --input: 210 25% 20%;
-    --accent: 250 50% 65%;
+    --accent: 252 34% 58%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 250 55% 70%;
+    --accent-light: 252 40% 65%;
     --secondary: 175 50% 45%;
     --secondary-foreground: 0 0% 100%;
     --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 250 50% 65%;
+    --ring: 252 34% 58%;
     --teal: 175 50% 45%;
     --sidebar-background: 212 36% 9%;
     --sidebar-foreground: 0 0% 90%;
@@ -131,7 +131,7 @@
     --sidebar-accent: 210 25% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 210 25% 18%;
-    --sidebar-ring: 252 50% 60%;
+    --sidebar-ring: 252 34% 58%;
   }
 }
 
@@ -190,14 +190,14 @@
   }
   
   .text-gradient {
-    background: linear-gradient(135deg, hsl(252 40% 53%) 0%, hsl(249 49% 35%) 100%);
+    background: linear-gradient(135deg, hsl(252 34% 54%) 0%, hsl(252 40% 45%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .border-accent-gradient {
-    border-image: linear-gradient(135deg, hsl(252 40% 53%), hsl(249 49% 35%)) 1;
+    border-image: linear-gradient(135deg, hsl(252 34% 54%), hsl(252 40% 45%)) 1;
   }
   
   /* Primary Button Style */

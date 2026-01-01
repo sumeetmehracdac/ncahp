@@ -54,11 +54,19 @@ const HeroCarousel = () => {
     <section 
       className="relative min-h-[480px] md:min-h-[550px] flex items-center overflow-hidden"
       style={{ 
-        backgroundImage: `linear-gradient(to right, hsla(175, 55%, 38%, 0.95) 0%, hsla(252, 34%, 54%, 0.92) 50%, hsla(252, 34%, 54%, 0.80) 75%, transparent 100%), url(${heroBg})`,
+        backgroundImage: `url(${heroBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center right'
       }}
     >
+      {/* Dark overlay for better text contrast */}
+      <div 
+        className="absolute inset-0"
+        style={{ 
+          background: 'linear-gradient(to right, hsla(175, 55%, 32%, 0.94) 0%, hsla(252, 34%, 48%, 0.92) 50%, hsla(252, 34%, 48%, 0.78) 75%, rgba(4, 20, 30, 0.15) 100%)'
+        }} 
+      />
+      
       {/* Subtle overlay pattern */}
       <div className="absolute inset-0 opacity-5" 
         style={{ 
