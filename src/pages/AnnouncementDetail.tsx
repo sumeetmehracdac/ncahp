@@ -322,7 +322,7 @@ const AnnouncementDetail = () => {
             >
               {/* Header Section */}
               <div className="p-6 lg:p-8 border-b border-border">
-                {/* Status and Category Badges */}
+                {/* Status Badge, Category and Date - all in one line */}
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   {isNew && (
                     <Badge className="bg-accent text-accent-foreground font-semibold">
@@ -338,11 +338,8 @@ const AnnouncementDetail = () => {
                     )}
                     {announcement.category}
                   </Badge>
-                </div>
-
-                {/* Metadata Row */}
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center gap-2">
+                  <span className="text-border">•</span>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4 text-primary" />
                     <span>Published {formatDate(announcement.createdAt)}</span>
                   </div>
