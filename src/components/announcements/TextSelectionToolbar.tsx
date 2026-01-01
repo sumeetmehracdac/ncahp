@@ -149,7 +149,7 @@ const TextSelectionToolbar = ({ containerRef, onAskAI }: TextSelectionToolbarPro
           {/* Toolbar container */}
           <div className="relative">
             {/* Main toolbar */}
-            <div className="flex items-center gap-0.5 px-1 py-1 bg-foreground rounded-lg shadow-xl border border-border/10">
+            <div className="flex items-center gap-0.5 px-1.5 py-1.5 bg-foreground/95 backdrop-blur-sm rounded-xl shadow-2xl border border-background/10">
               {actions.map((action, idx) => (
                 <button
                   key={action.label}
@@ -159,26 +159,32 @@ const TextSelectionToolbar = ({ containerRef, onAskAI }: TextSelectionToolbarPro
                     action.onClick(selectedText);
                   }}
                   className={`
-                    group relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-md
-                    text-background/80 hover:text-background hover:bg-background/15
-                    transition-all duration-150 text-xs font-medium
-                    ${action.label === 'Ask AI' ? 'bg-accent/20 text-accent-foreground hover:bg-accent/30' : ''}
+                    group relative flex items-center gap-1.5 px-3 py-2 rounded-lg
+                    text-background/70 
+                    transition-all duration-200 ease-out text-xs font-medium
+                    hover:text-background
+                    ${action.label === 'Ask AI' 
+                      ? 'bg-gradient-to-r from-accent/25 to-purple-500/20 text-background hover:from-accent/40 hover:to-purple-500/35 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]' 
+                      : 'hover:bg-gradient-to-r hover:from-background/10 hover:via-background/15 hover:to-background/10 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
+                    }
                   `}
                   title={action.label}
                 >
-                  {action.icon}
+                  <span className={`transition-transform duration-200 ${action.label === 'Ask AI' ? 'group-hover:scale-110' : 'group-hover:scale-105'}`}>
+                    {action.icon}
+                  </span>
                   <span className="hidden sm:inline">{action.label}</span>
                   
                   {/* Divider */}
                   {idx < actions.length - 1 && (
-                    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-4 bg-background/20" />
+                    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-px h-4 bg-background/15" />
                   )}
                 </button>
               ))}
             </div>
             
             {/* Arrow pointer */}
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-foreground rotate-45 rounded-sm" />
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-foreground/95 rotate-45 rounded-sm shadow-lg" />
           </div>
         </motion.div>
       )}
