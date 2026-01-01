@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import TextSelectionToolbar from '@/components/announcements/TextSelectionToolbar';
 
 // Sample data - in production this would come from a database
 const sampleAnnouncements = [
@@ -148,6 +149,7 @@ const AnnouncementDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const today = new Date();
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const announcement = useMemo(() => {
     return sampleAnnouncements.find(a => a.id === id);
@@ -385,7 +387,13 @@ const AnnouncementDetail = () => {
               </div>
 
               {/* Content Section */}
-              <div className="p-6 lg:p-8">
+              <div className="p-6 lg:p-8 relative" ref={contentRef}>
+                <TextSelectionToolbar 
+                  containerRef={contentRef} 
+                  onAskAI={(text) => {
+                    toast.info(`AI: Analyzing "${text.slice(0, 50)}${text.length > 50 ? '...' : ''}"`);
+                  }}
+                />
                 <div className="prose prose-sm lg:prose-base max-w-none text-foreground">
                   {announcement.content.split('\n\n').map((paragraph, idx) => (
                     <p 
