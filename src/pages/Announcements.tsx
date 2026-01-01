@@ -37,7 +37,10 @@ const sampleAnnouncements: Announcement[] = [
     category: 'Head Office',
     documents: [
       { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB', type: 'pdf' },
-      { name: 'User Manual - Portal Navigation.pdf', url: '#', size: '1.8 MB', type: 'pdf' },
+      { name: 'User Manual - Portal.pdf', url: '#', size: '1.8 MB', type: 'pdf' },
+      { name: 'FAQ Document.pdf', url: '#', size: '520 KB', type: 'pdf' },
+      { name: 'Technical Specs.pdf', url: '#', size: '1.1 MB', type: 'pdf' },
+      { name: 'Video Tutorial Guide.pdf', url: '#', size: '340 KB', type: 'pdf' },
     ],
   },
   {
@@ -50,9 +53,10 @@ const sampleAnnouncements: Announcement[] = [
     createdAt: new Date('2025-12-25'),
     category: 'State Council',
     documents: [
-      { name: 'Election Schedule 2026.pdf', url: '#', size: '890 KB', type: 'pdf' },
+      { name: 'Election Schedule.pdf', url: '#', size: '890 KB', type: 'pdf' },
       { name: 'Nomination Form.docx', url: '#', size: '156 KB', type: 'docx' },
       { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB', type: 'pdf' },
+      { name: 'Voter Registration.pdf', url: '#', size: '680 KB', type: 'pdf' },
     ],
   },
   {
@@ -80,6 +84,10 @@ const sampleAnnouncements: Announcement[] = [
     documents: [
       { name: 'Fee Structure 2026.pdf', url: '#', size: '320 KB', type: 'pdf' },
       { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB', type: 'pdf' },
+      { name: 'Concession Policy.pdf', url: '#', size: '190 KB', type: 'pdf' },
+      { name: 'Refund Process.docx', url: '#', size: '145 KB', type: 'docx' },
+      { name: 'Bank Details.pdf', url: '#', size: '85 KB', type: 'pdf' },
+      { name: 'Payment FAQ.pdf', url: '#', size: '220 KB', type: 'pdf' },
     ],
   },
   {
