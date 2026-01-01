@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Megaphone, Plus, Bell } from 'lucide-react';
@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import AnnouncementCard, { Announcement } from '@/components/announcements/AnnouncementCard';
+import AnnouncementCardSkeleton from '@/components/announcements/AnnouncementCardSkeleton';
 import AnnouncementFilters from '@/components/announcements/AnnouncementFilters';
 import { Button } from '@/components/ui/button';
 import {
@@ -206,7 +207,16 @@ const Announcements = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'new' | 'archived'>('all');
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'head-office' | 'state-council'>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const isAdmin = useIsAdmin();
+
+  // Simulate initial loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const today = new Date();
 
@@ -432,7 +442,11 @@ const Announcements = () => {
       {/* Announcements Grid */}
       <main className="flex-1 py-8 lg:py-12">
         <div className="container mx-auto px-4">
-          {paginatedAnnouncements.length > 0 ? (
+          {isLoading ? (
+            <div className="grid md:grid-cols-2 gap-6">
+              <AnnouncementCardSkeleton count={6} />
+            </div>
+          ) : paginatedAnnouncements.length > 0 ? (
             <>
               <div className="grid md:grid-cols-2 gap-6">
                 {paginatedAnnouncements.map((announcement, index) => (

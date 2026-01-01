@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -26,6 +26,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import TextSelectionToolbar from '@/components/announcements/TextSelectionToolbar';
+import AnnouncementDetailSkeleton from '@/components/announcements/AnnouncementDetailSkeleton';
 
 // Sample data - in production this would come from a database
 const sampleAnnouncements = [
@@ -150,9 +151,19 @@ const AnnouncementDetail = () => {
   const navigate = useNavigate();
   const today = new Date();
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const announcement = useMemo(() => {
     return sampleAnnouncements.find(a => a.id === id);
+  }, [id]);
+
+  // Simulate loading
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
   }, [id]);
 
   // Find related announcements (same category, excluding current)
@@ -282,6 +293,9 @@ const AnnouncementDetail = () => {
       {/* Main Content */}
       <main className="flex-1 py-8 lg:py-12">
         <div className="container mx-auto px-4">
+          {isLoading ? (
+            <AnnouncementDetailSkeleton />
+          ) : (
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
             <motion.div
@@ -518,6 +532,7 @@ const AnnouncementDetail = () => {
               </motion.section>
             )}
           </div>
+          )}
         </div>
       </main>
 
