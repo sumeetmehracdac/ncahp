@@ -15,12 +15,12 @@
     /* Primary Dark - For hover states */
     --primary-dark: 175 60% 30%;
     
-    /* Accent Indigo - Unified to single accent value #6C5AB6 */
-    --accent: 252 34% 54%;
+    /* Accent Indigo - Unified #6C5AB6, reduced saturation by ~5% for softer CTA */
+    --accent: 252 28% 54%;
     --accent-foreground: 0 0% 100%;
     
-    /* Accent Light - Links, hover states (lighter variant of #6C5AB6) */
-    --accent-light: 252 40% 62%;
+    /* Accent Light - Links, hover states */
+    --accent-light: 252 32% 60%;
     
     /* Secondary - Same as Primary for consistency */
     --secondary: 175 55% 38%;
@@ -48,7 +48,7 @@
     /* Borders & Inputs (Neutral-300) - #D7E0E0 */
     --border: 180 12% 86%;
     --input: 180 12% 90%;
-    --ring: 252 34% 54%;
+    --ring: 252 28% 54%;
     
     /* Success - #2E7D32 */
     --success: 123 46% 34%;
@@ -97,7 +97,7 @@
     --sidebar-accent: 210 25% 95%;
     --sidebar-accent-foreground: 200 19% 18%;
     --sidebar-border: 180 12% 86%;
-    --sidebar-ring: 252 34% 54%;
+    --sidebar-ring: 252 28% 54%;
   }
 
   .dark {
@@ -122,7 +122,7 @@
     --secondary-foreground: 0 0% 100%;
     --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 252 34% 58%;
+    --ring: 252 28% 58%;
     --teal: 175 50% 45%;
     --sidebar-background: 212 36% 9%;
     --sidebar-foreground: 0 0% 90%;
@@ -131,7 +131,7 @@
     --sidebar-accent: 210 25% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 210 25% 18%;
-    --sidebar-ring: 252 34% 58%;
+    --sidebar-ring: 252 28% 58%;
   }
 }
 
@@ -272,10 +272,23 @@
     @apply w-full;
   }
   
-  /* Focus ring using accent-light color */
+  /* Focus ring using accent color - WCAG compliant */
   .focus-ring {
     @apply outline-none ring-2 ring-offset-2;
-    --tw-ring-color: hsl(var(--accent-light));
+    --tw-ring-color: hsl(var(--accent));
+  }
+}
+
+/* Global focus states for accessibility */
+@layer base {
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid hsl(252 28% 54%);
+    outline-offset: 2px;
   }
 }
 
