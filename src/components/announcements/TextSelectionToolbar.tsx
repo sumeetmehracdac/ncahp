@@ -54,8 +54,6 @@ const TextSelectionToolbar = ({ containerRef, onAskAI }: TextSelectionToolbarPro
   const handleAskAI = useCallback((text: string) => {
     if (onAskAI) {
       onAskAI(text);
-    } else {
-      toast.info('AI assistant coming soon');
     }
     setIsVisible(false);
   }, [onAskAI]);
