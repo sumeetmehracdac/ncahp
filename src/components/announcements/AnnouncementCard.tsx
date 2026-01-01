@@ -28,26 +28,31 @@ interface AnnouncementCardProps {
 const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [previewDoc, setPreviewDoc] = useState<Announcement['documents'][0] | null>(null);
-  const [showRightFade, setShowRightFade] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
-  // Check if content overflows to show fade indicator
+  // Check if content overflows to show scroll button
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
       const checkOverflow = () => {
-        setShowRightFade(container.scrollWidth > container.clientWidth);
+        const hasOverflow = container.scrollWidth > container.clientWidth;
+        const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+        setCanScrollRight(hasOverflow && !isAtEnd);
       };
       checkOverflow();
+      container.addEventListener('scroll', checkOverflow);
       window.addEventListener('resize', checkOverflow);
-      return () => window.removeEventListener('resize', checkOverflow);
+      return () => {
+        container.removeEventListener('scroll', checkOverflow);
+        window.removeEventListener('resize', checkOverflow);
+      };
     }
   }, [announcement.documents]);
 
-  const handleScroll = () => {
+  const scrollRight = () => {
     const container = scrollContainerRef.current;
     if (container) {
-      const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
-      setShowRightFade(!isAtEnd);
+      container.scrollBy({ left: 140, behavior: 'smooth' });
     }
   };
 
@@ -168,11 +173,10 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
             {/* Documents section - clean hidden scrollbar with fade indicator */}
             {announcement.documents.length > 0 && (
               <div className="border-t border-border pt-3 mt-auto">
-                <div className="relative">
+                <div className="relative flex items-center gap-1">
                   <div 
                     ref={scrollContainerRef}
-                    onScroll={handleScroll}
-                    className="flex gap-2 overflow-x-auto"
+                    className="flex gap-2 overflow-x-auto flex-1"
                     style={{ 
                       scrollbarWidth: 'none', 
                       msOverflowStyle: 'none',
@@ -208,11 +212,15 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
                     ))}
                   </div>
                   
-                  {/* Fade indicator for more content */}
-                  {showRightFade && (
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card to-transparent pointer-events-none flex items-center justify-end pr-1">
-                      <ChevronRight className="h-3 w-3 text-muted-foreground animate-pulse" />
-                    </div>
+                  {/* Arrow button to scroll right */}
+                  {canScrollRight && (
+                    <button
+                      onClick={scrollRight}
+                      className="flex-shrink-0 h-6 w-6 rounded-full bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
+                      title="More documents"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
                   )}
                 </div>
               </div>
