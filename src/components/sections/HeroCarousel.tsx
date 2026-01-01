@@ -89,7 +89,7 @@ const HeroCarousel = () => {
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
                 {slide.title}
               </h2>
-              <p className="text-base md:text-lg text-primary-foreground/95 mb-8 max-w-lg font-medium">
+              <p className="text-base md:text-lg text-white mb-8 max-w-lg font-medium drop-shadow-sm">
                 {slide.subtitle}
               </p>
               <div className="flex flex-wrap gap-3">
