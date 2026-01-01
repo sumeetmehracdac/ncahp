@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Copy, Building2, MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight, Eye, Building2, MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -67,13 +67,6 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
     }).format(date);
   };
 
-  const handleCopyLink = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const url = `${window.location.origin}/announcements/${announcement.id}`;
-    await navigator.clipboard.writeText(url);
-    toast.success('Link copied to clipboard');
-  };
 
   const handlePreview = (e: React.MouseEvent, doc: Announcement['documents'][0]) => {
     e.preventDefault();
@@ -149,29 +142,17 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
               "{announcement.punchline}"
             </p>
 
-            {/* Main content */}
-            <p className="text-sm text-muted-foreground mb-3 leading-relaxed line-clamp-2">
-              {announcement.content}
-            </p>
-
-            {/* Action Buttons Row */}
-            <div className="flex items-center gap-2 mb-4">
-              <Link to={`/announcements/${announcement.id}`}>
-                <Button variant="link" size="sm" className="p-0 h-auto text-primary font-medium group/link">
-                  Read More
-                  <ArrowRight className="h-3 w-3 ml-1 transition-transform group-hover/link:translate-x-1" />
-                </Button>
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCopyLink}
-                className="h-6 w-6 p-0 text-muted-foreground hover:text-primary"
-                title="Copy link"
+            {/* Main content with inline Read More */}
+            <p className="text-sm text-muted-foreground mb-3 leading-relaxed line-clamp-3">
+              {announcement.content}{' '}
+              <Link 
+                to={`/announcements/${announcement.id}`}
+                className="inline-flex items-center text-primary hover:text-primary/80 font-medium text-xs transition-colors"
               >
-                <Copy className="h-3.5 w-3.5" />
-              </Button>
-            </div>
+                Read more
+                <ArrowRight className="h-3 w-3 ml-0.5" />
+              </Link>
+            </p>
 
             {/* Documents section - clean hidden scrollbar with fade indicator */}
             {announcement.documents.length > 0 && (
