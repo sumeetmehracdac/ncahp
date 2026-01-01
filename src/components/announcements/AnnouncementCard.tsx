@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Calendar, FileText, Download, Clock, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calendar, FileText, Download, Clock, Sparkles, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export interface Announcement {
   id: string;
@@ -70,9 +72,17 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
           </p>
 
           {/* Main content */}
-          <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-3 flex-1">
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed line-clamp-2">
             {announcement.content}
           </p>
+
+          {/* Read More Button */}
+          <Link to={`/announcements/${announcement.id}`} className="mb-4">
+            <Button variant="link" size="sm" className="p-0 h-auto text-primary font-medium group/link">
+              Read More
+              <ArrowRight className="h-3 w-3 ml-1 transition-transform group-hover/link:translate-x-1" />
+            </Button>
+          </Link>
 
           {/* Documents section */}
           {announcement.documents.length > 0 && (

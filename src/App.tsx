@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import CategoryMapping from "./pages/CategoryMapping";
 import Announcements from "./pages/Announcements";
 import AnnouncementSubmit from "./pages/AnnouncementSubmit";
+import AnnouncementDetail from "./pages/AnnouncementDetail";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/category-subcategory-profession-mapping" element={<CategoryMapping />} />
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/announcements/:id" element={<AnnouncementDetail />} />
           <Route path="/announcements/submit" element={<AnnouncementSubmit />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
