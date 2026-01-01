@@ -15,12 +15,12 @@
     /* Primary Dark - For hover states */
     --primary-dark: 175 60% 30%;
     
-    /* Accent Indigo - Softer, harmonious with teal */
-    --accent: 250 45% 55%;
+    /* Accent Indigo - Unified to single accent value #6C5AB6 */
+    --accent: 252 34% 54%;
     --accent-foreground: 0 0% 100%;
     
-    /* Accent Light - Links, hover states */
-    --accent-light: 250 50% 62%;
+    /* Accent Light - Links, hover states (lighter variant of #6C5AB6) */
+    --accent-light: 252 40% 62%;
     
     /* Secondary - Same as Primary for consistency */
     --secondary: 175 55% 38%;
@@ -73,9 +73,9 @@
     --gold: 28 86% 62%;
     --cream: 210 25% 97%;
     
-    /* Hero Gradient: Softer teal to indigo */
-    --gradient-hero: linear-gradient(90deg, hsl(175 55% 38%) 0%, hsl(250 45% 55%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(250 50% 62%) 0%, hsl(250 45% 55%) 100%);
+    /* Hero Gradient: Teal to unified accent #6C5AB6 */
+    --gradient-hero: linear-gradient(90deg, hsl(175 55% 38%) 0%, hsl(252 34% 54%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(252 40% 62%) 0%, hsl(252 34% 54%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 97%) 100%);
     

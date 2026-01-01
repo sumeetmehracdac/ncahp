@@ -54,7 +54,7 @@ const HeroCarousel = () => {
     <section 
       className="relative min-h-[480px] md:min-h-[550px] flex items-center overflow-hidden"
       style={{ 
-        backgroundImage: `linear-gradient(to right, hsla(175, 55%, 38%, 0.95) 0%, hsla(250, 45%, 55%, 0.88) 50%, hsla(250, 45%, 55%, 0.75) 75%, transparent 100%), url(${heroBg})`,
+        backgroundImage: `linear-gradient(to right, hsla(175, 55%, 38%, 0.95) 0%, hsla(252, 34%, 54%, 0.92) 50%, hsla(252, 34%, 54%, 0.80) 75%, transparent 100%), url(${heroBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center right'
       }}
@@ -81,7 +81,7 @@ const HeroCarousel = () => {
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight">
                 {slide.title}
               </h2>
-              <p className="text-base md:text-lg text-primary-foreground/80 mb-8 max-w-lg">
+              <p className="text-base md:text-lg text-primary-foreground/95 mb-8 max-w-lg font-medium">
                 {slide.subtitle}
               </p>
               <div className="flex flex-wrap gap-3">
