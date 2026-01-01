@@ -10,7 +10,12 @@ import {
   Sparkles,
   Share2,
   Printer,
-  ChevronRight
+  ChevronRight,
+  Eye,
+  Building2,
+  MapPin,
+  Copy,
+  ExternalLink
 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Navbar from '@/components/layout/Navbar';
@@ -43,9 +48,10 @@ For technical assistance, please contact our helpdesk at 1800-XXX-XXXX (toll-fre
     fromDate: new Date('2024-12-20'),
     toDate: new Date('2025-02-28'),
     createdAt: new Date('2024-12-28'),
+    category: 'Head Office' as const,
     documents: [
-      { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB' },
-      { name: 'User Manual - Portal Navigation.pdf', url: '#', size: '1.8 MB' },
+      { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB', type: 'pdf' },
+      { name: 'User Manual - Portal Navigation.pdf', url: '#', size: '1.8 MB', type: 'pdf' },
     ],
   },
   {
@@ -68,10 +74,11 @@ Nomination forms can be downloaded from the portal and must be submitted by Janu
     fromDate: new Date('2024-12-25'),
     toDate: new Date('2025-03-15'),
     createdAt: new Date('2024-12-25'),
+    category: 'State Council' as const,
     documents: [
-      { name: 'Election Schedule 2025.pdf', url: '#', size: '890 KB' },
-      { name: 'Nomination Form.docx', url: '#', size: '156 KB' },
-      { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB' },
+      { name: 'Election Schedule 2025.pdf', url: '#', size: '890 KB', type: 'pdf' },
+      { name: 'Nomination Form.docx', url: '#', size: '156 KB', type: 'docx' },
+      { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB', type: 'pdf' },
     ],
   },
   {
@@ -84,8 +91,9 @@ Distinguished speakers from leading institutions will share their expertise. Reg
     fromDate: new Date('2024-12-22'),
     toDate: new Date('2025-01-15'),
     createdAt: new Date('2024-12-22'),
+    category: 'Head Office' as const,
     documents: [
-      { name: 'Workshop Agenda.pdf', url: '#', size: '450 KB' },
+      { name: 'Workshop Agenda.pdf', url: '#', size: '450 KB', type: 'pdf' },
     ],
   },
   {
@@ -98,9 +106,10 @@ The new structure aims to balance operational sustainability with accessibility 
     fromDate: new Date('2024-11-01'),
     toDate: new Date('2024-12-15'),
     createdAt: new Date('2024-11-15'),
+    category: 'Head Office' as const,
     documents: [
-      { name: 'Fee Structure 2025.pdf', url: '#', size: '320 KB' },
-      { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB' },
+      { name: 'Fee Structure 2025.pdf', url: '#', size: '320 KB', type: 'pdf' },
+      { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB', type: 'pdf' },
     ],
   },
   {
@@ -113,8 +122,9 @@ This expansion will help address the growing demand for skilled healthcare profe
     fromDate: new Date('2024-10-01'),
     toDate: new Date('2024-11-30'),
     createdAt: new Date('2024-10-20'),
+    category: 'State Council' as const,
     documents: [
-      { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB' },
+      { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB', type: 'pdf' },
     ],
   },
   {
@@ -127,8 +137,9 @@ These guidelines outline the mandatory CPD credit requirements, approved learnin
     fromDate: new Date('2024-09-15'),
     toDate: new Date('2024-10-31'),
     createdAt: new Date('2024-09-20'),
+    category: 'Head Office' as const,
     documents: [
-      { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB' },
+      { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB', type: 'pdf' },
     ],
   },
 ];
@@ -141,6 +152,14 @@ const AnnouncementDetail = () => {
   const announcement = useMemo(() => {
     return sampleAnnouncements.find(a => a.id === id);
   }, [id]);
+
+  // Find related announcements (same category, excluding current)
+  const relatedAnnouncements = useMemo(() => {
+    if (!announcement) return [];
+    return sampleAnnouncements
+      .filter(a => a.id !== id && a.category === announcement.category)
+      .slice(0, 3);
+  }, [id, announcement]);
 
   if (!announcement) {
     return (
@@ -176,6 +195,14 @@ const AnnouncementDetail = () => {
     }).format(date);
   };
 
+  const formatShortDate = (date: Date) => {
+    return new Intl.DateTimeFormat('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(date);
+  };
+
   const handleShare = async () => {
     const url = window.location.href;
     if (navigator.share) {
@@ -194,8 +221,30 @@ const AnnouncementDetail = () => {
     }
   };
 
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    toast.success('Link copied to clipboard');
+  };
+
   const handlePrint = () => {
     window.print();
+  };
+
+  const handlePreview = (doc: { name: string; url: string }) => {
+    // In production, this would open a proper preview modal or new tab
+    toast.info(`Opening preview for ${doc.name}`);
+    window.open(doc.url, '_blank');
+  };
+
+  const getFileIcon = (type: string) => {
+    switch (type) {
+      case 'pdf':
+        return 'bg-red-500/10 text-red-600';
+      case 'docx':
+        return 'bg-blue-500/10 text-blue-600';
+      default:
+        return 'bg-primary/10 text-primary';
+    }
   };
 
   return (
@@ -257,21 +306,40 @@ const AnnouncementDetail = () => {
             >
               {/* Header Section */}
               <div className="p-6 lg:p-8 border-b border-border">
+                {/* Status and Category Badges */}
                 <div className="flex flex-wrap items-center gap-3 mb-4">
                   {isNew && (
                     <Badge className="bg-accent text-accent-foreground font-semibold">
                       <Sparkles className="h-3 w-3 mr-1" />
-                      Active
+                      New
                     </Badge>
                   )}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Badge variant="outline" className="font-medium">
+                    {announcement.category === 'Head Office' ? (
+                      <Building2 className="h-3 w-3 mr-1" />
+                    ) : (
+                      <MapPin className="h-3 w-3 mr-1" />
+                    )}
+                    {announcement.category}
+                  </Badge>
+                </div>
+
+                {/* Metadata Row */}
+                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+                  <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
                     <span>Published {formatDate(announcement.createdAt)}</span>
                   </div>
                   {isNew && (
-                    <div className="flex items-center gap-2 text-sm text-accent">
+                    <div className="flex items-center gap-2 text-accent">
                       <Clock className="h-4 w-4" />
                       <span>Valid until {formatDate(announcement.toDate)}</span>
+                    </div>
+                  )}
+                  {!isNew && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>Expired on {formatDate(announcement.toDate)}</span>
                     </div>
                   )}
                 </div>
@@ -285,7 +353,16 @@ const AnnouncementDetail = () => {
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex items-center gap-3 mt-6 print:hidden">
+                <div className="flex flex-wrap items-center gap-3 mt-6 print:hidden">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopyLink}
+                    className="gap-2"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Copy Link
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
@@ -329,21 +406,20 @@ const AnnouncementDetail = () => {
                 <div className="p-6 lg:p-8 bg-muted/30 border-t border-border">
                   <h2 className="font-display text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                     <FileText className="h-5 w-5 text-primary" />
-                    Attached Documents ({announcement.documents.length})
+                    Attached Documents
                   </h2>
                   
                   <div className="grid sm:grid-cols-2 gap-3">
                     {announcement.documents.map((doc, idx) => (
-                      <motion.a
+                      <motion.div
                         key={idx}
-                        href={doc.url}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border hover:border-primary/30 hover:shadow-sm transition-all duration-200 group"
                       >
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <FileText className="h-6 w-6 text-primary" />
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${getFileIcon(doc.type)}`}>
+                          <FileText className="h-6 w-6" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-foreground group-hover:text-primary transition-colors truncate">
@@ -351,8 +427,28 @@ const AnnouncementDetail = () => {
                           </p>
                           <p className="text-sm text-muted-foreground">{doc.size}</p>
                         </div>
-                        <Download className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                      </motion.a>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handlePreview(doc)}
+                            className="h-8 w-8 p-0"
+                            title="Preview"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <a href={doc.url} download>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              title="Download"
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </a>
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -361,6 +457,58 @@ const AnnouncementDetail = () => {
               {/* Footer */}
               <div className={`h-1 w-full ${isNew ? 'bg-gradient-to-r from-primary via-accent to-primary' : 'bg-gradient-to-r from-muted via-border to-muted'}`} />
             </motion.article>
+
+            {/* Related Announcements */}
+            {relatedAnnouncements.length > 0 && (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="mt-8"
+              >
+                <h2 className="font-display text-xl font-bold text-foreground mb-4">
+                  Related Announcements
+                </h2>
+                <div className="grid gap-4">
+                  {relatedAnnouncements.map((related, idx) => (
+                    <Link
+                      key={related.id}
+                      to={`/announcements/${related.id}`}
+                      className="group"
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="p-4 bg-card rounded-lg border border-border hover:border-primary/30 hover:shadow-sm transition-all duration-200"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-xs text-muted-foreground">
+                                {formatShortDate(related.createdAt)}
+                              </span>
+                              {related.toDate >= today && (
+                                <Badge className="bg-accent/10 text-accent text-xs px-1.5 py-0">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
+                            <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                              {related.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                              {related.punchline}
+                            </p>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-1" />
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              </motion.section>
+            )}
           </div>
         </div>
       </main>
