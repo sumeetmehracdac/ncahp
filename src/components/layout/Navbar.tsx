@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -111,12 +111,13 @@ const Navbar = () => {
 
           {/* Right: Action Buttons - aligned to same baseline */}
           <div className="flex items-center gap-3 h-12">
-            <Button
-              asChild
-              className="bg-accent hover:bg-accent-light text-accent-foreground font-semibold px-5 h-9 rounded-md shadow-sm transition-all duration-200"
-            >
-              <Link to="/register">Register Now</Link>
-            </Button>
+            <Link to="/register" className="btn-register">
+              <span className="btn-register-content">
+                <span className="btn-register-dot" />
+                <span>Register Now</span>
+                <ArrowRight className="h-3.5 w-3.5 btn-register-icon" />
+              </span>
+            </Link>
             <Button
               asChild
               variant="ghost"
