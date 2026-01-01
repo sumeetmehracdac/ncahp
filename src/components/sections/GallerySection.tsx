@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import GallerySkeleton from '@/components/skeletons/GallerySkeleton';
 
 const categories = ['All', 'Events', 'Workshops', 'Meetings', 'Ceremonies'];
 
@@ -15,6 +16,14 @@ const galleryItems = [
 const GallerySection = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredItems = activeCategory === 'All' 
     ? galleryItems 
@@ -74,6 +83,10 @@ const GallerySection = () => {
 
         {/* Gallery Carousel */}
         <div className="relative">
+          {isLoading ? (
+            <GallerySkeleton />
+          ) : (
+          <>
           <div className="overflow-hidden">
             <div 
               className="flex gap-6 transition-transform duration-500 ease-out"
@@ -134,6 +147,8 @@ const GallerySection = () => {
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
+          </>
+          )}
         </div>
 
         {/* View All Link */}

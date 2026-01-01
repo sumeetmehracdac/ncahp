@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Calendar, ArrowRight, Clock, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import NewsSectionSkeleton from '@/components/skeletons/NewsSectionSkeleton';
 
 const newsItems = [
   {
@@ -75,6 +77,15 @@ const events = [
 ];
 
 const NewsUpdatesSection = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -110,6 +121,9 @@ const NewsUpdatesSection = () => {
 
           {/* News Tab */}
           <TabsContent value="news" className="mt-0">
+            {isLoading ? (
+              <NewsSectionSkeleton variant="news" />
+            ) : (
             <div className="grid md:grid-cols-3 gap-6">
               {newsItems.map((item) => (
                 <article
@@ -142,10 +156,15 @@ const NewsUpdatesSection = () => {
                 </article>
               ))}
             </div>
+            )}
           </TabsContent>
 
           {/* Notifications Tab */}
           <TabsContent value="notifications" className="mt-0">
+            {isLoading ? (
+              <NewsSectionSkeleton variant="notifications" />
+            ) : (
+            <>
             <div className="bg-card rounded-2xl shadow-card border border-border overflow-hidden">
               {notifications.map((item, index) => (
                 <a
@@ -177,10 +196,16 @@ const NewsUpdatesSection = () => {
                 View All Notifications
               </Button>
             </div>
+            </>
+            )}
           </TabsContent>
 
           {/* Events Tab */}
           <TabsContent value="events" className="mt-0">
+            {isLoading ? (
+              <NewsSectionSkeleton variant="events" />
+            ) : (
+            <>
             <div className="grid md:grid-cols-3 gap-6">
               {events.map((item) => (
                 <div
@@ -210,6 +235,8 @@ const NewsUpdatesSection = () => {
                 View All Events
               </Button>
             </div>
+            </>
+            )}
           </TabsContent>
         </Tabs>
       </div>
