@@ -69,25 +69,17 @@ const ToolbarButton = ({ onClick, isActive, disabled, tooltip, children }: Toolb
           onClick={onClick}
           disabled={disabled}
           className={cn(
-            'relative p-2 rounded-lg transition-all duration-200',
-            'hover:bg-accent/10 active:scale-95',
+            'p-2 rounded-lg transition-all duration-200',
+            'hover:bg-primary/10 hover:text-primary active:scale-95',
             'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
-            isActive && 'bg-primary/10 text-primary shadow-sm'
+            isActive && 'bg-primary/15 text-primary'
           )}
         >
           {children}
-          {isActive && (
-            <motion.div
-              layoutId="activeIndicator"
-              className="absolute inset-0 rounded-lg border-2 border-primary/30"
-              initial={false}
-              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            />
-          )}
         </button>
       </TooltipTrigger>
-      <TooltipContent side="top" className="text-xs">
+      <TooltipContent side="top" className="text-xs bg-popover border border-border">
         {tooltip}
       </TooltipContent>
     </Tooltip>
