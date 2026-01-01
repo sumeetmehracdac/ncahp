@@ -4,7 +4,7 @@ import ncahpLogo from '@/assets/ncahp-logo.png';
 
 const Header = () => {
   return (
-    <header className="bg-card border-b-2 border-border">
+    <header className="bg-card" style={{ borderBottom: '1px solid #D7E0E0' }}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4 md:py-5">
           {/* Left: Ministry Info */}
