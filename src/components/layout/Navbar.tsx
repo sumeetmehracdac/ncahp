@@ -121,7 +121,7 @@ const Navbar = () => {
             <Button
               asChild
               variant="ghost"
-              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-gradient-to-r hover:from-primary-foreground/10 hover:to-primary-foreground/5 font-medium px-4 h-9 transition-all duration-300"
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 font-medium px-4 h-9 text-sm rounded-md transition-colors"
             >
               <Link to="/login">Login</Link>
             </Button>
