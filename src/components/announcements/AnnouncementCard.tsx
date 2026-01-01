@@ -135,9 +135,11 @@ const AnnouncementCard = ({ announcement, isNew, index }: AnnouncementCardProps)
             </div>
 
             {/* Title and punchline */}
-            <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 leading-snug line-clamp-2">
-              {announcement.title}
-            </h3>
+            <Link to={`/announcements/${announcement.id}`}>
+              <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1 group-hover:text-primary hover:text-primary transition-colors duration-300 leading-snug line-clamp-2 cursor-pointer">
+                {announcement.title}
+              </h3>
+            </Link>
             <p className="text-accent font-medium text-xs mb-2 italic line-clamp-1">
               "{announcement.punchline}"
             </p>
