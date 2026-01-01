@@ -21,20 +21,19 @@ import {
 
 // TODO: Replace with actual admin check from auth system
 const useIsAdmin = () => {
-  // Simulating admin status - replace with real auth check
   return true;
 };
 
-// Sample data - in production this would come from a database
+// Sample data with future dates to show "New" status
 const sampleAnnouncements: Announcement[] = [
   {
     id: '1',
     title: 'New Registration Portal Launch for Allied Health Professionals',
     punchline: 'Streamlined digital registration process now available nationwide',
-    content: 'The National Commission for Allied and Healthcare Professions is pleased to announce the launch of our new digital registration portal. This state-of-the-art platform enables seamless registration, document verification, and certificate issuance for all allied health professionals across India. The portal features multi-language support, Aadhaar-based verification, and real-time application tracking.',
-    fromDate: new Date('2024-12-20'),
-    toDate: new Date('2025-02-28'),
-    createdAt: new Date('2024-12-28'),
+    content: 'The National Commission for Allied and Healthcare Professions is pleased to announce the launch of our new digital registration portal. This state-of-the-art platform enables seamless registration, document verification, and certificate issuance for all allied health professionals across India.',
+    fromDate: new Date('2025-12-20'),
+    toDate: new Date('2026-02-28'),
+    createdAt: new Date('2025-12-28'),
     category: 'Head Office',
     documents: [
       { name: 'Registration Guidelines 2025.pdf', url: '#', size: '2.4 MB', type: 'pdf' },
@@ -45,13 +44,13 @@ const sampleAnnouncements: Announcement[] = [
     id: '2',
     title: 'State Council Elections Schedule Released',
     punchline: 'Democratic representation for healthcare professionals',
-    content: 'Elections for State Allied Healthcare Professional Councils will be conducted across all states and union territories in February 2025. This is a significant step towards ensuring democratic representation of allied health professionals in policy-making decisions. All registered professionals are encouraged to participate in this historic electoral process.',
-    fromDate: new Date('2024-12-25'),
-    toDate: new Date('2025-03-15'),
-    createdAt: new Date('2024-12-25'),
+    content: 'Elections for State Allied Healthcare Professional Councils will be conducted across all states and union territories in February 2026. This is a significant step towards ensuring democratic representation of allied health professionals in policy-making decisions.',
+    fromDate: new Date('2025-12-25'),
+    toDate: new Date('2026-03-15'),
+    createdAt: new Date('2025-12-25'),
     category: 'State Council',
     documents: [
-      { name: 'Election Schedule 2025.pdf', url: '#', size: '890 KB', type: 'pdf' },
+      { name: 'Election Schedule 2026.pdf', url: '#', size: '890 KB', type: 'pdf' },
       { name: 'Nomination Form.docx', url: '#', size: '156 KB', type: 'docx' },
       { name: 'Electoral Guidelines.pdf', url: '#', size: '1.2 MB', type: 'pdf' },
     ],
@@ -60,10 +59,10 @@ const sampleAnnouncements: Announcement[] = [
     id: '3',
     title: 'National Workshop on Digital Healthcare Practices',
     punchline: 'Transforming healthcare through technology',
-    content: 'A comprehensive national workshop focusing on digital transformation in allied healthcare will be held at Vigyan Bhawan, New Delhi. The workshop will cover telemedicine protocols, electronic health records management, AI in diagnostics, and cybersecurity best practices for healthcare data. Distinguished speakers from leading institutions will share their expertise.',
-    fromDate: new Date('2024-12-22'),
-    toDate: new Date('2025-01-15'),
-    createdAt: new Date('2024-12-22'),
+    content: 'A comprehensive national workshop focusing on digital transformation in allied healthcare will be held at Vigyan Bhawan, New Delhi. The workshop will cover telemedicine protocols, electronic health records management, AI in diagnostics, and cybersecurity best practices.',
+    fromDate: new Date('2025-12-22'),
+    toDate: new Date('2026-01-15'),
+    createdAt: new Date('2025-12-22'),
     category: 'Head Office',
     documents: [
       { name: 'Workshop Agenda.pdf', url: '#', size: '450 KB', type: 'pdf' },
@@ -72,14 +71,14 @@ const sampleAnnouncements: Announcement[] = [
   {
     id: '4',
     title: 'Revised Fee Structure for Professional Registration',
-    punchline: 'Updated fees effective from January 2025',
-    content: 'In accordance with the recommendations of the fee revision committee and after considering feedback from stakeholders, the Commission has approved a revised fee structure for professional registration and renewal. The new structure aims to balance operational sustainability with accessibility for professionals across different economic backgrounds.',
-    fromDate: new Date('2024-11-01'),
-    toDate: new Date('2024-12-15'),
-    createdAt: new Date('2024-11-15'),
+    punchline: 'Updated fees effective from January 2026',
+    content: 'In accordance with the recommendations of the fee revision committee and after considering feedback from stakeholders, the Commission has approved a revised fee structure for professional registration and renewal.',
+    fromDate: new Date('2025-11-01'),
+    toDate: new Date('2025-12-15'),
+    createdAt: new Date('2025-11-15'),
     category: 'Head Office',
     documents: [
-      { name: 'Fee Structure 2025.pdf', url: '#', size: '320 KB', type: 'pdf' },
+      { name: 'Fee Structure 2026.pdf', url: '#', size: '320 KB', type: 'pdf' },
       { name: 'Payment Guidelines.pdf', url: '#', size: '280 KB', type: 'pdf' },
     ],
   },
@@ -87,10 +86,10 @@ const sampleAnnouncements: Announcement[] = [
     id: '5',
     title: 'Recognition of New Allied Health Programs',
     punchline: 'Expanding educational opportunities across India',
-    content: 'The Commission has granted recognition to 45 new allied health professional programs across various institutions in India. These programs cover specializations in physiotherapy, medical laboratory technology, radiography, and optometry. This expansion will help address the growing demand for skilled healthcare professionals in the country.',
-    fromDate: new Date('2024-10-01'),
-    toDate: new Date('2024-11-30'),
-    createdAt: new Date('2024-10-20'),
+    content: 'The Commission has granted recognition to 45 new allied health professional programs across various institutions in India. These programs cover specializations in physiotherapy, medical laboratory technology, radiography, and optometry.',
+    fromDate: new Date('2025-10-01'),
+    toDate: new Date('2025-11-30'),
+    createdAt: new Date('2025-10-20'),
     category: 'State Council',
     documents: [
       { name: 'Recognized Programs List.pdf', url: '#', size: '1.1 MB', type: 'pdf' },
@@ -100,10 +99,10 @@ const sampleAnnouncements: Announcement[] = [
     id: '6',
     title: 'Guidelines for Continuing Professional Development',
     punchline: 'Lifelong learning for healthcare excellence',
-    content: 'The Commission has released comprehensive guidelines for Continuing Professional Development (CPD) for all registered allied health professionals. These guidelines outline the mandatory CPD credit requirements, approved learning activities, and the documentation process for maintaining professional registration.',
-    fromDate: new Date('2024-09-15'),
-    toDate: new Date('2024-10-31'),
-    createdAt: new Date('2024-09-20'),
+    content: 'The Commission has released comprehensive guidelines for Continuing Professional Development (CPD) for all registered allied health professionals. These guidelines outline the mandatory CPD credit requirements and approved learning activities.',
+    fromDate: new Date('2025-09-15'),
+    toDate: new Date('2025-10-31'),
+    createdAt: new Date('2025-09-20'),
     category: 'Head Office',
     documents: [
       { name: 'CPD Guidelines.pdf', url: '#', size: '780 KB', type: 'pdf' },
@@ -114,12 +113,12 @@ const sampleAnnouncements: Announcement[] = [
     title: 'Emergency Response Protocol Updates',
     punchline: 'Enhanced preparedness for healthcare emergencies',
     content: 'New emergency response protocols have been issued for all allied health professionals. These protocols incorporate lessons learned from recent public health challenges and align with international best practices.',
-    fromDate: new Date('2024-12-01'),
-    toDate: new Date('2025-06-30'),
-    createdAt: new Date('2024-12-01'),
+    fromDate: new Date('2025-12-01'),
+    toDate: new Date('2026-06-30'),
+    createdAt: new Date('2025-12-01'),
     category: 'Head Office',
     documents: [
-      { name: 'Emergency Protocol 2025.pdf', url: '#', size: '1.5 MB', type: 'pdf' },
+      { name: 'Emergency Protocol 2026.pdf', url: '#', size: '1.5 MB', type: 'pdf' },
     ],
   },
   {
@@ -127,19 +126,72 @@ const sampleAnnouncements: Announcement[] = [
     title: 'Regional Training Centers Announcement',
     punchline: 'Skill development centers across states',
     content: 'The commission announces the establishment of 15 new regional training centers for allied health professionals. These centers will provide hands-on training and certification programs.',
-    fromDate: new Date('2024-11-15'),
-    toDate: new Date('2025-04-30'),
-    createdAt: new Date('2024-11-20'),
+    fromDate: new Date('2025-11-15'),
+    toDate: new Date('2026-04-30'),
+    createdAt: new Date('2025-11-20'),
     category: 'State Council',
     documents: [
       { name: 'Training Center Details.pdf', url: '#', size: '2.1 MB', type: 'pdf' },
       { name: 'Application Form.pdf', url: '#', size: '450 KB', type: 'pdf' },
     ],
   },
+  {
+    id: '9',
+    title: 'Annual Conference 2026 Registration Open',
+    punchline: 'Join healthcare leaders from across the nation',
+    content: 'Registration is now open for the Annual NCAHP Conference 2026 to be held in Mumbai. The conference will feature keynote speakers, panel discussions, and networking opportunities.',
+    fromDate: new Date('2025-12-10'),
+    toDate: new Date('2026-03-01'),
+    createdAt: new Date('2025-12-10'),
+    category: 'Head Office',
+    documents: [
+      { name: 'Conference Brochure.pdf', url: '#', size: '3.2 MB', type: 'pdf' },
+    ],
+  },
+  {
+    id: '10',
+    title: 'State Council Formation Guidelines',
+    punchline: 'Framework for state-level governance',
+    content: 'Comprehensive guidelines for the formation and operation of State Allied Healthcare Councils have been released. These guidelines ensure uniform standards across all states.',
+    fromDate: new Date('2025-12-05'),
+    toDate: new Date('2026-02-15'),
+    createdAt: new Date('2025-12-05'),
+    category: 'State Council',
+    documents: [
+      { name: 'Formation Guidelines.pdf', url: '#', size: '1.8 MB', type: 'pdf' },
+      { name: 'Governance Framework.pdf', url: '#', size: '920 KB', type: 'pdf' },
+    ],
+  },
+  {
+    id: '11',
+    title: 'Updated Licensing Requirements',
+    punchline: 'New standards for professional practice',
+    content: 'The Commission announces updated licensing requirements effective from April 2026. All professionals must ensure compliance with the new standards.',
+    fromDate: new Date('2025-11-25'),
+    toDate: new Date('2026-01-31'),
+    createdAt: new Date('2025-11-25'),
+    category: 'Head Office',
+    documents: [
+      { name: 'Licensing Requirements.pdf', url: '#', size: '680 KB', type: 'pdf' },
+    ],
+  },
+  {
+    id: '12',
+    title: 'Inter-State Professional Mobility Framework',
+    punchline: 'Seamless practice across state boundaries',
+    content: 'A new framework enabling allied health professionals to practice across state boundaries has been established. This promotes workforce mobility and addresses regional shortages.',
+    fromDate: new Date('2025-11-10'),
+    toDate: new Date('2026-05-30'),
+    createdAt: new Date('2025-11-10'),
+    category: 'State Council',
+    documents: [
+      { name: 'Mobility Framework.pdf', url: '#', size: '1.4 MB', type: 'pdf' },
+    ],
+  },
 ];
 
-// Optimal items per page for 2-column grid layout
-const ITEMS_PER_PAGE = 8;
+// 6 announcements per page for optimal 2-column grid viewing
+const ITEMS_PER_PAGE = 6;
 
 const Announcements = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -297,7 +349,6 @@ const Announcements = () => {
       
       {/* Compact Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-accent py-8 lg:py-10">
-        {/* Abstract background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent rounded-full blur-3xl transform translate-x-1/3 translate-y-1/3" />
