@@ -7,9 +7,9 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import CategoryMapping from "./pages/CategoryMapping";
-import Announcements from "./pages/Announcements";
-import AnnouncementSubmit from "./pages/AnnouncementSubmit";
-import AnnouncementDetail from "./pages/AnnouncementDetail";
+import Announcements from "./pages/Announcements.jsx";
+import AnnouncementSubmit from "./pages/AnnouncementSubmit.jsx";
+import AnnouncementDetail from "./pages/AnnouncementDetail.jsx";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
