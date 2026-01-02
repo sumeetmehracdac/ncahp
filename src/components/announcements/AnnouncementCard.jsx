@@ -1,0 +1,205 @@
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Calendar, FileText, Download, Sparkles, ArrowRight, Eye, Building2, MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { useRef, useState, useEffect } from 'react';
+import DocumentPreviewModal from './DocumentPreviewModal';
+
+const AnnouncementCard = ({ announcement, isNew, index }) => {
+  const scrollContainerRef = useRef(null);
+  const [previewDoc, setPreviewDoc] = useState(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const checkOverflow = () => {
+        const hasOverflow = container.scrollWidth > container.clientWidth;
+        const isAtStart = container.scrollLeft <= 5;
+        const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+        setCanScrollLeft(hasOverflow && !isAtStart);
+        setCanScrollRight(hasOverflow && !isAtEnd);
+      };
+      checkOverflow();
+      container.addEventListener('scroll', checkOverflow);
+      window.addEventListener('resize', checkOverflow);
+      return () => {
+        container.removeEventListener('scroll', checkOverflow);
+        window.removeEventListener('resize', checkOverflow);
+      };
+    }
+  }, [announcement.documents]);
+
+  const scroll = (direction) => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.scrollBy({ left: direction === 'right' ? 140 : -140, behavior: 'smooth' });
+    }
+  };
+
+  const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(date);
+  };
+
+  const handlePreview = (e, doc) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPreviewDoc(doc);
+  };
+
+  const handleDownload = (e) => {
+    e.stopPropagation();
+  };
+
+  const getFileIconColor = (type) => {
+    switch (type) {
+      case 'pdf':
+        return 'text-red-500';
+      case 'docx':
+        return 'text-blue-500';
+      default:
+        return 'text-primary';
+    }
+  };
+
+  return (
+    <>
+      <motion.article
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.05 }}
+        className="group relative h-full"
+      >
+        <div className={`relative overflow-hidden rounded-xl border transition-all duration-300 h-full flex flex-col ${isNew ? 'bg-card border-accent/30 shadow-md hover:shadow-lg' : 'bg-card/80 border-border hover:border-accent/20 shadow-sm hover:shadow-md'}`}>
+          {isNew && (
+            <div className="absolute top-3 right-3 z-10">
+              <Badge className="bg-accent text-accent-foreground text-xs font-semibold px-2 py-0.5">
+                <Sparkles className="h-3 w-3 mr-1" />
+                New
+              </Badge>
+            </div>
+          )}
+
+          <div className="p-4 lg:p-5 flex-1 flex flex-col">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 flex-wrap pr-16">
+              <Calendar className="h-3 w-3 text-primary flex-shrink-0" />
+              <span>{formatDate(announcement.createdAt)}</span>
+              {announcement.category && (
+                <>
+                  <span className="text-border">•</span>
+                  {announcement.category === 'Head Office' ? (
+                    <Building2 className="h-3 w-3 text-primary flex-shrink-0" />
+                  ) : (
+                    <MapPin className="h-3 w-3 text-primary flex-shrink-0" />
+                  )}
+                  <span>{announcement.category}</span>
+                </>
+              )}
+            </div>
+
+            <Link to={`/announcements/${announcement.id}`}>
+              <h3 className="font-display text-base lg:text-lg font-bold text-foreground mb-1 group-hover:text-primary hover:text-primary transition-colors duration-300 leading-snug line-clamp-2 cursor-pointer">
+                {announcement.title}
+              </h3>
+            </Link>
+            <p className="text-accent font-medium text-xs mb-2 italic line-clamp-1">
+              "{announcement.punchline}"
+            </p>
+
+            <p className="text-sm text-muted-foreground mb-3 leading-relaxed line-clamp-3">
+              {announcement.content}{' '}
+              <Link 
+                to={`/announcements/${announcement.id}`}
+                className="inline-flex items-center text-primary hover:text-primary/80 font-medium text-xs transition-colors"
+              >
+                Read more
+                <ArrowRight className="h-3 w-3 ml-0.5" />
+              </Link>
+            </p>
+
+            {announcement.documents.length > 0 && (
+              <div className="border-t border-border pt-3 mt-auto">
+                <div className="relative flex items-center gap-1">
+                  {canScrollLeft && (
+                    <button
+                      onClick={() => scroll('left')}
+                      className="flex-shrink-0 h-6 w-6 rounded-md bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
+                      title="Previous documents"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                  
+                  <div 
+                    ref={scrollContainerRef}
+                    className="flex gap-2 overflow-x-auto flex-1"
+                    style={{ 
+                      scrollbarWidth: 'none', 
+                      msOverflowStyle: 'none',
+                      WebkitOverflowScrolling: 'touch'
+                    }}
+                  >
+                    {announcement.documents.map((doc, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-muted/50 hover:bg-muted border border-transparent hover:border-primary/20 transition-all duration-200 text-xs group/doc flex-shrink-0"
+                      >
+                        <FileText className={`h-3 w-3 ${getFileIconColor(doc.type)}`} />
+                        <span className="font-medium text-foreground truncate max-w-[80px] group-hover/doc:text-primary transition-colors">
+                          {doc.name.length > 15 ? `${doc.name.slice(0, 12)}...` : doc.name}
+                        </span>
+                        <button
+                          onClick={(e) => handlePreview(e, doc)}
+                          className="p-0.5 hover:bg-primary/10 rounded transition-colors"
+                          title="Preview"
+                        >
+                          <Eye className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
+                        </button>
+                        <a 
+                          href={doc.url} 
+                          download 
+                          onClick={handleDownload}
+                          className="p-0.5 hover:bg-primary/10 rounded transition-colors"
+                          title="Download"
+                        >
+                          <Download className="h-3 w-3 text-muted-foreground hover:text-primary transition-colors" />
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {canScrollRight && (
+                    <button
+                      onClick={() => scroll('right')}
+                      className="flex-shrink-0 h-6 w-6 rounded-md bg-muted hover:bg-primary/10 border border-border hover:border-primary/30 flex items-center justify-center transition-all duration-200"
+                      title="More documents"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className={`h-0.5 w-full ${isNew ? 'bg-gradient-to-r from-primary via-accent to-primary' : 'bg-gradient-to-r from-muted via-border to-muted'}`} />
+        </div>
+      </motion.article>
+
+      <DocumentPreviewModal
+        isOpen={!!previewDoc}
+        onClose={() => setPreviewDoc(null)}
+        document={previewDoc}
+      />
+    </>
+  );
+};
+
+export default AnnouncementCard;
