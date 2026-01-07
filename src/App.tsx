@@ -10,6 +10,7 @@ import CategoryMapping from "./pages/CategoryMapping";
 import Announcements from "./pages/Announcements.jsx";
 import AnnouncementSubmit from "./pages/AnnouncementSubmit.jsx";
 import AnnouncementDetail from "./pages/AnnouncementDetail.jsx";
+import QualificationProfessionManagement from "./pages/QualificationProfessionManagement.jsx";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/announcements/:id" element={<AnnouncementDetail />} />
           <Route path="/announcements/submit" element={<AnnouncementSubmit />} />
+          <Route path="/qualification-profession-management" element={<QualificationProfessionManagement />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
