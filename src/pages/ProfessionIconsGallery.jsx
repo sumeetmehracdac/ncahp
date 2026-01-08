@@ -107,157 +107,138 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
 // All 57+ professions organized by category with carefully curated Lucide icons
+// Each profession has its own unique color suited to its role
 const professionCategories = [
   {
     id: 'cat1',
     name: 'Medical Laboratory & Life Sciences',
-    color: 'hsl(175, 55%, 38%)',
-    bgGradient: 'from-teal-500/20 to-cyan-500/20',
     professions: [
-      { id: 'p1', name: 'Biotechnologist', icon: Dna, keywords: ['biotech', 'genetics', 'dna'] },
-      { id: 'p2', name: 'Biochemist (non-clinical)', icon: FlaskConical, keywords: ['chemistry', 'lab'] },
-      { id: 'p3', name: 'Cell Geneticist', icon: Atom, keywords: ['cells', 'genetics'] },
-      { id: 'p4', name: 'Clinical Embryologist', icon: Baby, keywords: ['embryo', 'fertility', 'ivf'] },
-      { id: 'p5', name: 'Medical Microbiologist', icon: Bug, keywords: ['bacteria', 'virus', 'microbes'] },
-      { id: 'p6', name: 'Molecular Biologist', icon: Dna, keywords: ['molecular', 'dna', 'rna'] },
-      { id: 'p7', name: 'Molecular Geneticist', icon: Atom, keywords: ['genetics', 'molecular'] },
-      { id: 'p8', name: 'Cytotechnologist', icon: Microscope, keywords: ['cells', 'cytology'] },
-      { id: 'p9', name: 'Forensic Science Technologist', icon: Fingerprint, keywords: ['forensic', 'crime', 'evidence'] },
-      { id: 'p10', name: 'Histotechnologist', icon: Slice, keywords: ['tissue', 'histology', 'pathology'] },
-      { id: 'p11', name: 'Hemato Technologist', icon: Droplets, keywords: ['blood', 'hematology'] },
-      { id: 'p12', name: 'Immunology Technologist', icon: Shield, keywords: ['immune', 'antibodies'] },
-      { id: 'p13', name: 'Medical Laboratory Technologist', icon: Microscope, keywords: ['lab', 'testing'] },
-      { id: 'p14', name: 'Medical Laboratory Assistant', icon: ClipboardList, keywords: ['lab', 'assistant'] },
-      { id: 'p15', name: 'Medical Laboratory Technician', icon: TestTube, keywords: ['lab', 'technician'] },
-      { id: 'p16', name: 'Blood Bank Technician', icon: Syringe, keywords: ['blood', 'transfusion', 'bank'] },
-      { id: 'p17', name: 'Research Assistant', icon: GraduationCap, keywords: ['research', 'academic'] },
+      { id: 'p1', name: 'Biotechnologist', icon: Dna, color: 'hsl(280, 70%, 55%)', keywords: ['biotech', 'genetics', 'dna'] },
+      { id: 'p2', name: 'Biochemist (non-clinical)', icon: FlaskConical, color: 'hsl(200, 75%, 45%)', keywords: ['chemistry', 'lab'] },
+      { id: 'p3', name: 'Cell Geneticist', icon: Atom, color: 'hsl(320, 65%, 50%)', keywords: ['cells', 'genetics'] },
+      { id: 'p4', name: 'Clinical Embryologist', icon: Baby, color: 'hsl(340, 70%, 60%)', keywords: ['embryo', 'fertility', 'ivf'] },
+      { id: 'p5', name: 'Medical Microbiologist', icon: Bug, color: 'hsl(140, 60%, 40%)', keywords: ['bacteria', 'virus', 'microbes'] },
+      { id: 'p6', name: 'Molecular Biologist', icon: Dna, color: 'hsl(260, 65%, 55%)', keywords: ['molecular', 'dna', 'rna'] },
+      { id: 'p7', name: 'Molecular Geneticist', icon: Atom, color: 'hsl(290, 60%, 50%)', keywords: ['genetics', 'molecular'] },
+      { id: 'p8', name: 'Cytotechnologist', icon: Microscope, color: 'hsl(175, 55%, 40%)', keywords: ['cells', 'cytology'] },
+      { id: 'p9', name: 'Forensic Science Technologist', icon: Fingerprint, color: 'hsl(220, 50%, 45%)', keywords: ['forensic', 'crime', 'evidence'] },
+      { id: 'p10', name: 'Histotechnologist', icon: Slice, color: 'hsl(10, 65%, 50%)', keywords: ['tissue', 'histology', 'pathology'] },
+      { id: 'p11', name: 'Hemato Technologist', icon: Droplets, color: 'hsl(0, 70%, 50%)', keywords: ['blood', 'hematology'] },
+      { id: 'p12', name: 'Immunology Technologist', icon: Shield, color: 'hsl(45, 80%, 50%)', keywords: ['immune', 'antibodies'] },
+      { id: 'p13', name: 'Medical Laboratory Technologist', icon: Microscope, color: 'hsl(190, 65%, 45%)', keywords: ['lab', 'testing'] },
+      { id: 'p14', name: 'Medical Laboratory Assistant', icon: ClipboardList, color: 'hsl(160, 50%, 45%)', keywords: ['lab', 'assistant'] },
+      { id: 'p15', name: 'Medical Laboratory Technician', icon: TestTube, color: 'hsl(180, 60%, 42%)', keywords: ['lab', 'technician'] },
+      { id: 'p16', name: 'Blood Bank Technician', icon: Syringe, color: 'hsl(355, 75%, 55%)', keywords: ['blood', 'transfusion', 'bank'] },
+      { id: 'p17', name: 'Research Assistant', icon: GraduationCap, color: 'hsl(230, 55%, 50%)', keywords: ['research', 'academic'] },
     ],
   },
   {
     id: 'cat2',
     name: 'Trauma, Burn Care & Surgical / Anaesthesia-related Technology',
-    color: 'hsl(0, 84%, 60%)',
-    bgGradient: 'from-red-500/20 to-orange-500/20',
     professions: [
-      { id: 'p18', name: 'Advance Care Paramedic', icon: Ambulance, keywords: ['emergency', 'paramedic', 'ems'] },
-      { id: 'p19', name: 'Burn Care Technologist', icon: Flame, keywords: ['burn', 'wound', 'care'] },
-      { id: 'p20', name: 'Emergency Medical Technologist (Paramedic)', icon: HeartPulse, keywords: ['emt', 'emergency'] },
-      { id: 'p21', name: 'Anaesthesia Assistants and Technologists', icon: Stethoscope, keywords: ['anesthesia', 'surgery'] },
-      { id: 'p22', name: 'Operation Theatre (OT) Technologists', icon: MonitorDot, keywords: ['surgery', 'operation'] },
-      { id: 'p23', name: 'Endoscopy and Laparoscopy Technologists', icon: Camera, keywords: ['endoscopy', 'laparoscopy'] },
+      { id: 'p18', name: 'Advance Care Paramedic', icon: Ambulance, color: 'hsl(0, 80%, 55%)', keywords: ['emergency', 'paramedic', 'ems'] },
+      { id: 'p19', name: 'Burn Care Technologist', icon: Flame, color: 'hsl(25, 90%, 50%)', keywords: ['burn', 'wound', 'care'] },
+      { id: 'p20', name: 'Emergency Medical Technologist (Paramedic)', icon: HeartPulse, color: 'hsl(350, 85%, 50%)', keywords: ['emt', 'emergency'] },
+      { id: 'p21', name: 'Anaesthesia Assistants and Technologists', icon: Stethoscope, color: 'hsl(210, 60%, 50%)', keywords: ['anesthesia', 'surgery'] },
+      { id: 'p22', name: 'Operation Theatre (OT) Technologists', icon: MonitorDot, color: 'hsl(165, 55%, 45%)', keywords: ['surgery', 'operation'] },
+      { id: 'p23', name: 'Endoscopy and Laparoscopy Technologists', icon: Camera, color: 'hsl(240, 50%, 55%)', keywords: ['endoscopy', 'laparoscopy'] },
     ],
   },
   {
     id: 'cat3',
     name: 'Physiotherapy Professional',
-    color: 'hsl(142, 76%, 36%)',
-    bgGradient: 'from-green-500/20 to-emerald-500/20',
     professions: [
-      { id: 'p24', name: 'Physiotherapist', icon: Activity, keywords: ['physio', 'physical therapy', 'rehab'] },
+      { id: 'p24', name: 'Physiotherapist', icon: Activity, color: 'hsl(142, 70%, 40%)', keywords: ['physio', 'physical therapy', 'rehab'] },
     ],
   },
   {
     id: 'cat4',
     name: 'Nutrition Science Professional',
-    color: 'hsl(82, 78%, 42%)',
-    bgGradient: 'from-lime-500/20 to-green-500/20',
     professions: [
-      { id: 'p25', name: 'Dietician', icon: Apple, keywords: ['diet', 'nutrition', 'food'] },
-      { id: 'p26', name: 'Nutritionist', icon: Salad, keywords: ['nutrition', 'health', 'food'] },
+      { id: 'p25', name: 'Dietician', icon: Apple, color: 'hsl(5, 75%, 55%)', keywords: ['diet', 'nutrition', 'food'] },
+      { id: 'p26', name: 'Nutritionist', icon: Salad, color: 'hsl(85, 70%, 45%)', keywords: ['nutrition', 'health', 'food'] },
     ],
   },
   {
     id: 'cat5',
     name: 'Ophthalmic Sciences Professional',
-    color: 'hsl(199, 89%, 48%)',
-    bgGradient: 'from-sky-500/20 to-blue-500/20',
     professions: [
-      { id: 'p27', name: 'Optometrist', icon: Eye, keywords: ['vision', 'eye', 'optometry'] },
-      { id: 'p28', name: 'Ophthalmic Assistant', icon: Glasses, keywords: ['eye', 'ophthalmology'] },
-      { id: 'p29', name: 'Vision Technician', icon: Scan, keywords: ['vision', 'eye test'] },
+      { id: 'p27', name: 'Optometrist', icon: Eye, color: 'hsl(200, 80%, 50%)', keywords: ['vision', 'eye', 'optometry'] },
+      { id: 'p28', name: 'Ophthalmic Assistant', icon: Glasses, color: 'hsl(185, 60%, 45%)', keywords: ['eye', 'ophthalmology'] },
+      { id: 'p29', name: 'Vision Technician', icon: Scan, color: 'hsl(215, 65%, 50%)', keywords: ['vision', 'eye test'] },
     ],
   },
   {
     id: 'cat6',
     name: 'Occupational Therapy Professional',
-    color: 'hsl(280, 65%, 50%)',
-    bgGradient: 'from-purple-500/20 to-violet-500/20',
     professions: [
-      { id: 'p30', name: 'Occupational Therapist', icon: Hand, keywords: ['occupational', 'therapy', 'rehab'] },
+      { id: 'p30', name: 'Occupational Therapist', icon: Hand, color: 'hsl(35, 80%, 50%)', keywords: ['occupational', 'therapy', 'rehab'] },
     ],
   },
   {
     id: 'cat7',
     name: 'Community Care, Behavioural Health Sciences & Other Professionals',
-    color: 'hsl(260, 60%, 58%)',
-    bgGradient: 'from-violet-500/20 to-purple-500/20',
     professions: [
-      { id: 'p31', name: 'Environment Protection Officer', icon: Leaf, keywords: ['environment', 'protection'] },
-      { id: 'p32', name: 'Ecologist', icon: TreeDeciduous, keywords: ['ecology', 'nature', 'environment'] },
-      { id: 'p33', name: 'Community Health Practitioner', icon: Users, keywords: ['community', 'health', 'public'] },
-      { id: 'p34', name: 'Occupational Health & Safety Officer', icon: HardHat, keywords: ['safety', 'workplace'] },
-      { id: 'p35', name: 'Physiologist (except Clinical)', icon: PersonStanding, keywords: ['physiology', 'body'] },
-      { id: 'p36', name: 'Behavioural Analyst', icon: Brain, keywords: ['behavior', 'psychology', 'analysis'] },
-      { id: 'p37', name: 'Integrated Behaviour Health Counsellor', icon: MessageCircle, keywords: ['counseling', 'mental health'] },
-      { id: 'p38', name: 'Rehabilitation and Counselling Consultant', icon: Building2, keywords: ['rehab', 'counseling'] },
-      { id: 'p39', name: 'Social Worker', icon: Handshake, keywords: ['social work', 'welfare', 'community'] },
-      { id: 'p40', name: 'Medical Immunodology Technologist', icon: Shield, keywords: ['immunology', 'immune'] },
-      { id: 'p41', name: 'Family Counsellor', icon: Heart, keywords: ['family', 'counseling', 'therapy'] },
-      { id: 'p42', name: 'Mental Health Support Worker', icon: Brain, keywords: ['mental health', 'support'] },
-      { id: 'p43', name: 'Podiatrist', icon: Footprints, keywords: ['feet', 'podiatry'] },
-      { id: 'p44', name: 'Community Care Professional', icon: Home, keywords: ['community', 'care', 'home'] },
-      { id: 'p45', name: 'Movement Therapist', icon: Move, keywords: ['movement', 'therapy', 'dance'] },
-      { id: 'p46', name: 'Yoga Therapy Assistant', icon: Flower2, keywords: ['yoga', 'therapy', 'wellness'] },
-      { id: 'p47', name: 'Recreational Therapist', icon: Sparkle, keywords: ['recreation', 'therapy', 'leisure'] },
-      { id: 'p48', name: 'Acupuncture Professional', icon: Zap, keywords: ['acupuncture', 'alternative medicine'] },
+      { id: 'p31', name: 'Environment Protection Officer', icon: Leaf, color: 'hsl(120, 60%, 40%)', keywords: ['environment', 'protection'] },
+      { id: 'p32', name: 'Ecologist', icon: TreeDeciduous, color: 'hsl(100, 55%, 42%)', keywords: ['ecology', 'nature', 'environment'] },
+      { id: 'p33', name: 'Community Health Practitioner', icon: Users, color: 'hsl(195, 65%, 48%)', keywords: ['community', 'health', 'public'] },
+      { id: 'p34', name: 'Occupational Health & Safety Officer', icon: HardHat, color: 'hsl(45, 90%, 50%)', keywords: ['safety', 'workplace'] },
+      { id: 'p35', name: 'Physiologist (except Clinical)', icon: PersonStanding, color: 'hsl(170, 55%, 45%)', keywords: ['physiology', 'body'] },
+      { id: 'p36', name: 'Behavioural Analyst', icon: Brain, color: 'hsl(280, 55%, 55%)', keywords: ['behavior', 'psychology', 'analysis'] },
+      { id: 'p37', name: 'Integrated Behaviour Health Counsellor', icon: MessageCircle, color: 'hsl(200, 60%, 50%)', keywords: ['counseling', 'mental health'] },
+      { id: 'p38', name: 'Rehabilitation and Counselling Consultant', icon: Building2, color: 'hsl(220, 50%, 50%)', keywords: ['rehab', 'counseling'] },
+      { id: 'p39', name: 'Social Worker', icon: Handshake, color: 'hsl(340, 60%, 55%)', keywords: ['social work', 'welfare', 'community'] },
+      { id: 'p40', name: 'Medical Immunodology Technologist', icon: Shield, color: 'hsl(50, 75%, 48%)', keywords: ['immunology', 'immune'] },
+      { id: 'p41', name: 'Family Counsellor', icon: Heart, color: 'hsl(350, 70%, 55%)', keywords: ['family', 'counseling', 'therapy'] },
+      { id: 'p42', name: 'Mental Health Support Worker', icon: Brain, color: 'hsl(265, 55%, 55%)', keywords: ['mental health', 'support'] },
+      { id: 'p43', name: 'Podiatrist', icon: Footprints, color: 'hsl(25, 65%, 50%)', keywords: ['feet', 'podiatry'] },
+      { id: 'p44', name: 'Community Care Professional', icon: Home, color: 'hsl(180, 50%, 45%)', keywords: ['community', 'care', 'home'] },
+      { id: 'p45', name: 'Movement Therapist', icon: Move, color: 'hsl(300, 55%, 55%)', keywords: ['movement', 'therapy', 'dance'] },
+      { id: 'p46', name: 'Yoga Therapy Assistant', icon: Flower2, color: 'hsl(320, 60%, 55%)', keywords: ['yoga', 'therapy', 'wellness'] },
+      { id: 'p47', name: 'Recreational Therapist', icon: Sparkle, color: 'hsl(40, 85%, 55%)', keywords: ['recreation', 'therapy', 'leisure'] },
+      { id: 'p48', name: 'Acupuncture Professional', icon: Zap, color: 'hsl(55, 80%, 48%)', keywords: ['acupuncture', 'alternative medicine'] },
     ],
   },
   {
     id: 'cat8',
     name: 'Medical Radiology, Imaging & Therapeutic Technology',
-    color: 'hsl(38, 92%, 50%)',
-    bgGradient: 'from-amber-500/20 to-yellow-500/20',
     professions: [
-      { id: 'p49', name: 'Medical Physicist', icon: Atom, keywords: ['physics', 'medical', 'radiation'] },
-      { id: 'p50', name: 'Nuclear Medicine Technologist', icon: Radiation, keywords: ['nuclear', 'medicine', 'imaging'] },
-      { id: 'p51', name: 'Radiology & Imaging Technologist', icon: ScanLine, keywords: ['radiology', 'xray', 'imaging'] },
-      { id: 'p52', name: 'Diagnostic Medical Sonographer', icon: AudioWaveform, keywords: ['ultrasound', 'sonography'] },
-      { id: 'p53', name: 'Radiotherapy Technologist', icon: Sun, keywords: ['radiotherapy', 'cancer', 'treatment'] },
-      { id: 'p54', name: 'Densitometrist', icon: Bone, keywords: ['bone density', 'dexa'] },
+      { id: 'p49', name: 'Medical Physicist', icon: Atom, color: 'hsl(250, 60%, 55%)', keywords: ['physics', 'medical', 'radiation'] },
+      { id: 'p50', name: 'Nuclear Medicine Technologist', icon: Radiation, color: 'hsl(65, 85%, 45%)', keywords: ['nuclear', 'medicine', 'imaging'] },
+      { id: 'p51', name: 'Radiology & Imaging Technologist', icon: ScanLine, color: 'hsl(190, 70%, 45%)', keywords: ['radiology', 'xray', 'imaging'] },
+      { id: 'p52', name: 'Diagnostic Medical Sonographer', icon: AudioWaveform, color: 'hsl(205, 65%, 50%)', keywords: ['ultrasound', 'sonography'] },
+      { id: 'p53', name: 'Radiotherapy Technologist', icon: Sun, color: 'hsl(35, 90%, 50%)', keywords: ['radiotherapy', 'cancer', 'treatment'] },
+      { id: 'p54', name: 'Densitometrist', icon: Bone, color: 'hsl(30, 45%, 55%)', keywords: ['bone density', 'dexa'] },
     ],
   },
   {
     id: 'cat9',
     name: 'Medical Technologists & Physician Associate',
-    color: 'hsl(340, 75%, 55%)',
-    bgGradient: 'from-pink-500/20 to-rose-500/20',
     professions: [
-      { id: 'p55', name: 'Biomedical Engineer', icon: Cpu, keywords: ['biomedical', 'engineering', 'devices'] },
-      { id: 'p56', name: 'Medical Equipment Technologist', icon: Settings, keywords: ['equipment', 'maintenance'] },
-      { id: 'p57', name: 'Physician Associate', icon: UserCog, keywords: ['physician', 'assistant', 'pa'] },
-      { id: 'p58', name: 'Cardiovascular Technologist', icon: HeartPulse, keywords: ['cardio', 'heart', 'vascular'] },
-      { id: 'p59', name: 'Perfusionist', icon: Waves, keywords: ['perfusion', 'heart-lung', 'bypass'] },
-      { id: 'p60', name: 'Respiratory Technologist', icon: Wind, keywords: ['respiratory', 'lungs', 'breathing'] },
-      { id: 'p61', name: 'Electrocardiogram (ECG) Technologist', icon: Activity, keywords: ['ecg', 'ekg', 'heart'] },
-      { id: 'p62', name: 'Electroencephalogram (EEG) Technologist', icon: BrainCircuit, keywords: ['eeg', 'brain', 'neuro'] },
-      { id: 'p63', name: 'Electroneuromyography (ENMG) Technologist', icon: Zap, keywords: ['enmg', 'nerve', 'muscle'] },
-      { id: 'p64', name: 'Electroneurophysiology Technologist', icon: BrainCircuit, keywords: ['neuro', 'physiology'] },
-      { id: 'p65', name: 'Gastrointestinal Technologist', icon: Pill, keywords: ['gi', 'gastro', 'digestive'] },
-      { id: 'p66', name: 'Sleep Lab Technologist', icon: Moon, keywords: ['sleep', 'polysomnography'] },
-      { id: 'p67', name: 'Dialysis Therapy Technologist', icon: Pipette, keywords: ['dialysis', 'kidney', 'renal'] },
-      { id: 'p68', name: 'Lithotripsy Technologist', icon: Gauge, keywords: ['lithotripsy', 'kidney stones'] },
+      { id: 'p55', name: 'Biomedical Engineer', icon: Cpu, color: 'hsl(210, 70%, 50%)', keywords: ['biomedical', 'engineering', 'devices'] },
+      { id: 'p56', name: 'Medical Equipment Technologist', icon: Settings, color: 'hsl(225, 50%, 50%)', keywords: ['equipment', 'maintenance'] },
+      { id: 'p57', name: 'Physician Associate', icon: UserCog, color: 'hsl(175, 60%, 42%)', keywords: ['physician', 'assistant', 'pa'] },
+      { id: 'p58', name: 'Cardiovascular Technologist', icon: HeartPulse, color: 'hsl(0, 75%, 50%)', keywords: ['cardio', 'heart', 'vascular'] },
+      { id: 'p59', name: 'Perfusionist', icon: Waves, color: 'hsl(355, 65%, 55%)', keywords: ['perfusion', 'heart-lung', 'bypass'] },
+      { id: 'p60', name: 'Respiratory Technologist', icon: Wind, color: 'hsl(195, 70%, 50%)', keywords: ['respiratory', 'lungs', 'breathing'] },
+      { id: 'p61', name: 'Electrocardiogram (ECG) Technologist', icon: Activity, color: 'hsl(5, 70%, 50%)', keywords: ['ecg', 'ekg', 'heart'] },
+      { id: 'p62', name: 'Electroencephalogram (EEG) Technologist', icon: BrainCircuit, color: 'hsl(270, 55%, 55%)', keywords: ['eeg', 'brain', 'neuro'] },
+      { id: 'p63', name: 'Electroneuromyography (ENMG) Technologist', icon: Zap, color: 'hsl(60, 75%, 48%)', keywords: ['enmg', 'nerve', 'muscle'] },
+      { id: 'p64', name: 'Electroneurophysiology Technologist', icon: BrainCircuit, color: 'hsl(285, 55%, 55%)', keywords: ['neuro', 'physiology'] },
+      { id: 'p65', name: 'Gastrointestinal Technologist', icon: Pill, color: 'hsl(20, 70%, 50%)', keywords: ['gi', 'gastro', 'digestive'] },
+      { id: 'p66', name: 'Sleep Lab Technologist', icon: Moon, color: 'hsl(240, 45%, 55%)', keywords: ['sleep', 'polysomnography'] },
+      { id: 'p67', name: 'Dialysis Therapy Technologist', icon: Pipette, color: 'hsl(185, 65%, 45%)', keywords: ['dialysis', 'kidney', 'renal'] },
+      { id: 'p68', name: 'Lithotripsy Technologist', icon: Gauge, color: 'hsl(15, 65%, 50%)', keywords: ['lithotripsy', 'kidney stones'] },
     ],
   },
   {
     id: 'cat10',
     name: 'Health Information Management & Informatics',
-    color: 'hsl(210, 80%, 50%)',
-    bgGradient: 'from-blue-500/20 to-indigo-500/20',
     professions: [
-      { id: 'p69', name: 'Health Information Management Professional', icon: Database, keywords: ['him', 'records', 'data'] },
-      { id: 'p70', name: 'Health Information Management Technologist', icon: FileText, keywords: ['him', 'technology'] },
-      { id: 'p71', name: 'Clinical Coder', icon: Keyboard, keywords: ['coding', 'icd', 'medical coding'] },
-      { id: 'p72', name: 'Medical Secretary and Medical Transcriptionist', icon: ClipboardList, keywords: ['secretary', 'transcription'] },
+      { id: 'p69', name: 'Health Information Management Professional', icon: Database, color: 'hsl(210, 65%, 50%)', keywords: ['him', 'records', 'data'] },
+      { id: 'p70', name: 'Health Information Management Technologist', icon: FileText, color: 'hsl(200, 55%, 48%)', keywords: ['him', 'technology'] },
+      { id: 'p71', name: 'Clinical Coder', icon: Keyboard, color: 'hsl(230, 55%, 52%)', keywords: ['coding', 'icd', 'medical coding'] },
+      { id: 'p72', name: 'Medical Secretary and Medical Transcriptionist', icon: ClipboardList, color: 'hsl(160, 50%, 45%)', keywords: ['secretary', 'transcription'] },
     ],
   },
 ];
@@ -268,7 +249,6 @@ const allProfessions = professionCategories.flatMap(cat =>
     ...prof,
     categoryId: cat.id,
     categoryName: cat.name,
-    categoryColor: cat.color,
   }))
 );
 
@@ -664,13 +644,13 @@ const ProfessionIconsGallery = () => {
                       <div
                         className="w-16 h-16 mx-auto mb-3 rounded-xl flex items-center justify-center"
                         style={{
-                          background: `linear-gradient(135deg, ${profession.categoryColor}15, ${profession.categoryColor}25)`,
+                          background: `linear-gradient(135deg, ${profession.color}15, ${profession.color}25)`,
                         }}
                       >
                         <IconComponent
                           id={`icon-${profession.id}`}
                           className="w-8 h-8"
-                          style={{ color: profession.categoryColor }}
+                          style={{ color: profession.color }}
                           strokeWidth={1.5}
                         />
                       </div>
@@ -758,13 +738,13 @@ const ProfessionIconsGallery = () => {
                       <div
                         className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
                         style={{
-                          background: `linear-gradient(135deg, ${profession.categoryColor}15, ${profession.categoryColor}25)`,
+                          background: `linear-gradient(135deg, ${profession.color}15, ${profession.color}25)`,
                         }}
                       >
                         <IconComponent
                           id={`icon-${profession.id}`}
                           className="w-6 h-6"
-                          style={{ color: profession.categoryColor }}
+                          style={{ color: profession.color }}
                           strokeWidth={1.5}
                         />
                       </div>
