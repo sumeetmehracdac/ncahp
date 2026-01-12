@@ -104,8 +104,11 @@ const EducationHistoryStep = ({ formData, updateFormData }: Props) => {
               {index < 3 && (
                 <div className="mb-3 pb-2 border-b border-border">
                   <span className="text-sm font-medium text-primary">
-                    {educationLabels[index]} {index < 1 && <span className="text-destructive">*</span>}
+                    {educationLabels[index]} {index === 0 && <span className="text-destructive">*</span>}
                   </span>
+                  {index > 0 && (
+                    <span className="ml-2 text-xs text-muted-foreground">(Optional)</span>
+                  )}
                 </div>
               )}
 

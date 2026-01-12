@@ -12,9 +12,36 @@ interface Props {
 
 const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
   const registrationTypes = [
-    { value: 'fresh', label: 'Fresh Registration', description: 'First-time registration with NCAHP' },
-    { value: 'conversion', label: 'Conversion from Provisional', description: 'Convert provisional to permanent' },
-    { value: 'foreign', label: 'Foreign Qualification', description: 'Registration with foreign degree' }
+    { 
+      value: '1A', 
+      formType: 'Form 1A', 
+      label: 'Regular Registration', 
+      description: 'Indian nationals who have passed a recognised qualification from India on or before 2021.' 
+    },
+    { 
+      value: '1B', 
+      formType: 'Form 1B', 
+      label: 'Provisional Registration', 
+      description: 'Working professionals who do not possess any recognized qualification' 
+    },
+    { 
+      value: '1C', 
+      formType: 'Form 1C', 
+      label: 'Interim Qualification', 
+      description: 'Students pursuing a recognized qualification' 
+    },
+    { 
+      value: '2A', 
+      formType: 'Form 2A', 
+      label: 'Temporary Registration', 
+      description: 'Foreign nationals with foreign qualification' 
+    },
+    { 
+      value: '2B', 
+      formType: 'Form 2B', 
+      label: 'Regular Registration', 
+      description: 'Indian nationals with foreign qualification' 
+    }
   ];
 
   const selectedProfession = formData.profession ? getProfessionByName(formData.profession) : null;
@@ -39,7 +66,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
         <Label className="text-base font-semibold text-foreground">
           Type of Registration <span className="text-destructive">*</span>
         </Label>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {registrationTypes.map((type) => (
             <motion.button
               key={type.value}
@@ -47,25 +74,30 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => updateFormData('registrationType', type.value)}
-              className={`p-5 rounded-xl border-2 text-left transition-all ${
+              className={`p-4 rounded-xl border-2 text-left transition-all ${
                 formData.registrationType === type.value
                   ? 'border-accent bg-accent/5 shadow-lg shadow-accent/10'
                   : 'border-border bg-card hover:border-accent/50 hover:bg-muted/50'
               }`}
             >
-              <div className="flex items-start justify-between mb-2">
-                <span className={`font-semibold ${
-                  formData.registrationType === type.value ? 'text-accent' : 'text-foreground'
+              <div className="flex items-start justify-between mb-1">
+                <span className={`text-xs font-bold uppercase tracking-wide ${
+                  formData.registrationType === type.value ? 'text-accent' : 'text-primary'
                 }`}>
-                  {type.label}
+                  {type.formType}
                 </span>
                 {formData.registrationType === type.value && (
-                  <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center">
+                  <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-3 h-3 text-white" />
                   </div>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">{type.description}</p>
+              <p className={`font-semibold mb-1 ${
+                formData.registrationType === type.value ? 'text-accent' : 'text-foreground'
+              }`}>
+                {type.label}
+              </p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{type.description}</p>
             </motion.button>
           ))}
         </div>
@@ -101,8 +133,8 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">Registration Type</span>
-                <p className="font-medium text-foreground capitalize">
-                  {registrationTypes.find(t => t.value === formData.registrationType)?.label}
+                <p className="font-medium text-foreground">
+                  <span className="text-primary font-bold">{registrationTypes.find(t => t.value === formData.registrationType)?.formType}</span> - {registrationTypes.find(t => t.value === formData.registrationType)?.label}
                 </p>
               </div>
             </div>

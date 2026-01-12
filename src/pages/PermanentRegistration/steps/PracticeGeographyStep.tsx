@@ -9,6 +9,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import {
@@ -29,7 +30,9 @@ const PracticeGeographyStep = ({ formData, updateFormData }: Props) => {
   const addPracticeState = () => {
     const newState: PracticeState = {
       state: '',
-      proofDocument: null
+      proofDocument: null,
+      institutionName: '',
+      institutionAddress: ''
     };
     updateFormData('practiceStates', [...formData.practiceStates, newState]);
   };
@@ -169,7 +172,7 @@ const PracticeGeographyStep = ({ formData, updateFormData }: Props) => {
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   {/* State Selection */}
                   <div className="space-y-1.5">
                     <Label className="text-xs text-muted-foreground">
@@ -190,6 +193,33 @@ const PracticeGeographyStep = ({ formData, updateFormData }: Props) => {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  {/* Institution Name */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground">
+                      Clinic/Lab/Hospital/Institution Name <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      placeholder="Name of clinic, lab, hospital or institution"
+                      value={practiceState.institutionName}
+                      onChange={(e) => updatePracticeState(index, 'institutionName', e.target.value)}
+                      className="h-10"
+                    />
+                  </div>
+
+                  {/* Institution Address */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      Clinic/Lab/Hospital/Institution Address <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      placeholder="Complete address of the institution"
+                      value={practiceState.institutionAddress}
+                      onChange={(e) => updatePracticeState(index, 'institutionAddress', e.target.value)}
+                      className="h-10"
+                    />
                   </div>
 
                   {/* Proof Upload */}

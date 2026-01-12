@@ -56,6 +56,7 @@ export interface InternshipEntry {
   id: string;
   designation: string;
   organizationName: string;
+  organizationCountry: string;
   organizationAddress: string;
   startDate: string;
   completionDate: string;
@@ -77,6 +78,17 @@ export interface ExperienceEntry {
 export interface PracticeState {
   state: string;
   proofDocument: File | null;
+  institutionName: string;
+  institutionAddress: string;
+}
+
+export interface AddressFields {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  pincode: string;
+  district: string;
+  state: string;
 }
 
 export interface FormData {
@@ -97,9 +109,10 @@ export interface FormData {
   motherName: string;
   citizenshipType: 'birth' | 'domicile' | '';
   domicileDate: string;
-  permanentAddress: string;
+  permanentAddress: AddressFields;
+  correspondenceAddressDifferent: boolean;
+  correspondenceAddress: AddressFields;
   presentOccupation: string;
-  correspondenceAddress: string;
   stateOfResidence: string;
   stateFromAadhaar: string;
   differentStateProof: File | null;
@@ -194,14 +207,31 @@ const PermanentRegistration = () => {
     motherName: '',
     citizenshipType: '',
     domicileDate: '',
-    permanentAddress: '',
+    permanentAddress: {
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      pincode: '',
+      district: '',
+      state: ''
+    },
+    correspondenceAddressDifferent: false,
+    correspondenceAddress: {
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      pincode: '',
+      district: '',
+      state: ''
+    },
     presentOccupation: '',
-    correspondenceAddress: '',
     stateOfResidence: mockUserData.stateFromAadhaar,
     stateFromAadhaar: mockUserData.stateFromAadhaar,
     differentStateProof: null,
     educationHistory: [
       { id: '1', schoolName: '', board: '', yearOfPassing: '', certificate: null },
+      { id: '2', schoolName: '', board: '', yearOfPassing: '', certificate: null },
+      { id: '3', schoolName: '', board: '', yearOfPassing: '', certificate: null },
     ],
     healthcareQualifications: [
       { id: '1', qualificationName: '', institutionName: '', university: '', durationMonths: '', admissionDate: '', passingDate: '', certificate: null }
@@ -231,11 +261,15 @@ const PermanentRegistration = () => {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
       case 2:
-        return formData.placeOfBirth !== '' && 
-               formData.fatherName !== '' && 
-               formData.motherName !== '' && 
+        return formData.placeOfBirth !== '' &&
+               formData.fatherName !== '' &&
+               formData.motherName !== '' &&
                formData.citizenshipType !== '' &&
-               formData.permanentAddress !== '' &&
+               formData.permanentAddress.addressLine1 !== '' &&
+               formData.permanentAddress.city !== '' &&
+               formData.permanentAddress.pincode !== '' &&
+               formData.permanentAddress.district !== '' &&
+               formData.permanentAddress.state !== '' &&
                formData.stateOfResidence !== '' &&
                (formData.stateOfResidence === formData.stateFromAadhaar || formData.differentStateProof !== null);
       case 3:
