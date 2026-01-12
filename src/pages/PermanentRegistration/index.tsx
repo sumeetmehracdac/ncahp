@@ -338,22 +338,22 @@ const PermanentRegistration = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-blue-50/20">
-      {/* Header */}
-      <header className="bg-white border-b border-border sticky top-0 z-50">
+      {/* Header - Deep Teal Navbar */}
+      <header className="bg-primary border-b border-primary-dark sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <img src={ncahpLogo} alt="NCAHP" className="h-10 w-auto" />
               <div className="hidden sm:block">
-                <h1 className="text-lg font-display font-semibold text-primary">NCAHP</h1>
-                <p className="text-xs text-muted-foreground">National Commission for Allied and Healthcare Professions</p>
+                <h1 className="text-lg font-display font-semibold text-white">NCAHP</h1>
+                <p className="text-xs text-white/80">National Commission for Allied and Healthcare Professions</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground hidden md:block">
-                Application Fee: <strong className="text-foreground">₹2,000</strong> (max)
+              <span className="text-sm text-white/90 hidden md:block">
+                Application Fee: <strong className="text-accent">₹2,000</strong> (max)
               </span>
-              <Button variant="outline" size="sm" onClick={() => navigate('/')}>
+              <Button variant="outline" size="sm" onClick={() => navigate('/')} className="border-white/30 text-white hover:bg-white/10 hover:text-white">
                 Save & Exit
               </Button>
             </div>
@@ -389,7 +389,7 @@ const PermanentRegistration = () => {
                         disabled={step.id > currentStep}
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
                           isActive 
-                            ? 'bg-primary text-white shadow-lg shadow-primary/25' 
+                            ? 'bg-accent text-white shadow-lg shadow-accent/25' 
                             : isCompleted
                               ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
                               : 'bg-muted text-muted-foreground cursor-not-allowed'
@@ -451,7 +451,7 @@ const PermanentRegistration = () => {
               <Button
                 onClick={nextStep}
                 disabled={!canProceed()}
-                className="gap-2 bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/25"
+                className="gap-2 bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/25"
               >
                 Continue
                 <ChevronRight className="w-4 h-4" />
@@ -460,7 +460,7 @@ const PermanentRegistration = () => {
               <Button
                 onClick={handleSubmit}
                 disabled={!canProceed()}
-                className="gap-2 bg-gradient-to-r from-primary to-teal-600 hover:from-primary-dark hover:to-teal-700 text-white shadow-lg shadow-primary/25"
+                className="gap-2 bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/25"
               >
                 <Shield className="w-4 h-4" />
                 Submit Application

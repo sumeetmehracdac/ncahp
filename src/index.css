@@ -6,28 +6,32 @@
 
 @layer base {
   :root {
-    /* ===== TEAL PRIMARY + NEUTRAL SLATE ACCENT SCHEME ===== */
+    /* ===== TEAL-BLUE-ORANGE HEALTHCARE-GOVERNMENT PALETTE ===== */
+    /* Usage Ratio: 60% Teal, 30% Blue/White, 10% Orange */
     
-    /* Primary Brand Teal - #0E7A7A */
-    --primary: 175 79% 27%;
+    /* Primary - Deep Teal (authority, regulation, healthcare trust) */
+    /* #0E6B6B - slightly darker for navbar/headers */
+    --primary: 180 79% 24%;
     --primary-foreground: 0 0% 100%;
     
-    /* Primary Dark - For hover states #064C4C */
-    --primary-dark: 180 84% 16%;
+    /* Primary Dark - For hover states #064848 */
+    --primary-dark: 180 84% 15%;
     
-    /* Accent Neutral Slate - #4A5568 */
-    --accent: 215 19% 35%;
+    /* Secondary - Medical Blue (clinical clarity, visual depth) */
+    /* #2563EB - Professional medical blue */
+    --secondary: 217 91% 53%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Accent - Saffron/Warm Orange (CTAs, highlights) */
+    /* #F97316 - Vibrant saffron orange */
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
     
-    /* Accent Hover - #2F3A45 */
-    --accent-hover: 210 20% 23%;
+    /* Accent Hover - Darker orange for hover #EA580C */
+    --accent-hover: 21 90% 48%;
     
-    /* Accent Light - For subtle highlights */
-    --accent-light: 215 16% 47%;
-    
-    /* Secondary - Same as Primary for consistency */
-    --secondary: 175 79% 27%;
-    --secondary-foreground: 0 0% 100%;
+    /* Accent Light - Softer orange for backgrounds */
+    --accent-light: 27 96% 61%;
     
     /* Surface / Card Background - #FFFFFF */
     --background: 0 0% 100%;
@@ -52,8 +56,8 @@
     --border: 213 27% 84%;
     --input: 213 27% 88%;
     
-    /* Ring - Using neutral accent */
-    --ring: 215 19% 35%;
+    /* Ring - Using primary teal */
+    --ring: 180 79% 24%;
     
     /* Disabled - #E4E7EC */
     --disabled: 220 14% 91%;
@@ -63,8 +67,8 @@
     --success: 123 46% 34%;
     --success-foreground: 0 0% 100%;
     
-    /* Warning - #F2994A */
-    --warning: 28 86% 62%;
+    /* Warning - Using accent orange */
+    --warning: 25 95% 53%;
     --warning-foreground: 0 0% 100%;
     
     /* Destructive / Error - #D32F2F */
@@ -72,48 +76,50 @@
     --destructive-foreground: 0 0% 100%;
     
     /* Legacy Custom Colors - Mapped to new palette */
-    --navy: 175 79% 27%;
-    --navy-light: 175 65% 35%;
-    --navy-dark: 180 84% 16%;
-    --saffron: 28 86% 62%;
-    --saffron-dark: 28 86% 52%;
-    --teal: 175 79% 27%;
-    --teal-light: 175 65% 35%;
-    --gold: 28 86% 62%;
+    --navy: 180 79% 24%;
+    --navy-light: 180 65% 32%;
+    --navy-dark: 180 84% 15%;
+    --saffron: 25 95% 53%;
+    --saffron-dark: 21 90% 48%;
+    --teal: 180 79% 24%;
+    --teal-light: 180 65% 32%;
+    --gold: 25 95% 53%;
     --cream: 210 25% 97%;
     
-    /* Hero Gradient: Teal to darker teal (no purple) */
-    --gradient-hero: linear-gradient(90deg, hsl(175 79% 27%) 0%, hsl(180 84% 16%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(215 19% 35%) 0%, hsl(210 20% 23%) 100%);
+    /* Hero Gradient: Teal to Medical Blue */
+    --gradient-hero: linear-gradient(135deg, hsl(180 79% 24%) 0%, hsl(180 84% 15%) 50%, hsl(217 70% 35%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(21 90% 48%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 97%) 100%);
+    --gradient-medical: linear-gradient(135deg, hsl(217 91% 53%) 0%, hsl(217 80% 45%) 100%);
     
     /* Shadows - Using teal brand color */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.04);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.07), 0 2px 4px -2px hsl(0 0% 0% / 0.05);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.04);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.05);
-    --shadow-glow: 0 0 20px hsl(175 79% 27% / 0.25);
-    --shadow-primary: 0 6px 18px hsl(175 79% 27% / 0.15);
+    --shadow-glow: 0 0 20px hsl(180 79% 24% / 0.25);
+    --shadow-primary: 0 6px 18px hsl(180 79% 24% / 0.15);
+    --shadow-accent: 0 6px 18px hsl(25 95% 53% / 0.25);
     
     --radius: 0.5rem;
     
     /* Sidebar */
     --sidebar-background: 210 25% 97%;
     --sidebar-foreground: 200 19% 18%;
-    --sidebar-primary: 175 79% 27%;
+    --sidebar-primary: 180 79% 24%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 95%;
     --sidebar-accent-foreground: 200 19% 18%;
     --sidebar-border: 213 27% 84%;
-    --sidebar-ring: 215 19% 35%;
+    --sidebar-ring: 180 79% 24%;
   }
 
   .dark {
-    /* Dark mode with Teal + Neutral Slate palette */
-    --primary: 175 65% 35%;
+    /* Dark mode with Teal-Blue-Orange palette */
+    --primary: 180 65% 30%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 175 79% 27%;
+    --primary-dark: 180 79% 24%;
     --background: 212 36% 9%;
     --foreground: 0 0% 95%;
     --card: 210 30% 12%;
@@ -124,24 +130,25 @@
     --muted-foreground: 0 0% 60%;
     --border: 210 25% 20%;
     --input: 210 25% 20%;
-    --accent: 215 16% 47%;
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 215 19% 35%;
-    --accent-light: 215 14% 55%;
-    --secondary: 175 65% 35%;
+    --accent-hover: 21 90% 48%;
+    --accent-light: 27 96% 61%;
+    --secondary: 217 70% 50%;
     --secondary-foreground: 0 0% 100%;
     --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 215 16% 47%;
-    --teal: 175 65% 35%;
+    --ring: 180 65% 30%;
+    --teal: 180 65% 30%;
+    --saffron: 25 95% 53%;
     --sidebar-background: 212 36% 9%;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 175 65% 35%;
+    --sidebar-primary: 180 65% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 25% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 210 25% 18%;
-    --sidebar-ring: 215 16% 47%;
+    --sidebar-ring: 180 65% 30%;
   }
 }
 
@@ -211,14 +218,52 @@
   }
   
   .text-gradient {
-    background: linear-gradient(135deg, hsl(175 79% 27%) 0%, hsl(180 84% 16%) 100%);
+    background: linear-gradient(135deg, hsl(180 79% 24%) 0%, hsl(180 84% 15%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-accent {
+    background: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(21 90% 48%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .border-accent-gradient {
-    border-image: linear-gradient(135deg, hsl(175 79% 27%), hsl(180 84% 16%)) 1;
+    border-image: linear-gradient(135deg, hsl(25 95% 53%), hsl(21 90% 48%)) 1;
+  }
+  
+  /* Saffron/Orange CTA Button */
+  .btn-accent {
+    background: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(21 90% 48%) 100%);
+    color: hsl(0 0% 100%);
+    box-shadow: 0 6px 18px hsl(25 95% 53% / 0.25);
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-accent:hover {
+    background: linear-gradient(135deg, hsl(21 90% 48%) 0%, hsl(17 85% 42%) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px hsl(25 95% 53% / 0.35);
+  }
+  
+  /* Medical Blue secondary button */
+  .btn-medical {
+    background: linear-gradient(135deg, hsl(217 91% 53%) 0%, hsl(217 80% 45%) 100%);
+    color: hsl(0 0% 100%);
+    box-shadow: 0 6px 18px hsl(217 91% 53% / 0.2);
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-medical:hover {
+    background: linear-gradient(135deg, hsl(217 80% 45%) 0%, hsl(217 70% 38%) 100%);
+    transform: translateY(-2px);
   }
   
   /* Primary Button Style */
