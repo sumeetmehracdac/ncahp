@@ -1,32 +1,13 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  User, 
-  Lock, 
-  MapPin, 
-  AlertTriangle, 
-  Upload,
-  Calendar,
-  Info,
-  CheckCircle2
-} from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { FormData, indianStates } from '../index';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Lock, MapPin, AlertTriangle, Upload, Calendar, Info, CheckCircle2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { FormData, indianStates } from "../index";
 
 interface Props {
   formData: FormData;
@@ -39,7 +20,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updateFormData('photo', file);
+      updateFormData("photo", file);
       const reader = new FileReader();
       reader.onloadend = () => setPhotoPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -49,11 +30,11 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
   const handleStateProofChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updateFormData('differentStateProof', file);
+      updateFormData("differentStateProof", file);
     }
   };
 
-  const isDifferentState = formData.stateOfResidence !== formData.stateFromAadhaar && formData.stateOfResidence !== '';
+  const isDifferentState = formData.stateOfResidence !== formData.stateFromAadhaar && formData.stateOfResidence !== "";
 
   return (
     <div className="space-y-8">
@@ -62,9 +43,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <User className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Personal Information
-        </h2>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Personal Information</h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Review your pre-filled information and complete the remaining fields.
         </p>
@@ -74,18 +53,23 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
       <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
         <div className="flex items-center gap-2 mb-4">
           <Lock className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-medium text-muted-foreground">
-            Pre-filled from your account registration
-          </span>
+          <span className="text-sm font-medium text-muted-foreground">Pre-filled from your account registration</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { label: 'Full Name', value: formData.name },
-            { label: 'Gender', value: formData.gender },
-            { label: 'Age', value: `${formData.age} years` },
-            { label: 'Date of Birth', value: new Date(formData.dateOfBirth).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) },
-            { label: 'Email', value: formData.email },
-            { label: 'Mobile', value: formData.mobile }
+            { label: "Full Name", value: formData.name },
+            { label: "Gender", value: formData.gender },
+            { label: "Age", value: `${formData.age} years` },
+            {
+              label: "Date of Birth",
+              value: new Date(formData.dateOfBirth).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }),
+            },
+            { label: "Email", value: formData.email },
+            { label: "Mobile", value: formData.mobile },
           ].map((field) => (
             <div key={field.label} className="bg-white rounded-lg p-3 border border-border">
               <span className="text-xs text-muted-foreground">{field.label}</span>
@@ -102,9 +86,11 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         </Label>
         <div className="flex items-start gap-6">
           <div className="relative group">
-            <div className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${
-              photoPreview ? 'border-primary bg-primary/5' : 'border-border bg-muted hover:border-primary/50'
-            }`}>
+            <div
+              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${
+                photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
+              }`}
+            >
               {photoPreview ? (
                 <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
               ) : (
@@ -140,7 +126,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             id="placeOfBirth"
             placeholder="City, State"
             value={formData.placeOfBirth}
-            onChange={(e) => updateFormData('placeOfBirth', e.target.value)}
+            onChange={(e) => updateFormData("placeOfBirth", e.target.value)}
             className="h-11"
           />
         </div>
@@ -152,7 +138,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             id="fatherName"
             placeholder="Enter father's full name"
             value={formData.fatherName}
-            onChange={(e) => updateFormData('fatherName', e.target.value)}
+            onChange={(e) => updateFormData("fatherName", e.target.value)}
             className="h-11"
           />
         </div>
@@ -164,7 +150,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             id="motherName"
             placeholder="Enter mother's full name"
             value={formData.motherName}
-            onChange={(e) => updateFormData('motherName', e.target.value)}
+            onChange={(e) => updateFormData("motherName", e.target.value)}
             className="h-11"
           />
         </div>
@@ -177,15 +163,15 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         </Label>
         <RadioGroup
           value={formData.citizenshipType}
-          onValueChange={(value) => updateFormData('citizenshipType', value as 'birth' | 'domicile')}
+          onValueChange={(value) => updateFormData("citizenshipType", value as "birth" | "domicile")}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
           <Label
             htmlFor="birth"
             className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.citizenshipType === 'birth'
-                ? 'border-primary bg-primary/5'
-                : 'border-border hover:border-primary/50'
+              formData.citizenshipType === "birth"
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
             }`}
           >
             <RadioGroupItem value="birth" id="birth" />
@@ -197,9 +183,9 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
           <Label
             htmlFor="domicile"
             className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.citizenshipType === 'domicile'
-                ? 'border-primary bg-primary/5'
-                : 'border-border hover:border-primary/50'
+              formData.citizenshipType === "domicile"
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
             }`}
           >
             <RadioGroupItem value="domicile" id="domicile" />
@@ -211,10 +197,10 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         </RadioGroup>
 
         <AnimatePresence>
-          {formData.citizenshipType === 'domicile' && (
+          {formData.citizenshipType === "domicile" && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="space-y-2"
             >
@@ -225,7 +211,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                 id="domicileDate"
                 type="date"
                 value={formData.domicileDate}
-                onChange={(e) => updateFormData('domicileDate', e.target.value)}
+                onChange={(e) => updateFormData("domicileDate", e.target.value)}
                 className="h-11 max-w-xs"
               />
             </motion.div>
@@ -243,7 +229,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             id="permanentAddress"
             placeholder="Enter your complete permanent address"
             value={formData.permanentAddress}
-            onChange={(e) => updateFormData('permanentAddress', e.target.value)}
+            onChange={(e) => updateFormData("permanentAddress", e.target.value)}
             rows={3}
             className="resize-none"
           />
@@ -256,7 +242,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
               id="presentOccupation"
               placeholder="e.g., Medical Lab Technologist"
               value={formData.presentOccupation}
-              onChange={(e) => updateFormData('presentOccupation', e.target.value)}
+              onChange={(e) => updateFormData("presentOccupation", e.target.value)}
               className="h-11"
             />
           </div>
@@ -266,7 +252,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
               id="correspondenceAddress"
               placeholder="If different from permanent address"
               value={formData.correspondenceAddress}
-              onChange={(e) => updateFormData('correspondenceAddress', e.target.value)}
+              onChange={(e) => updateFormData("correspondenceAddress", e.target.value)}
               className="h-11"
             />
           </div>
@@ -277,14 +263,16 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Label className="text-base font-semibold text-foreground">
-            State of Residence <span className="text-destructive">*</span>
+            State of Residence (as per Aadhaar) <span className="text-destructive">*</span>
           </Label>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info className="w-4 h-4 text-muted-foreground cursor-help" />
             </TooltipTrigger>
             <TooltipContent className="max-w-xs bg-white">
-              <p>Default from your Aadhaar: <strong>{formData.stateFromAadhaar}</strong></p>
+              <p>
+                Default from your Aadhaar: <strong>{formData.stateFromAadhaar}</strong>
+              </p>
             </TooltipContent>
           </Tooltip>
         </div>
@@ -301,10 +289,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
           )}
         </div>
 
-        <Select
-          value={formData.stateOfResidence}
-          onValueChange={(value) => updateFormData('stateOfResidence', value)}
-        >
+        <Select value={formData.stateOfResidence} onValueChange={(value) => updateFormData("stateOfResidence", value)}>
           <SelectTrigger className="h-11">
             <SelectValue placeholder="Select state of residence" />
           </SelectTrigger>
@@ -325,7 +310,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
           {isDifferentState && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="space-y-4"
             >
@@ -335,8 +320,8 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                   <div>
                     <p className="font-medium text-amber-800 mb-1">State differs from Aadhaar</p>
                     <p className="text-sm text-amber-700">
-                      Your application will be submitted to the <strong>{formData.stateOfResidence}</strong> State Council 
-                      for processing. Please upload a valid proof of residence for this state.
+                      Your application will be submitted to the <strong>{formData.stateOfResidence}</strong> State
+                      Council for processing. Please upload a valid proof of residence for this state.
                     </p>
                   </div>
                 </div>
@@ -353,11 +338,13 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                     onChange={handleStateProofChange}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
-                  <div className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed transition-all ${
-                    formData.differentStateProof 
-                      ? 'border-green-500 bg-green-50' 
-                      : 'border-border hover:border-primary/50'
-                  }`}>
+                  <div
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed transition-all ${
+                      formData.differentStateProof
+                        ? "border-green-500 bg-green-50"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
                     {formData.differentStateProof ? (
                       <>
                         <CheckCircle2 className="w-5 h-5 text-green-600" />
