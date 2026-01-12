@@ -12,6 +12,7 @@ import AnnouncementSubmit from "./pages/AnnouncementSubmit.jsx";
 import AnnouncementDetail from "./pages/AnnouncementDetail.jsx";
 import QualificationProfessionManagement from "./pages/QualificationProfessionManagement.jsx";
 import ProfessionIconsGallery from "./pages/ProfessionIconsGallery.jsx";
+import PermanentRegistration from "./pages/PermanentRegistration";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/announcements/submit" element={<AnnouncementSubmit />} />
           <Route path="/qualification-profession-management" element={<QualificationProfessionManagement />} />
           <Route path="/profession-icons" element={<ProfessionIconsGallery />} />
+          <Route path="/permanent-registration" element={<PermanentRegistration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
