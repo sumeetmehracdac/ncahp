@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ChevronDown, Check, X, Stethoscope } from 'lucide-react';
+import { Search, ChevronDown, Check, X, Stethoscope, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +26,9 @@ const ProfessionSelect = ({
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   // Get selected profession data
   const selectedProfession = value ? getProfessionByName(value) : null;
@@ -52,6 +55,35 @@ const ProfessionSelect = ({
     });
     return groups;
   }, [filteredProfessions]);
+
+  // Check scroll position for category pills
+  const checkScrollPosition = () => {
+    if (categoryScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = categoryScrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  // Scroll category pills
+  const scrollCategories = (direction: 'left' | 'right') => {
+    if (categoryScrollRef.current) {
+      const scrollAmount = 150;
+      categoryScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // Check scroll on mount and resize
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(checkScrollPosition, 100);
+      window.addEventListener('resize', checkScrollPosition);
+      return () => window.removeEventListener('resize', checkScrollPosition);
+    }
+  }, [isOpen]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -150,10 +182,10 @@ const ProfessionSelect = ({
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.15 }}
             className={cn(
-              'absolute top-full left-0 right-0 z-50 mt-2',
-              'bg-white border border-border rounded-xl shadow-xl overflow-hidden'
+              'absolute top-full left-0 right-0 z-[100] mt-2',
+              'bg-white border border-border rounded-xl shadow-2xl overflow-hidden'
             )}
-            style={{ maxHeight: '420px' }}
+            style={{ maxHeight: '400px' }}
           >
             {/* Search Input */}
             <div className="p-3 border-b border-border bg-muted/30">
@@ -168,44 +200,73 @@ const ProfessionSelect = ({
                   className="pl-10 h-10 bg-white border-border"
                 />
               </div>
-              {/* Category Pills */}
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                <Badge
-                  variant={activeCategory === null ? 'default' : 'outline'}
-                  className={cn(
-                    'cursor-pointer text-xs transition-all',
-                    activeCategory === null 
-                      ? 'bg-primary text-white' 
-                      : 'hover:bg-primary/10'
-                  )}
-                  onClick={() => setActiveCategory(null)}
+              
+              {/* Category Pills with Arrow Navigation */}
+              <div className="relative mt-3 flex items-center gap-1">
+                {/* Left Arrow */}
+                {canScrollLeft && (
+                  <button
+                    onClick={() => scrollCategories('left')}
+                    className="flex-shrink-0 w-7 h-7 rounded-md bg-white border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors z-10"
+                  >
+                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                )}
+                
+                {/* Scrollable Category Container */}
+                <div
+                  ref={categoryScrollRef}
+                  onScroll={checkScrollPosition}
+                  className="flex-1 flex gap-1.5 overflow-x-auto scrollbar-hide"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  All ({allProfessions.length})
-                </Badge>
-                {professionCategories.slice(0, 4).map(cat => {
-                  const count = groupedProfessions[cat.id]?.length || 0;
-                  if (count === 0 && searchQuery) return null;
-                  return (
-                    <Badge
-                      key={cat.id}
-                      variant={activeCategory === cat.id ? 'default' : 'outline'}
-                      className={cn(
-                        'cursor-pointer text-xs transition-all',
-                        activeCategory === cat.id 
-                          ? 'bg-primary text-white' 
-                          : 'hover:bg-primary/10'
-                      )}
-                      onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
-                    >
-                      {cat.shortName}
-                    </Badge>
-                  );
-                })}
+                  <Badge
+                    variant={activeCategory === null ? 'default' : 'outline'}
+                    className={cn(
+                      'cursor-pointer text-xs transition-all flex-shrink-0 whitespace-nowrap',
+                      activeCategory === null 
+                        ? 'bg-primary text-white' 
+                        : 'hover:bg-primary/10'
+                    )}
+                    onClick={() => setActiveCategory(null)}
+                  >
+                    All ({allProfessions.length})
+                  </Badge>
+                  {professionCategories.map(cat => {
+                    const count = groupedProfessions[cat.id]?.length || 0;
+                    if (count === 0 && searchQuery) return null;
+                    return (
+                      <Badge
+                        key={cat.id}
+                        variant={activeCategory === cat.id ? 'default' : 'outline'}
+                        className={cn(
+                          'cursor-pointer text-xs transition-all flex-shrink-0 whitespace-nowrap',
+                          activeCategory === cat.id 
+                            ? 'bg-primary text-white' 
+                            : 'hover:bg-primary/10'
+                        )}
+                        onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
+                      >
+                        {cat.shortName} ({count})
+                      </Badge>
+                    );
+                  })}
+                </div>
+                
+                {/* Right Arrow */}
+                {canScrollRight && (
+                  <button
+                    onClick={() => scrollCategories('right')}
+                    className="flex-shrink-0 w-7 h-7 rounded-md bg-white border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors z-10"
+                  >
+                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                )}
               </div>
             </div>
 
             {/* Professions List */}
-            <ScrollArea className="h-[280px]">
+            <ScrollArea className="h-[250px]">
               <div className="p-2">
                 {filteredProfessions.length === 0 ? (
                   <div className="py-8 text-center text-muted-foreground">
@@ -232,7 +293,7 @@ const ProfessionSelect = ({
                         </div>
                         
                         {/* Professions Grid */}
-                        <div className="grid grid-cols-1 gap-1">
+                        <div className="grid grid-cols-1 gap-0.5">
                           {groupedProfessions[cat.id]?.map(prof => {
                             const isSelected = value === prof.name;
                             const Icon = prof.icon;
@@ -241,22 +302,22 @@ const ProfessionSelect = ({
                               <motion.button
                                 key={prof.id}
                                 type="button"
-                                whileHover={{ scale: 1.01 }}
-                                whileTap={{ scale: 0.99 }}
+                                whileHover={{ scale: 1.005 }}
+                                whileTap={{ scale: 0.995 }}
                                 onClick={() => handleSelect(prof)}
                                 className={cn(
-                                  'w-full px-3 py-2.5 flex items-center gap-3 rounded-lg text-left transition-all',
+                                  'w-full px-3 py-2 flex items-center gap-3 rounded-lg text-left transition-all',
                                   isSelected
                                     ? 'bg-primary/10 border border-primary/30'
                                     : 'hover:bg-muted/70 border border-transparent'
                                 )}
                               >
                                 <div
-                                  className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0"
+                                  className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
                                   style={{ backgroundColor: `${prof.color}15` }}
                                 >
                                   <Icon
-                                    className="w-4 h-4"
+                                    className="w-3.5 h-3.5"
                                     style={{ color: prof.color }}
                                   />
                                 </div>
