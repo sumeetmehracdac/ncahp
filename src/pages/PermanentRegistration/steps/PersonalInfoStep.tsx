@@ -291,7 +291,7 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
 
         <Select value={formData.stateOfResidence} onValueChange={(value) => updateFormData("stateOfResidence", value)}>
           <SelectTrigger className="h-11">
-            <SelectValue placeholder="Select state of residence" />
+            <SelectValue placeholder="Select state of residence (as per Aadhaar)" />
           </SelectTrigger>
           <SelectContent className="max-h-60 bg-white">
             {indianStates.map((state) => (
