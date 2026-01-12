@@ -202,23 +202,26 @@ const ProfessionSelect = ({
               </div>
               
               {/* Category Pills with Arrow Navigation */}
-              <div className="relative mt-3 flex items-center gap-1">
-                {/* Left Arrow */}
-                {canScrollLeft && (
-                  <button
-                    onClick={() => scrollCategories('left')}
-                    className="flex-shrink-0 w-7 h-7 rounded-md bg-white border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors z-10"
-                  >
-                    <ChevronLeft className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                )}
+              <div className="relative mt-3 flex items-center gap-2">
+                {/* Left Arrow - Always visible */}
+                <button
+                  onClick={() => scrollCategories('left')}
+                  disabled={!canScrollLeft}
+                  className={cn(
+                    "flex-shrink-0 w-7 h-7 rounded-md border shadow-sm flex items-center justify-center transition-all",
+                    canScrollLeft 
+                      ? "bg-white border-border hover:bg-muted cursor-pointer" 
+                      : "bg-muted/50 border-transparent cursor-not-allowed opacity-40"
+                  )}
+                >
+                  <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+                </button>
                 
-                {/* Scrollable Category Container */}
+                {/* Scrollable Category Container - Hidden scrollbar */}
                 <div
                   ref={categoryScrollRef}
                   onScroll={checkScrollPosition}
                   className="flex-1 flex gap-1.5 overflow-x-auto scrollbar-hide"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   <Badge
                     variant={activeCategory === null ? 'default' : 'outline'}
@@ -253,15 +256,19 @@ const ProfessionSelect = ({
                   })}
                 </div>
                 
-                {/* Right Arrow */}
-                {canScrollRight && (
-                  <button
-                    onClick={() => scrollCategories('right')}
-                    className="flex-shrink-0 w-7 h-7 rounded-md bg-white border border-border shadow-sm flex items-center justify-center hover:bg-muted transition-colors z-10"
-                  >
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                )}
+                {/* Right Arrow - Always visible */}
+                <button
+                  onClick={() => scrollCategories('right')}
+                  disabled={!canScrollRight}
+                  className={cn(
+                    "flex-shrink-0 w-7 h-7 rounded-md border shadow-sm flex items-center justify-center transition-all",
+                    canScrollRight 
+                      ? "bg-white border-border hover:bg-muted cursor-pointer" 
+                      : "bg-muted/50 border-transparent cursor-not-allowed opacity-40"
+                  )}
+                >
+                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                </button>
               </div>
             </div>
 
