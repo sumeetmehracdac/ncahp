@@ -1,61 +1,9 @@
 import { motion } from 'framer-motion';
-import { FileCheck, Stethoscope, ChevronRight } from 'lucide-react';
+import { FileCheck, ChevronRight, Check } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { FormData } from '../index';
-
-// Profession categories mapped to professions
-const professionCategories = {
-  'Medical Laboratory & Life Sciences': [
-    'Biotechnologist', 'Biochemist (non-clinical)', 'Cell Geneticist', 'Clinical Embryologist',
-    'Medical Microbiologist', 'Molecular Biologist', 'Molecular Geneticist', 'Cytotechnologist',
-    'Forensic Science Technologist', 'Histotechnologist', 'Hemato Technologist', 
-    'Immunology Technologist', 'Medical Laboratory Technologist', 'Medical Laboratory Assistant',
-    'Medical Laboratory Technician', 'Blood Bank Technician', 'Research Assistant'
-  ],
-  'Trauma, Burn Care & Surgical Technology': [
-    'Advance Care Paramedic', 'Burn Care Technologist', 'Emergency Medical Technologist (Paramedic)',
-    'Anaesthesia Assistants and Technologists', 'Operation Theatre (OT) Technologists',
-    'Endoscopy and Laparoscopy Technologists'
-  ],
-  'Physiotherapy': ['Physiotherapist'],
-  'Nutrition Science': [
-    'Dietician (including Clinical & Food Service Dietician)',
-    'Nutritionist (including Public Health & Sports Nutritionist)'
-  ],
-  'Ophthalmic Sciences': ['Optometrist', 'Ophthalmic Assistant', 'Vision Technician'],
-  'Occupational Therapy': ['Occupational Therapist'],
-  'Community Care & Behavioural Health Sciences': [
-    'Environment Protection Officer', 'Ecologist', 'Community Health Practitioner',
-    'Occupational Health & Safety Officer', 'Physiologist (except Clinical)', 'Behavioural Analyst',
-    'Integrated Behaviour Health Counsellor', 'Rehabilitation and Counselling Consultant',
-    'Social Worker (Clinical/Medical/Psychiatric)', 'Medical Immunology Technologist',
-    'Family Counsellor', 'Mental Health Support Worker', 'Podiatrist', 'Community Care Professional',
-    'Movement Therapist', 'Yoga Therapy Assistant', 'Recreational Therapist', 'Acupuncture Professional'
-  ],
-  'Medical Radiology & Imaging Technology': [
-    'Medical Physicist', 'Nuclear Medicine Technologist', 'Radiology & Imaging Technologist',
-    'Diagnostic Medical Sonographer', 'Radiotherapy Technologist', 'Densitometrist'
-  ],
-  'Medical Technologists & Physician Associate': [
-    'Biomedical Engineer', 'Medical Equipment Technologist', 'Physician Associate',
-    'Cardiovascular Technologist', 'Perfusionist', 'Respiratory Technologist',
-    'ECG Technologist', 'EEG Technologist', 'ENMG Technologist', 'Electroneurophysiology Technologist',
-    'Gastrointestinal Technologist', 'Sleep Lab Technologist', 'Dialysis Therapy Technologist',
-    'Lithotripsy Technologist'
-  ],
-  'Health Information Management': [
-    'Health Information Management Professional',
-    'Health Information Management Technologist',
-    'Clinical Coder', 'Medical Secretary and Medical Transcriptionist'
-  ]
-};
+import ProfessionSelect from '@/components/ProfessionSelect';
+import { getProfessionByName } from '@/data/professions';
 
 interface Props {
   formData: FormData;
@@ -68,6 +16,8 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
     { value: 'conversion', label: 'Conversion from Provisional', description: 'Convert provisional to permanent' },
     { value: 'foreign', label: 'Foreign Qualification', description: 'Registration with foreign degree' }
   ];
+
+  const selectedProfession = formData.profession ? getProfessionByName(formData.profession) : null;
 
   return (
     <div className="space-y-8">
@@ -99,19 +49,19 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               onClick={() => updateFormData('registrationType', type.value)}
               className={`p-5 rounded-xl border-2 text-left transition-all ${
                 formData.registrationType === type.value
-                  ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
-                  : 'border-border bg-card hover:border-primary/50 hover:bg-muted/50'
+                  ? 'border-accent bg-accent/5 shadow-lg shadow-accent/10'
+                  : 'border-border bg-card hover:border-accent/50 hover:bg-muted/50'
               }`}
             >
               <div className="flex items-start justify-between mb-2">
                 <span className={`font-semibold ${
-                  formData.registrationType === type.value ? 'text-primary' : 'text-foreground'
+                  formData.registrationType === type.value ? 'text-accent' : 'text-foreground'
                 }`}>
                   {type.label}
                 </span>
                 {formData.registrationType === type.value && (
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                    <ChevronRight className="w-3 h-3 text-white" />
+                  <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center">
+                    <Check className="w-3 h-3 text-white" />
                   </div>
                 )}
               </div>
@@ -126,49 +76,50 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
         <Label className="text-base font-semibold text-foreground">
           Select Profession <span className="text-destructive">*</span>
         </Label>
-        <Select
+        <ProfessionSelect
           value={formData.profession}
           onValueChange={(value) => updateFormData('profession', value)}
-        >
-          <SelectTrigger className="h-12 text-base bg-background">
-            <SelectValue placeholder="Choose your profession" />
-          </SelectTrigger>
-          <SelectContent className="max-h-80 bg-white">
-            {Object.entries(professionCategories).map(([category, professions]) => (
-              <div key={category}>
-                <div className="px-3 py-2 text-xs font-semibold text-primary bg-primary/5 sticky top-0">
-                  {category}
-                </div>
-                {professions.map((profession) => (
-                  <SelectItem key={profession} value={profession} className="py-2.5">
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="w-4 h-4 text-muted-foreground" />
-                      <span>{profession}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </div>
-            ))}
-          </SelectContent>
-        </Select>
+          placeholder="Search or select your profession..."
+        />
       </div>
 
       {/* Selection Summary */}
-      {formData.registrationType && formData.profession && (
+      {formData.registrationType && formData.profession && selectedProfession && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-primary/5 to-teal-50 rounded-xl p-5 border border-primary/20"
+          className="bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 rounded-xl p-5 border border-primary/20"
         >
-          <h4 className="font-semibold text-foreground mb-3">Your Selection</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <span className="text-sm text-muted-foreground">Registration Type</span>
-              <p className="font-medium text-foreground capitalize">{formData.registrationType} Registration</p>
+          <h4 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+            <Check className="w-5 h-5 text-primary" />
+            Your Selection
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                <FileCheck className="w-6 h-6 text-accent" />
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">Registration Type</span>
+                <p className="font-medium text-foreground capitalize">
+                  {registrationTypes.find(t => t.value === formData.registrationType)?.label}
+                </p>
+              </div>
             </div>
-            <div>
-              <span className="text-sm text-muted-foreground">Profession</span>
-              <p className="font-medium text-foreground">{formData.profession}</p>
+            <div className="flex items-center gap-4">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${selectedProfession.color}15` }}
+              >
+                <selectedProfession.icon
+                  className="w-6 h-6"
+                  style={{ color: selectedProfession.color }}
+                />
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">Profession</span>
+                <p className="font-medium text-foreground">{formData.profession}</p>
+              </div>
             </div>
           </div>
         </motion.div>
