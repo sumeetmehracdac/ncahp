@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { User, Lock, MapPin, AlertTriangle, Upload, Calendar, Info, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { FormData, indianStates } from "../index";
+import { FormData, indianStates, AddressFields } from "../index";
 
 interface Props {
   formData: FormData;
@@ -32,6 +32,20 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
     if (file) {
       updateFormData("differentStateProof", file);
     }
+  };
+
+  const updatePermanentAddress = (field: keyof AddressFields, value: string) => {
+    updateFormData("permanentAddress", {
+      ...formData.permanentAddress,
+      [field]: value
+    });
+  };
+
+  const updateCorrespondenceAddress = (field: keyof AddressFields, value: string) => {
+    updateFormData("correspondenceAddress", {
+      ...formData.correspondenceAddress,
+      [field]: value
+    });
   };
 
   const isDifferentState = formData.stateOfResidence !== formData.stateFromAadhaar && formData.stateOfResidence !== "";
@@ -154,6 +168,16 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             className="h-11"
           />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="presentOccupation">Present Occupation</Label>
+          <Input
+            id="presentOccupation"
+            placeholder="e.g., Medical Lab Technologist"
+            value={formData.presentOccupation}
+            onChange={(e) => updateFormData("presentOccupation", e.target.value)}
+            className="h-11"
+          />
+        </div>
       </div>
 
       {/* Citizenship */}
@@ -219,44 +243,183 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         </AnimatePresence>
       </div>
 
-      {/* Address Section */}
+      {/* Permanent Address Section */}
       <div className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="permanentAddress">
+        <div className="space-y-4">
+          <Label className="text-base font-semibold text-foreground">
             Permanent Address <span className="text-destructive">*</span>
           </Label>
-          <Textarea
-            id="permanentAddress"
-            placeholder="Enter your complete permanent address"
-            value={formData.permanentAddress}
-            onChange={(e) => updateFormData("permanentAddress", e.target.value)}
-            rows={3}
-            className="resize-none"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2 space-y-2">
+              <Label htmlFor="perm-address1" className="text-sm text-muted-foreground">Address Line 1</Label>
+              <Input
+                id="perm-address1"
+                placeholder="House/Flat No., Building Name, Street"
+                value={formData.permanentAddress.addressLine1}
+                onChange={(e) => updatePermanentAddress("addressLine1", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="md:col-span-2 space-y-2">
+              <Label htmlFor="perm-address2" className="text-sm text-muted-foreground">Address Line 2</Label>
+              <Input
+                id="perm-address2"
+                placeholder="Area, Locality, Landmark (Optional)"
+                value={formData.permanentAddress.addressLine2}
+                onChange={(e) => updatePermanentAddress("addressLine2", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="perm-city" className="text-sm text-muted-foreground">City</Label>
+              <Input
+                id="perm-city"
+                placeholder="City"
+                value={formData.permanentAddress.city}
+                onChange={(e) => updatePermanentAddress("city", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="perm-pincode" className="text-sm text-muted-foreground">Pincode</Label>
+              <Input
+                id="perm-pincode"
+                placeholder="6-digit Pincode"
+                value={formData.permanentAddress.pincode}
+                onChange={(e) => updatePermanentAddress("pincode", e.target.value)}
+                className="h-11"
+                maxLength={6}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="perm-district" className="text-sm text-muted-foreground">District</Label>
+              <Input
+                id="perm-district"
+                placeholder="District"
+                value={formData.permanentAddress.district}
+                onChange={(e) => updatePermanentAddress("district", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="perm-state" className="text-sm text-muted-foreground">State</Label>
+              <Select
+                value={formData.permanentAddress.state}
+                onValueChange={(value) => updatePermanentAddress("state", value)}
+              >
+                <SelectTrigger className="h-11">
+                  <SelectValue placeholder="Select state" />
+                </SelectTrigger>
+                <SelectContent className="max-h-60 bg-white">
+                  {indianStates.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <Label htmlFor="presentOccupation">Present Occupation</Label>
-            <Input
-              id="presentOccupation"
-              placeholder="e.g., Medical Lab Technologist"
-              value={formData.presentOccupation}
-              onChange={(e) => updateFormData("presentOccupation", e.target.value)}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="correspondenceAddress">Correspondence Address</Label>
-            <Input
-              id="correspondenceAddress"
-              placeholder="If different from permanent address"
-              value={formData.correspondenceAddress}
-              onChange={(e) => updateFormData("correspondenceAddress", e.target.value)}
-              className="h-11"
-            />
-          </div>
+        {/* Correspondence Address Checkbox */}
+        <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-lg border border-border">
+          <Checkbox
+            id="correspondenceAddressDifferent"
+            checked={formData.correspondenceAddressDifferent}
+            onCheckedChange={(checked) => updateFormData("correspondenceAddressDifferent", checked as boolean)}
+          />
+          <Label htmlFor="correspondenceAddressDifferent" className="cursor-pointer text-sm font-medium text-foreground">
+            Correspondence address different from permanent address?
+          </Label>
         </div>
+
+        {/* Correspondence Address Section */}
+        <AnimatePresence>
+          {formData.correspondenceAddressDifferent && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-4"
+            >
+              <Label className="text-base font-semibold text-foreground">
+                Correspondence Address
+              </Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2 space-y-2">
+                  <Label htmlFor="corr-address1" className="text-sm text-muted-foreground">Address Line 1</Label>
+                  <Input
+                    id="corr-address1"
+                    placeholder="House/Flat No., Building Name, Street"
+                    value={formData.correspondenceAddress.addressLine1}
+                    onChange={(e) => updateCorrespondenceAddress("addressLine1", e.target.value)}
+                    className="h-11"
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <Label htmlFor="corr-address2" className="text-sm text-muted-foreground">Address Line 2</Label>
+                  <Input
+                    id="corr-address2"
+                    placeholder="Area, Locality, Landmark (Optional)"
+                    value={formData.correspondenceAddress.addressLine2}
+                    onChange={(e) => updateCorrespondenceAddress("addressLine2", e.target.value)}
+                    className="h-11"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="corr-city" className="text-sm text-muted-foreground">City</Label>
+                  <Input
+                    id="corr-city"
+                    placeholder="City"
+                    value={formData.correspondenceAddress.city}
+                    onChange={(e) => updateCorrespondenceAddress("city", e.target.value)}
+                    className="h-11"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="corr-pincode" className="text-sm text-muted-foreground">Pincode</Label>
+                  <Input
+                    id="corr-pincode"
+                    placeholder="6-digit Pincode"
+                    value={formData.correspondenceAddress.pincode}
+                    onChange={(e) => updateCorrespondenceAddress("pincode", e.target.value)}
+                    className="h-11"
+                    maxLength={6}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="corr-district" className="text-sm text-muted-foreground">District</Label>
+                  <Input
+                    id="corr-district"
+                    placeholder="District"
+                    value={formData.correspondenceAddress.district}
+                    onChange={(e) => updateCorrespondenceAddress("district", e.target.value)}
+                    className="h-11"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="corr-state" className="text-sm text-muted-foreground">State</Label>
+                  <Select
+                    value={formData.correspondenceAddress.state}
+                    onValueChange={(value) => updateCorrespondenceAddress("state", value)}
+                  >
+                    <SelectTrigger className="h-11">
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-60 bg-white">
+                      {indianStates.map((state) => (
+                        <SelectItem key={state} value={state}>
+                          {state}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* State of Residence */}
