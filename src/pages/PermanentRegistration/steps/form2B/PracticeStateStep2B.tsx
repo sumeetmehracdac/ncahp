@@ -15,10 +15,10 @@ interface Props {
 const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
   const addPracticeState = () => {
     const newState: Form2BPracticeState = {
-      institutionName: '',
-      address: '',
-      state: '',
-      proofDocument: null
+      institutionName: "",
+      address: "",
+      state: "",
+      proofDocument: null,
     };
     updateFormData("practiceStates", [...formData.practiceStates, newState]);
   };
@@ -29,9 +29,7 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
   };
 
   const updatePracticeState = (index: number, field: keyof Form2BPracticeState, value: string | File | null) => {
-    const updated = formData.practiceStates.map((state, i) => 
-      i === index ? { ...state, [field]: value } : state
-    );
+    const updated = formData.practiceStates.map((state, i) => (i === index ? { ...state, [field]: value } : state));
     updateFormData("practiceStates", updated);
   };
 
@@ -47,7 +45,10 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
 
       <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl">
         <div>
-          <Label className="text-base font-medium">Do you intend to practice in multiple states?</Label>
+          <Label className="text-base font-medium">
+            Are you desirous of practicing the recognized profession in a state other than state of residence ( state of
+            registration)
+          </Label>
           <p className="text-sm text-muted-foreground">Add the states where you plan to practice</p>
         </div>
         <Switch
@@ -62,44 +63,60 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
             <div key={index} className="p-4 border border-border rounded-xl space-y-4">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-foreground">Practice Location {index + 1}</span>
-                <Button type="button" variant="ghost" size="sm" onClick={() => removePracticeState(index)} className="text-destructive hover:text-destructive">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removePracticeState(index)}
+                  className="text-destructive hover:text-destructive"
+                >
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>State <span className="text-destructive">*</span></Label>
-                  <Select value={state.state} onValueChange={(value) => updatePracticeState(index, 'state', value)}>
-                    <SelectTrigger><SelectValue placeholder="Select state" /></SelectTrigger>
+                  <Label>
+                    State <span className="text-destructive">*</span>
+                  </Label>
+                  <Select value={state.state} onValueChange={(value) => updatePracticeState(index, "state", value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
                     <SelectContent>
                       {indianStates.map((s) => (
-                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Institution Name <span className="text-destructive">*</span></Label>
-                  <Input 
-                    value={state.institutionName} 
-                    onChange={(e) => updatePracticeState(index, 'institutionName', e.target.value)}
+                  <Label>
+                    Institution Name <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    value={state.institutionName}
+                    onChange={(e) => updatePracticeState(index, "institutionName", e.target.value)}
                     placeholder="Clinic/Lab/Hospital name"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Institution Address <span className="text-destructive">*</span></Label>
-                  <Input 
-                    value={state.address} 
-                    onChange={(e) => updatePracticeState(index, 'address', e.target.value)}
+                  <Label>
+                    Institution Address <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    value={state.address}
+                    onChange={(e) => updatePracticeState(index, "address", e.target.value)}
                     placeholder="Full address"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <Label>Proof of Practice (if any)</Label>
-                  <Input 
-                    type="file" 
+                  <Input
+                    type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => updatePracticeState(index, 'proofDocument', e.target.files?.[0] || null)}
+                    onChange={(e) => updatePracticeState(index, "proofDocument", e.target.files?.[0] || null)}
                   />
                 </div>
               </div>
