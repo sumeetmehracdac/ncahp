@@ -15,13 +15,15 @@ import {
   Upload,
   FileText,
   CreditCard,
-  Shield
+  Shield,
+  Plane,
+  Globe
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ncahpLogo from '@/assets/ncahp-logo.png';
 
-// Import step components
+// Import step components - Main form
 import RegistrationTypeStep from './steps/RegistrationTypeStep';
 import PersonalInfoStep from './steps/PersonalInfoStep';
 import EducationHistoryStep from './steps/EducationHistoryStep';
@@ -31,6 +33,33 @@ import ProfessionalExperienceStep from './steps/ProfessionalExperienceStep';
 import PracticeGeographyStep from './steps/PracticeGeographyStep';
 import DocumentUploadStep from './steps/DocumentUploadStep';
 import ReviewSubmitStep from './steps/ReviewSubmitStep';
+
+// Import Form 2A components
+import {
+  PersonalInfoStep2A,
+  PracticeStateStep2A,
+  PassportVisaStep2A,
+  AcademicQualificationStep2A,
+  InternshipStep2A,
+  ExperienceStep2A,
+  DocumentsStep2A,
+  DeclarationStep2A
+} from './steps/form2A';
+
+// Import Form 2B components
+import {
+  PersonalInfoStep2B,
+  PracticeStateStep2B,
+  AcademicQualificationStep2B,
+  InternshipStep2B,
+  ExperienceStep2B,
+  DocumentsStep2B,
+  DeclarationStep2B
+} from './steps/form2B';
+
+// Import types
+import { Form2AData, initialForm2AData } from './types/form2A';
+import { Form2BData, initialForm2BData } from './types/form2B';
 
 // Types
 export interface EducationEntry {
@@ -162,7 +191,8 @@ const mockUserData = {
 // Check if user has provisional/interim status (blocking logic)
 const hasProvisionalOrInterimStatus = false; // Set to true to test blocking
 
-const steps = [
+// Step definitions for each form type
+const mainFormSteps = [
   { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Education History', icon: GraduationCap, description: 'Prior qualifications' },
@@ -172,6 +202,29 @@ const steps = [
   { id: 7, title: 'Practice Location', icon: MapPin, description: 'Geographic intent' },
   { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
   { id: 9, title: 'Review & Submit', icon: FileText, description: 'Final verification' }
+];
+
+const form2ASteps = [
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
+  { id: 2, title: 'Personal Information', icon: User, description: 'Foreign national details' },
+  { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
+  { id: 4, title: 'Passport & Visa', icon: Plane, description: 'Travel documents' },
+  { id: 5, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
+  { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
+  { id: 7, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+];
+
+const form2BSteps = [
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
+  { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
+  { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
+  { id: 4, title: 'Academic Qualification', icon: Globe, description: 'Foreign qualifications' },
+  { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
+  { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const indianStates = [
@@ -191,7 +244,9 @@ const PermanentRegistration = () => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [isBlocked, setIsBlocked] = useState(hasProvisionalOrInterimStatus);
+  const [activeFormType, setActiveFormType] = useState<'main' | '2A' | '2B'>('main');
   
+  // Main form data
   const [formData, setFormData] = useState<FormData>({
     registrationType: '',
     profession: '',
@@ -252,11 +307,56 @@ const PermanentRegistration = () => {
     declarationAccepted: false
   });
 
+  // Form 2A data
+  const [form2AData, setForm2AData] = useState<Form2AData>(initialForm2AData);
+  
+  // Form 2B data
+  const [form2BData, setForm2BData] = useState<Form2BData>(initialForm2BData);
+
   const updateFormData = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Detect form type change
+    if (field === 'registrationType') {
+      if (value === '2A') {
+        setActiveFormType('2A');
+        setForm2AData(prev => ({ ...prev, profession: formData.profession }));
+      } else if (value === '2B') {
+        setActiveFormType('2B');
+        setForm2BData(prev => ({ ...prev, profession: formData.profession }));
+      } else {
+        setActiveFormType('main');
+      }
+    }
   };
 
+  const updateForm2AData = <K extends keyof Form2AData>(field: K, value: Form2AData[K]) => {
+    setForm2AData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateForm2BData = <K extends keyof Form2BData>(field: K, value: Form2BData[K]) => {
+    setForm2BData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Get current steps based on form type
+  const getCurrentSteps = () => {
+    if (activeFormType === '2A') return form2ASteps;
+    if (activeFormType === '2B') return form2BSteps;
+    return mainFormSteps;
+  };
+
+  const steps = getCurrentSteps();
+
   const canProceed = (): boolean => {
+    if (activeFormType === '2A') {
+      return canProceed2A();
+    } else if (activeFormType === '2B') {
+      return canProceed2B();
+    }
+    return canProceedMain();
+  };
+
+  const canProceedMain = (): boolean => {
     switch (currentStep) {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
@@ -286,6 +386,60 @@ const PermanentRegistration = () => {
         return formData.validIdProof !== null;
       case 9:
         return formData.aadhaarConsent && formData.declarationAccepted;
+      default:
+        return false;
+    }
+  };
+
+  const canProceed2A = (): boolean => {
+    switch (currentStep) {
+      case 1:
+        return formData.registrationType !== '' && formData.profession !== '';
+      case 2:
+        return form2AData.firstName !== '' && 
+               form2AData.lastName !== '' && 
+               form2AData.nationality !== '' &&
+               form2AData.permanentAddress.addressLine1 !== '';
+      case 3:
+        return form2AData.practiceStates.length > 0;
+      case 4:
+        return form2AData.passportDetails.passportNumber !== '' && 
+               form2AData.visaDetails.visaNumber !== '';
+      case 5:
+        return form2AData.academicQualifications.some(q => q.qualificationName !== '');
+      case 6:
+        return true; // Optional
+      case 7:
+        return true; // Optional
+      case 8:
+        return form2AData.documents.transcripts !== null;
+      case 9:
+        return form2AData.declarationAccepted;
+      default:
+        return false;
+    }
+  };
+
+  const canProceed2B = (): boolean => {
+    switch (currentStep) {
+      case 1:
+        return formData.registrationType !== '' && formData.profession !== '';
+      case 2:
+        return form2BData.firstName !== '' && 
+               form2BData.lastName !== '' && 
+               form2BData.permanentAddress.addressLine1 !== '';
+      case 3:
+        return !form2BData.practiceInOtherState || form2BData.practiceStates.length > 0;
+      case 4:
+        return form2BData.academicQualifications.some(q => q.qualificationName !== '');
+      case 5:
+        return true; // Optional
+      case 6:
+        return true; // Optional
+      case 7:
+        return form2BData.documents.transcripts !== null;
+      case 8:
+        return form2BData.declarationAccepted;
       default:
         return false;
     }
@@ -344,11 +498,60 @@ const PermanentRegistration = () => {
   }
 
   const renderStepContent = () => {
-    const commonProps = { formData, updateFormData };
+    // Step 1 is always the registration type selector
+    if (currentStep === 1) {
+      return <RegistrationTypeStep formData={formData} updateFormData={updateFormData} />;
+    }
+
+    // Form 2A steps
+    if (activeFormType === '2A') {
+      switch (currentStep) {
+        case 2:
+          return <PersonalInfoStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 3:
+          return <PracticeStateStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 4:
+          return <PassportVisaStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 5:
+          return <AcademicQualificationStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 6:
+          return <InternshipStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 7:
+          return <ExperienceStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 8:
+          return <DocumentsStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 9:
+          return <DeclarationStep2A formData={form2AData} updateFormData={updateForm2AData} onSubmit={handleSubmit} />;
+        default:
+          return null;
+      }
+    }
+
+    // Form 2B steps
+    if (activeFormType === '2B') {
+      switch (currentStep) {
+        case 2:
+          return <PersonalInfoStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 3:
+          return <PracticeStateStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 4:
+          return <AcademicQualificationStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 5:
+          return <InternshipStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 6:
+          return <ExperienceStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 7:
+          return <DocumentsStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 8:
+          return <DeclarationStep2B formData={form2BData} updateFormData={updateForm2BData} onSubmit={handleSubmit} />;
+        default:
+          return null;
+      }
+    }
     
+    // Main form steps
+    const commonProps = { formData, updateFormData };
     switch (currentStep) {
-      case 1:
-        return <RegistrationTypeStep {...commonProps} />;
       case 2:
         return <PersonalInfoStep {...commonProps} />;
       case 3:
@@ -368,6 +571,13 @@ const PermanentRegistration = () => {
       default:
         return null;
     }
+  };
+
+  // Get form type label for header
+  const getFormTypeLabel = () => {
+    if (activeFormType === '2A') return 'Form 2A - Temporary Registration';
+    if (activeFormType === '2B') return 'Form 2B - Regular Registration (Foreign Qualification)';
+    return 'Permanent Registration';
   };
 
   return (
@@ -399,9 +609,16 @@ const PermanentRegistration = () => {
         {/* Progress Tracker */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
-              Permanent Registration
-            </h2>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
+                {getFormTypeLabel()}
+              </h2>
+              {activeFormType !== 'main' && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  {activeFormType === '2A' ? 'Foreign nationals with foreign qualification' : 'Indian nationals with foreign qualification'}
+                </p>
+              )}
+            </div>
             <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
               Step {currentStep} of {steps.length}
             </span>
@@ -457,7 +674,7 @@ const PermanentRegistration = () => {
         {/* Step Content */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentStep}
+            key={`${activeFormType}-${currentStep}`}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
