@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
-import { FileCheck, ChevronRight, Check } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { FormData } from '../index';
-import ProfessionSelect from '@/components/ProfessionSelect';
-import { getProfessionByName } from '@/data/professions';
+import { motion } from "framer-motion";
+import { FileCheck, ChevronRight, Check } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { FormData } from "../index";
+import ProfessionSelect from "@/components/ProfessionSelect";
+import { getProfessionByName } from "@/data/professions";
 
 interface Props {
   formData: FormData;
@@ -12,36 +12,36 @@ interface Props {
 
 const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
   const registrationTypes = [
-    { 
-      value: '1A', 
-      formType: 'Form 1A', 
-      label: 'Regular Registration', 
-      description: 'Indian nationals who have passed a recognised qualification from India on or before 2021.' 
+    {
+      value: "1A",
+      formType: "Form 1A",
+      label: "Regular Registration",
+      description: "Indian nationals who have passed a recognised qualification from India on or before 2021.",
     },
-    { 
-      value: '1B', 
-      formType: 'Form 1B', 
-      label: 'Provisional Registration', 
-      description: 'Working professionals who do not possess any recognized qualification' 
+    {
+      value: "1B",
+      formType: "Form 1B",
+      label: "Provisional Registration",
+      description: "Working professionals who do not possess any recognized qualification",
     },
-    { 
-      value: '1C', 
-      formType: 'Form 1C', 
-      label: 'Interim Qualification', 
-      description: 'Students pursuing a recognized qualification' 
+    {
+      value: "1C",
+      formType: "Form 1C",
+      label: "Interim Registration",
+      description: "Students pursuing a recognized qualification",
     },
-    { 
-      value: '2A', 
-      formType: 'Form 2A', 
-      label: 'Temporary Registration', 
-      description: 'Foreign nationals with foreign qualification' 
+    {
+      value: "2A",
+      formType: "Form 2A",
+      label: "Temporary Registration",
+      description: "Foreign nationals with foreign qualification",
     },
-    { 
-      value: '2B', 
-      formType: 'Form 2B', 
-      label: 'Regular Registration', 
-      description: 'Indian nationals with foreign qualification' 
-    }
+    {
+      value: "2B",
+      formType: "Form 2B",
+      label: "Regular Registration",
+      description: "Indian nationals with foreign qualification",
+    },
   ];
 
   const selectedProfession = formData.profession ? getProfessionByName(formData.profession) : null;
@@ -73,17 +73,19 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => updateFormData('registrationType', type.value)}
+              onClick={() => updateFormData("registrationType", type.value)}
               className={`p-4 rounded-xl border-2 text-left transition-all ${
                 formData.registrationType === type.value
-                  ? 'border-accent bg-accent/5 shadow-lg shadow-accent/10'
-                  : 'border-border bg-card hover:border-accent/50 hover:bg-muted/50'
+                  ? "border-accent bg-accent/5 shadow-lg shadow-accent/10"
+                  : "border-border bg-card hover:border-accent/50 hover:bg-muted/50"
               }`}
             >
               <div className="flex items-start justify-between mb-1">
-                <span className={`text-xs font-bold uppercase tracking-wide ${
-                  formData.registrationType === type.value ? 'text-accent' : 'text-primary'
-                }`}>
+                <span
+                  className={`text-xs font-bold uppercase tracking-wide ${
+                    formData.registrationType === type.value ? "text-accent" : "text-primary"
+                  }`}
+                >
                   {type.formType}
                 </span>
                 {formData.registrationType === type.value && (
@@ -92,9 +94,11 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                   </div>
                 )}
               </div>
-              <p className={`font-semibold mb-1 ${
-                formData.registrationType === type.value ? 'text-accent' : 'text-foreground'
-              }`}>
+              <p
+                className={`font-semibold mb-1 ${
+                  formData.registrationType === type.value ? "text-accent" : "text-foreground"
+                }`}
+              >
                 {type.label}
               </p>
               <p className="text-xs text-muted-foreground leading-relaxed">{type.description}</p>
@@ -110,7 +114,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
         </Label>
         <ProfessionSelect
           value={formData.profession}
-          onValueChange={(value) => updateFormData('profession', value)}
+          onValueChange={(value) => updateFormData("profession", value)}
           placeholder="Search or select your profession..."
         />
       </div>
@@ -134,7 +138,10 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               <div>
                 <span className="text-sm text-muted-foreground">Registration Type</span>
                 <p className="font-medium text-foreground">
-                  <span className="text-primary font-bold">{registrationTypes.find(t => t.value === formData.registrationType)?.formType}</span> - {registrationTypes.find(t => t.value === formData.registrationType)?.label}
+                  <span className="text-primary font-bold">
+                    {registrationTypes.find((t) => t.value === formData.registrationType)?.formType}
+                  </span>{" "}
+                  - {registrationTypes.find((t) => t.value === formData.registrationType)?.label}
                 </p>
               </div>
             </div>
@@ -143,10 +150,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 className="w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: `${selectedProfession.color}15` }}
               >
-                <selectedProfession.icon
-                  className="w-6 h-6"
-                  style={{ color: selectedProfession.color }}
-                />
+                <selectedProfession.icon className="w-6 h-6" style={{ color: selectedProfession.color }} />
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">Profession</span>
