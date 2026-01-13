@@ -1,0 +1,425 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Upload, Globe } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form2AData, Form2AAddressFields } from "../../types/form2A";
+
+interface Props {
+  formData: Form2AData;
+  updateFormData: <K extends keyof Form2AData>(field: K, value: Form2AData[K]) => void;
+}
+
+const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateFormData("photo", file);
+      const reader = new FileReader();
+      reader.onloadend = () => setPhotoPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const updatePermanentAddress = (field: keyof Form2AAddressFields, value: string) => {
+    updateFormData("permanentAddress", {
+      ...formData.permanentAddress,
+      [field]: value
+    });
+  };
+
+  const updateCorrespondenceAddress = (field: keyof Form2AAddressFields, value: string) => {
+    updateFormData("correspondenceAddress", {
+      ...formData.correspondenceAddress,
+      [field]: value
+    });
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center pb-6 border-b border-border">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
+          <User className="w-8 h-8 text-primary" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Personal Details</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto">
+          Please provide your personal information for temporary registration.
+        </p>
+      </div>
+
+      {/* Name Fields */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="firstName">
+            First Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="firstName"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={(e) => updateFormData("firstName", e.target.value)}
+            className="h-11"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="middleName">Middle Name</Label>
+          <Input
+            id="middleName"
+            placeholder="Middle Name"
+            value={formData.middleName}
+            onChange={(e) => updateFormData("middleName", e.target.value)}
+            className="h-11"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="lastName">
+            Last Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="lastName"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={(e) => updateFormData("lastName", e.target.value)}
+            className="h-11"
+          />
+        </div>
+      </div>
+
+      {/* Gender & DOB */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <Label className="text-base font-semibold text-foreground">
+            Gender <span className="text-destructive">*</span>
+          </Label>
+          <RadioGroup
+            value={formData.gender}
+            onValueChange={(value) => updateFormData("gender", value)}
+            className="flex gap-4"
+          >
+            {["Male", "Female", "Other"].map((g) => (
+              <Label
+                key={g}
+                htmlFor={`gender-${g.toLowerCase()}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                  formData.gender === g
+                    ? "border-primary bg-primary/5"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <RadioGroupItem value={g} id={`gender-${g.toLowerCase()}`} />
+                <span className="text-sm font-medium">{g}</span>
+              </Label>
+            ))}
+          </RadioGroup>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="dateOfBirth">
+            Date of Birth <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="dateOfBirth"
+            type="date"
+            value={formData.dateOfBirth}
+            onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
+            className="h-11"
+          />
+        </div>
+      </div>
+
+      {/* Contact Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">
+            Email ID <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="email@example.com"
+            value={formData.email}
+            onChange={(e) => updateFormData("email", e.target.value)}
+            className="h-11"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="phoneNumber">
+            Phone Number (with country code) <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="phoneNumber"
+            placeholder="+1 234 567 8900"
+            value={formData.phoneNumber}
+            onChange={(e) => updateFormData("phoneNumber", e.target.value)}
+            className="h-11"
+          />
+        </div>
+      </div>
+
+      {/* Photo Upload */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold text-foreground">
+          Passport Photo <span className="text-destructive">*</span>
+        </Label>
+        <div className="flex items-start gap-6">
+          <div className="relative group">
+            <div
+              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${
+                photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
+              }`}
+            >
+              {photoPreview ? (
+                <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-center p-2">
+                  <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                  <span className="text-xs text-muted-foreground">Upload Photo</span>
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p>• Recent passport-size photograph</p>
+            <p>• White background preferred</p>
+            <p>• Max file size: 2MB</p>
+            <p>• Formats: JPG, PNG</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Parent Names */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="fatherName">
+            Father's Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="fatherName"
+            placeholder="Father's full name"
+            value={formData.fatherName}
+            onChange={(e) => updateFormData("fatherName", e.target.value)}
+            className="h-11"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="motherName">
+            Mother's Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="motherName"
+            placeholder="Mother's full name"
+            value={formData.motherName}
+            onChange={(e) => updateFormData("motherName", e.target.value)}
+            className="h-11"
+          />
+        </div>
+      </div>
+
+      {/* Nationality */}
+      <div className="space-y-2">
+        <Label htmlFor="nationality" className="flex items-center gap-2">
+          <Globe className="w-4 h-4" />
+          Nationality <span className="text-destructive">*</span>
+        </Label>
+        <Input
+          id="nationality"
+          placeholder="e.g., United States, United Kingdom"
+          value={formData.nationality}
+          onChange={(e) => updateFormData("nationality", e.target.value)}
+          className="h-11"
+        />
+      </div>
+
+      {/* Permanent Address */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold text-foreground">
+          Permanent Address <span className="text-destructive">*</span>
+        </Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="md:col-span-2 space-y-2">
+            <Label htmlFor="perm-address1" className="text-sm text-muted-foreground">Address Line 1</Label>
+            <Input
+              id="perm-address1"
+              placeholder="House/Flat No., Building Name, Street"
+              value={formData.permanentAddress.addressLine1}
+              onChange={(e) => updatePermanentAddress("addressLine1", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="md:col-span-2 space-y-2">
+            <Label htmlFor="perm-address2" className="text-sm text-muted-foreground">Address Line 2</Label>
+            <Input
+              id="perm-address2"
+              placeholder="Area, Locality, Landmark (Optional)"
+              value={formData.permanentAddress.addressLine2}
+              onChange={(e) => updatePermanentAddress("addressLine2", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="perm-city" className="text-sm text-muted-foreground">City</Label>
+            <Input
+              id="perm-city"
+              placeholder="City"
+              value={formData.permanentAddress.city}
+              onChange={(e) => updatePermanentAddress("city", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="perm-pincode" className="text-sm text-muted-foreground">Postal/Zip Code</Label>
+            <Input
+              id="perm-pincode"
+              placeholder="Postal Code"
+              value={formData.permanentAddress.pincode}
+              onChange={(e) => updatePermanentAddress("pincode", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="md:col-span-2 space-y-2">
+            <Label htmlFor="perm-country" className="text-sm text-muted-foreground">Country</Label>
+            <Input
+              id="perm-country"
+              placeholder="Country"
+              value={formData.permanentAddress.country}
+              onChange={(e) => updatePermanentAddress("country", e.target.value)}
+              className="h-11"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Correspondence Address Checkbox */}
+      <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-lg border border-border">
+        <Checkbox
+          id="correspondenceAddressDifferent"
+          checked={formData.correspondenceAddressDifferent}
+          onCheckedChange={(checked) => updateFormData("correspondenceAddressDifferent", checked as boolean)}
+        />
+        <Label htmlFor="correspondenceAddressDifferent" className="cursor-pointer text-sm font-medium text-foreground">
+          Current correspondence address different from permanent address?
+        </Label>
+      </div>
+
+      {/* Correspondence Address */}
+      <AnimatePresence>
+        {formData.correspondenceAddressDifferent && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-4"
+          >
+            <Label className="text-base font-semibold text-foreground">
+              Correspondence Address
+            </Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="corr-address1" className="text-sm text-muted-foreground">Address Line 1</Label>
+                <Input
+                  id="corr-address1"
+                  placeholder="House/Flat No., Building Name, Street"
+                  value={formData.correspondenceAddress.addressLine1}
+                  onChange={(e) => updateCorrespondenceAddress("addressLine1", e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="corr-address2" className="text-sm text-muted-foreground">Address Line 2</Label>
+                <Input
+                  id="corr-address2"
+                  placeholder="Area, Locality, Landmark (Optional)"
+                  value={formData.correspondenceAddress.addressLine2}
+                  onChange={(e) => updateCorrespondenceAddress("addressLine2", e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="corr-city" className="text-sm text-muted-foreground">City</Label>
+                <Input
+                  id="corr-city"
+                  placeholder="City"
+                  value={formData.correspondenceAddress.city}
+                  onChange={(e) => updateCorrespondenceAddress("city", e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="corr-pincode" className="text-sm text-muted-foreground">Postal/Zip Code</Label>
+                <Input
+                  id="corr-pincode"
+                  placeholder="Postal Code"
+                  value={formData.correspondenceAddress.pincode}
+                  onChange={(e) => updateCorrespondenceAddress("pincode", e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="corr-country" className="text-sm text-muted-foreground">Country</Label>
+                <Input
+                  id="corr-country"
+                  placeholder="Country"
+                  value={formData.correspondenceAddress.country}
+                  onChange={(e) => updateCorrespondenceAddress("country", e.target.value)}
+                  className="h-11"
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Practice Duration in India */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold text-foreground">
+          Duration of Practice in India <span className="text-destructive">*</span>
+        </Label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="durationOfPracticeIndia" className="text-sm text-muted-foreground">Duration (in months)</Label>
+            <Input
+              id="durationOfPracticeIndia"
+              type="number"
+              placeholder="e.g., 12"
+              value={formData.durationOfPracticeIndia}
+              onChange={(e) => updateFormData("durationOfPracticeIndia", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="expectedStartDate" className="text-sm text-muted-foreground">Expected Start Date</Label>
+            <Input
+              id="expectedStartDate"
+              type="date"
+              value={formData.expectedStartDate}
+              onChange={(e) => updateFormData("expectedStartDate", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="expectedEndDate" className="text-sm text-muted-foreground">Expected End Date</Label>
+            <Input
+              id="expectedEndDate"
+              type="date"
+              value={formData.expectedEndDate}
+              onChange={(e) => updateFormData("expectedEndDate", e.target.value)}
+              className="h-11"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PersonalInfoStep2A;
