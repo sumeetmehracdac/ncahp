@@ -47,7 +47,7 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
         <div>
           <Label className="text-base font-medium">
             Are you desirous of practicing the recognized profession in a state other than state of residence ( state of
-            registration)
+            registration)?
           </Label>
           <p className="text-sm text-muted-foreground">Add the states where you plan to practice</p>
         </div>
