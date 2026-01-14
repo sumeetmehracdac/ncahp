@@ -56,7 +56,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
           Academic Qualification
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Provide details of your academic qualifications related to allied healthcare.
+          Provide details of your academic qualifications related to allied and healthcare professions.
         </p>
       </div>
 

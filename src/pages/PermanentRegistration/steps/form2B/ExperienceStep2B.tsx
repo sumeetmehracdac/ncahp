@@ -43,8 +43,8 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <Briefcase className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Professional Experience</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Add your professional work experience (optional).</p>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Allied and Healthcare Professional Experience</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto">Add your allied and healthcare professional work experience (optional).</p>
       </div>
 
       <div className="space-y-6">

@@ -193,36 +193,36 @@ const hasProvisionalOrInterimStatus = false; // Set to true to test blocking
 
 // Step definitions for each form type
 const mainFormSteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Education History', icon: GraduationCap, description: 'Prior qualifications' },
   { id: 4, title: 'Healthcare Qualification', icon: Stethoscope, description: 'Allied healthcare degrees' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
-  { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 6, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
   { id: 7, title: 'Practice Location', icon: MapPin, description: 'Geographic intent' },
   { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
   { id: 9, title: 'Review & Submit', icon: FileText, description: 'Final verification' }
 ];
 
 const form2ASteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Foreign national details' },
   { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
   { id: 4, title: 'Passport & Visa', icon: Plane, description: 'Travel documents' },
   { id: 5, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
-  { id: 7, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 7, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
   { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
   { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const form2BSteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select profession & type' },
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
   { id: 4, title: 'Academic Qualification', icon: Globe, description: 'Foreign qualifications' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
-  { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 6, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
   { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
   { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];

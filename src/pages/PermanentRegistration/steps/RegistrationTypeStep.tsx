@@ -22,7 +22,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
       value: "1B",
       formType: "Form 1B",
       label: "Provisional Registration",
-      description: "Working professionals who do not possess any recognized qualification",
+      description: "Working allied and healthcare professionals who do not possess any recognized qualification",
     },
     {
       value: "1C",
@@ -54,10 +54,10 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
           <FileCheck className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Registration Type & Profession
+          Registration Type & Allied and Healthcare Profession
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Select your registration type and the allied healthcare profession you wish to register for.
+          Select your registration type and the allied and healthcare profession you wish to register for.
         </p>
       </div>
 
@@ -107,15 +107,15 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
         </div>
       </div>
 
-      {/* Profession Selection */}
+      {/* Allied and Healthcare Profession Selection */}
       <div className="space-y-4">
         <Label className="text-base font-semibold text-foreground">
-          Select Profession <span className="text-destructive">*</span>
+          Select Allied and Healthcare Profession <span className="text-destructive">*</span>
         </Label>
         <ProfessionSelect
           value={formData.profession}
           onValueChange={(value) => updateFormData("profession", value)}
-          placeholder="Search or select your profession..."
+          placeholder="Search or select your allied and healthcare profession..."
         />
       </div>
 
@@ -153,7 +153,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 <selectedProfession.icon className="w-6 h-6" style={{ color: selectedProfession.color }} />
               </div>
               <div>
-                <span className="text-sm text-muted-foreground">Profession</span>
+                <span className="text-sm text-muted-foreground">Allied and Healthcare Profession</span>
                 <p className="font-medium text-foreground">{formData.profession}</p>
               </div>
             </div>
