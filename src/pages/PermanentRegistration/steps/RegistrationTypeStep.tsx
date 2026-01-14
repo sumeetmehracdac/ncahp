@@ -1,14 +1,42 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileCheck, ChevronRight, Check } from "lucide-react";
+import { FileCheck, Check, Stethoscope } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { FormData } from "../index";
 import ProfessionSelect from "@/components/ProfessionSelect";
-import { getProfessionByName } from "@/data/professions";
+import { getProfessionByName, type Profession } from "@/data/professions";
 
 interface Props {
   formData: FormData;
   updateFormData: <K extends keyof FormData>(field: K, value: FormData[K]) => void;
 }
+
+// Profession Icon component for rendering PNG icons
+const ProfessionIcon = ({
+  profession,
+  className = "w-6 h-6",
+  style = {}
+}: {
+  profession: Profession;
+  className?: string;
+  style?: React.CSSProperties;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return <Stethoscope className={className} style={{ color: profession.color, ...style }} />;
+  }
+
+  return (
+    <img
+      src={profession.iconPath}
+      alt={profession.name}
+      className={`${className} object-contain`}
+      style={style}
+      onError={() => setHasError(true)}
+    />
+  );
+};
 
 const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
   const registrationTypes = [
@@ -74,17 +102,15 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => updateFormData("registrationType", type.value)}
-              className={`p-4 rounded-xl border-2 text-left transition-all ${
-                formData.registrationType === type.value
+              className={`p-4 rounded-xl border-2 text-left transition-all ${formData.registrationType === type.value
                   ? "border-accent bg-accent/5 shadow-lg shadow-accent/10"
                   : "border-border bg-card hover:border-accent/50 hover:bg-muted/50"
-              }`}
+                }`}
             >
               <div className="flex items-start justify-between mb-1">
                 <span
-                  className={`text-xs font-bold uppercase tracking-wide ${
-                    formData.registrationType === type.value ? "text-accent" : "text-primary"
-                  }`}
+                  className={`text-xs font-bold uppercase tracking-wide ${formData.registrationType === type.value ? "text-accent" : "text-primary"
+                    }`}
                 >
                   {type.formType}
                 </span>
@@ -95,9 +121,8 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 )}
               </div>
               <p
-                className={`font-semibold mb-1 ${
-                  formData.registrationType === type.value ? "text-accent" : "text-foreground"
-                }`}
+                className={`font-semibold mb-1 ${formData.registrationType === type.value ? "text-accent" : "text-foreground"
+                  }`}
               >
                 {type.label}
               </p>
@@ -150,7 +175,10 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 className="w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: `${selectedProfession.color}15` }}
               >
-                <selectedProfession.icon className="w-6 h-6" style={{ color: selectedProfession.color }} />
+                <ProfessionIcon
+                  profession={selectedProfession}
+                  className="w-6 h-6"
+                />
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">Allied and Healthcare Profession</span>

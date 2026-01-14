@@ -15,6 +15,33 @@ interface ProfessionSelectProps {
   disabled?: boolean;
 }
 
+// Profession Icon component that uses PNG images
+const ProfessionIcon = ({
+  profession,
+  className = "w-5 h-5",
+  style = {}
+}: {
+  profession: Profession;
+  className?: string;
+  style?: React.CSSProperties;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return <Stethoscope className={className} style={{ color: profession.color, ...style }} />;
+  }
+
+  return (
+    <img
+      src={profession.iconPath}
+      alt={profession.name}
+      className={cn(className, "object-contain")}
+      style={style}
+      onError={() => setHasError(true)}
+    />
+  );
+};
+
 const ProfessionSelect = ({
   value,
   onValueChange,
@@ -127,8 +154,8 @@ const ProfessionSelect = ({
           'w-full h-14 px-4 flex items-center justify-between gap-3',
           'bg-white border-2 rounded-xl transition-all duration-200',
           'text-left focus:outline-none',
-          isOpen 
-            ? 'border-primary ring-2 ring-primary/20 shadow-lg' 
+          isOpen
+            ? 'border-primary ring-2 ring-primary/20 shadow-lg'
             : 'border-border hover:border-primary/50',
           disabled && 'opacity-50 cursor-not-allowed bg-muted'
         )}
@@ -139,9 +166,9 @@ const ProfessionSelect = ({
               className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${selectedProfession.color}15` }}
             >
-              <selectedProfession.icon
+              <ProfessionIcon
+                profession={selectedProfession}
                 className="w-5 h-5"
-                style={{ color: selectedProfession.color }}
               />
             </div>
             <div className="min-w-0 flex-1">
@@ -200,7 +227,7 @@ const ProfessionSelect = ({
                   className="pl-10 h-10 bg-white border-border"
                 />
               </div>
-              
+
               {/* Category Pills with Arrow Navigation */}
               <div className="relative mt-3 flex items-center gap-2">
                 {/* Left Arrow - Always visible */}
@@ -209,14 +236,14 @@ const ProfessionSelect = ({
                   disabled={!canScrollLeft}
                   className={cn(
                     "flex-shrink-0 w-7 h-7 rounded-md border shadow-sm flex items-center justify-center transition-all",
-                    canScrollLeft 
-                      ? "bg-white border-border hover:bg-muted cursor-pointer" 
+                    canScrollLeft
+                      ? "bg-white border-border hover:bg-muted cursor-pointer"
                       : "bg-muted/50 border-transparent cursor-not-allowed opacity-40"
                   )}
                 >
                   <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                 </button>
-                
+
                 {/* Scrollable Category Container - Hidden scrollbar */}
                 <div
                   ref={categoryScrollRef}
@@ -227,8 +254,8 @@ const ProfessionSelect = ({
                     variant={activeCategory === null ? 'default' : 'outline'}
                     className={cn(
                       'cursor-pointer text-xs transition-all flex-shrink-0 whitespace-nowrap',
-                      activeCategory === null 
-                        ? 'bg-primary text-white' 
+                      activeCategory === null
+                        ? 'bg-primary text-white'
                         : 'hover:bg-primary/10'
                     )}
                     onClick={() => setActiveCategory(null)}
@@ -244,8 +271,8 @@ const ProfessionSelect = ({
                         variant={activeCategory === cat.id ? 'default' : 'outline'}
                         className={cn(
                           'cursor-pointer text-xs transition-all flex-shrink-0 whitespace-nowrap',
-                          activeCategory === cat.id 
-                            ? 'bg-primary text-white' 
+                          activeCategory === cat.id
+                            ? 'bg-primary text-white'
                             : 'hover:bg-primary/10'
                         )}
                         onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
@@ -255,15 +282,15 @@ const ProfessionSelect = ({
                     );
                   })}
                 </div>
-                
+
                 {/* Right Arrow - Always visible */}
                 <button
                   onClick={() => scrollCategories('right')}
                   disabled={!canScrollRight}
                   className={cn(
                     "flex-shrink-0 w-7 h-7 rounded-md border shadow-sm flex items-center justify-center transition-all",
-                    canScrollRight 
-                      ? "bg-white border-border hover:bg-muted cursor-pointer" 
+                    canScrollRight
+                      ? "bg-white border-border hover:bg-muted cursor-pointer"
                       : "bg-muted/50 border-transparent cursor-not-allowed opacity-40"
                   )}
                 >
@@ -298,13 +325,12 @@ const ProfessionSelect = ({
                             {groupedProfessions[cat.id]?.length || 0}
                           </span>
                         </div>
-                        
+
                         {/* Professions Grid */}
                         <div className="grid grid-cols-1 gap-0.5">
                           {groupedProfessions[cat.id]?.map(prof => {
                             const isSelected = value === prof.name;
-                            const Icon = prof.icon;
-                            
+
                             return (
                               <motion.button
                                 key={prof.id}
@@ -323,9 +349,9 @@ const ProfessionSelect = ({
                                   className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0"
                                   style={{ backgroundColor: `${prof.color}15` }}
                                 >
-                                  <Icon
+                                  <ProfessionIcon
+                                    profession={prof}
                                     className="w-3.5 h-3.5"
-                                    style={{ color: prof.color }}
                                   />
                                 </div>
                                 <span className={cn(

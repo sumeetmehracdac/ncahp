@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
@@ -10,81 +10,12 @@ import {
   Check,
   Sparkles,
   FileImage,
-  FileCode,
   ChevronDown,
-  ExternalLink,
-  Microscope,
-  FlaskConical,
-  Dna,
-  Baby,
-  Bug,
-  Atom,
-  TestTube,
-  Fingerprint,
-  Slice,
-  Droplets,
-  Shield,
-  Beaker,
-  ClipboardList,
-  Syringe,
-  GraduationCap,
-  Flame,
-  Ambulance,
-  HeartPulse,
-  Stethoscope,
-  MonitorDot,
-  Scissors,
-  Camera,
-  Activity,
-  Accessibility,
-  Apple,
-  Salad,
-  Eye,
-  Glasses,
-  Scan,
-  Hand,
-  Brain,
-  Leaf,
-  TreeDeciduous,
-  Users,
-  HardHat,
-  PersonStanding,
-  MessageCircle,
-  Building2,
-  Handshake,
-  Scale,
-  Heart,
-  Footprints,
-  Home,
-  Move,
-  Flower2,
-  Sparkle,
-  Zap,
-  RadioTower,
-  Radiation,
-  ScanLine,
-  AudioWaveform,
-  Sun,
-  Bone,
-  Cpu,
-  Settings,
-  UserCog,
-  Waves,
-  Wind,
-  Timer,
-  BrainCircuit,
-  Gauge,
-  Pill,
-  Moon,
-  Pipette,
-  FileText,
-  Keyboard,
-  Database
+  Stethoscope
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -106,127 +37,147 @@ import { toast } from 'sonner';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
-// All 57 allied and healthcare professions organized by 10 categories with carefully curated Lucide icons
-// Each profession has its own unique color suited to its role
+// All 57 allied and healthcare professions organized by 10 categories with PNG icons
 const professionCategories = [
   {
     id: 'cat1',
     name: 'Medical Laboratory and Life Sciences',
+    color: 'hsl(280, 70%, 55%)',
     professions: [
-      { id: 'p1', name: 'Biotechnologist', icon: Dna, color: 'hsl(280, 70%, 55%)', keywords: ['biotech', 'genetics', 'dna'] },
-      { id: 'p2', name: 'Biochemist (nonclinical)', icon: FlaskConical, color: 'hsl(200, 75%, 45%)', keywords: ['chemistry', 'lab', 'biochemistry'] },
-      { id: 'p3', name: 'Cell Geneticist', icon: Atom, color: 'hsl(320, 65%, 50%)', keywords: ['cells', 'genetics', 'cell'] },
-      { id: 'p4', name: 'Microbiologist (nonclinical)', icon: Bug, color: 'hsl(140, 60%, 40%)', keywords: ['bacteria', 'virus', 'microbes'] },
-      { id: 'p5', name: 'Molecular Biologist (nonclinical)', icon: Dna, color: 'hsl(260, 65%, 55%)', keywords: ['molecular', 'dna', 'rna'] },
-      { id: 'p6', name: 'Molecular Geneticist', icon: Atom, color: 'hsl(290, 60%, 50%)', keywords: ['genetics', 'molecular'] },
-      { id: 'p7', name: 'Cytotechnologist', icon: Microscope, color: 'hsl(175, 55%, 40%)', keywords: ['cells', 'cytology'] },
-      { id: 'p8', name: 'Forensic Science Technologist', icon: Fingerprint, color: 'hsl(220, 50%, 45%)', keywords: ['forensic', 'crime', 'evidence'] },
-      { id: 'p9', name: 'Histotechnologist', icon: Slice, color: 'hsl(10, 65%, 50%)', keywords: ['tissue', 'histology', 'pathology'] },
-      { id: 'p10', name: 'Hemato Technologist', icon: Droplets, color: 'hsl(0, 70%, 50%)', keywords: ['blood', 'hematology'] },
-      { id: 'p11', name: 'Medical Lab Technologist', icon: Microscope, color: 'hsl(190, 65%, 45%)', keywords: ['lab', 'testing', 'laboratory'] },
+      { id: 'p1', name: 'Biotechnologist', color: 'hsl(280, 70%, 55%)' },
+      { id: 'p2', name: 'Biochemist (nonclinical)', color: 'hsl(200, 75%, 45%)' },
+      { id: 'p3', name: 'Cell Geneticist', color: 'hsl(320, 65%, 50%)' },
+      { id: 'p4', name: 'Microbiologist (nonclinical)', color: 'hsl(160, 70%, 45%)' },
+      { id: 'p5', name: 'Molecular Biologist (nonclinical)', color: 'hsl(210, 70%, 50%)' },
+      { id: 'p6', name: 'Molecular Geneticist', color: 'hsl(300, 65%, 52%)' },
+      { id: 'p7', name: 'Cytotechnologist', color: 'hsl(250, 70%, 55%)' },
+      { id: 'p8', name: 'Forensic Science Technologist', color: 'hsl(10, 75%, 50%)' },
+      { id: 'p9', name: 'Histotechnologist', color: 'hsl(340, 70%, 55%)' },
+      { id: 'p10', name: 'Hemato Technologist', color: 'hsl(0, 75%, 50%)' },
+      { id: 'p11', name: 'Medical Lab Technologist', color: 'hsl(190, 70%, 45%)' },
     ],
   },
   {
     id: 'cat2',
     name: 'Trauma, Burn Care and Surgical/Anesthesia related technology',
+    color: 'hsl(0, 80%, 55%)',
     professions: [
-      { id: 'p12', name: 'Advance Care Paramedic', icon: Ambulance, color: 'hsl(0, 80%, 55%)', keywords: ['emergency', 'paramedic', 'ems'] },
-      { id: 'p13', name: 'Burn Care Technologist', icon: Flame, color: 'hsl(25, 90%, 50%)', keywords: ['burn', 'wound', 'care'] },
-      { id: 'p14', name: 'Emergency Medical Technologist (Paramedic)', icon: HeartPulse, color: 'hsl(350, 85%, 50%)', keywords: ['emt', 'emergency'] },
-      { id: 'p15', name: 'Anaesthesia Assistants and Technologists', icon: Stethoscope, color: 'hsl(210, 60%, 50%)', keywords: ['anesthesia', 'surgery'] },
-      { id: 'p16', name: 'Operation Theatre (OT) Technologists', icon: MonitorDot, color: 'hsl(165, 55%, 45%)', keywords: ['surgery', 'operation'] },
-      { id: 'p17', name: 'Endoscopy and Laparoscopy Technologists', icon: Camera, color: 'hsl(240, 50%, 55%)', keywords: ['endoscopy', 'laparoscopy'] },
+      { id: 'p12', name: 'Advance Care Paramedic', color: 'hsl(0, 80%, 55%)' },
+      { id: 'p13', name: 'Burn Care Technologist', color: 'hsl(25, 90%, 50%)' },
+      { id: 'p14', name: 'Emergency Medical Technologist (Paramedic)', color: 'hsl(350, 85%, 50%)' },
+      { id: 'p15', name: 'Anaesthesia Assistants and Technologists', color: 'hsl(210, 60%, 50%)' },
+      { id: 'p16', name: 'Operation Theatre (OT) Technologists', color: 'hsl(165, 55%, 45%)' },
+      { id: 'p17', name: 'Endoscopy and Laparoscopy Technologists', color: 'hsl(240, 50%, 55%)' },
     ],
   },
   {
     id: 'cat3',
     name: 'Physiotherapy Professional',
+    color: 'hsl(142, 70%, 40%)',
     professions: [
-      { id: 'p18', name: 'Physiotherapist', icon: Activity, color: 'hsl(142, 70%, 40%)', keywords: ['physio', 'physical therapy', 'rehab'] },
+      { id: 'p18', name: 'Physiotherapist', color: 'hsl(142, 70%, 40%)' },
     ],
   },
   {
     id: 'cat4',
     name: 'Nutrition Science Professional',
+    color: 'hsl(5, 75%, 55%)',
     professions: [
-      { id: 'p19', name: 'Dietician (including Clinical Dietician, Food Service Dietician)', icon: Apple, color: 'hsl(5, 75%, 55%)', keywords: ['diet', 'nutrition', 'food', 'clinical'] },
-      { id: 'p20', name: 'Nutritionist (including Public Health Nutritionist, Sports Nutritionist)', icon: Salad, color: 'hsl(85, 70%, 45%)', keywords: ['nutrition', 'health', 'sports'] },
+      { id: 'p19', name: 'Dietician (including Clinical Dietician, Food Service Dietician)', color: 'hsl(5, 75%, 55%)' },
+      { id: 'p20', name: 'Nutritionist (including Public Health Nutritionist, Sports Nutritionist)', color: 'hsl(85, 70%, 45%)' },
     ],
   },
   {
     id: 'cat5',
     name: 'Ophthalmic Sciences Professional',
+    color: 'hsl(200, 80%, 50%)',
     professions: [
-      { id: 'p21', name: 'Optometrist', icon: Eye, color: 'hsl(200, 80%, 50%)', keywords: ['vision', 'eye', 'optometry'] },
-      { id: 'p22', name: 'Ophthalmic Assistant', icon: Glasses, color: 'hsl(185, 60%, 45%)', keywords: ['eye', 'ophthalmology'] },
-      { id: 'p23', name: 'Vision Technician', icon: Scan, color: 'hsl(215, 65%, 50%)', keywords: ['vision', 'eye test'] },
+      { id: 'p21', name: 'Optometrist', color: 'hsl(200, 80%, 50%)' },
+      { id: 'p22', name: 'Ophthalmic Assistant', color: 'hsl(185, 60%, 45%)' },
+      { id: 'p23', name: 'Vision Technician', color: 'hsl(215, 65%, 50%)' },
     ],
   },
   {
     id: 'cat6',
     name: 'Occupational Therapy Professional',
+    color: 'hsl(35, 80%, 50%)',
     professions: [
-      { id: 'p24', name: 'Occupational Therapist', icon: Hand, color: 'hsl(35, 80%, 50%)', keywords: ['occupational', 'therapy', 'rehab'] },
+      { id: 'p24', name: 'Occupational Therapist', color: 'hsl(35, 80%, 50%)' },
     ],
   },
   {
     id: 'cat7',
     name: 'Community Care, Behavioural Health Sciences and other Professionals',
+    color: 'hsl(120, 60%, 40%)',
     professions: [
-      { id: 'p25', name: 'Environment Protection Officer', icon: Leaf, color: 'hsl(120, 60%, 40%)', keywords: ['environment', 'protection'] },
-      { id: 'p26', name: 'Ecologist', icon: TreeDeciduous, color: 'hsl(100, 55%, 42%)', keywords: ['ecology', 'nature', 'environment'] },
-      { id: 'p27', name: 'Community Health promoters', icon: Users, color: 'hsl(195, 65%, 48%)', keywords: ['community', 'health', 'public'] },
-      { id: 'p28', name: 'Occupational Health and Safety Officer (Inspector)', icon: HardHat, color: 'hsl(45, 90%, 50%)', keywords: ['safety', 'workplace', 'inspector'] },
-      { id: 'p29', name: 'Psychologist (Except Clinical Psychologist covered under RCI for PWD)', icon: Brain, color: 'hsl(280, 55%, 55%)', keywords: ['psychology', 'mental health'] },
-      { id: 'p30', name: 'Behavioural Analyst', icon: Brain, color: 'hsl(270, 55%, 55%)', keywords: ['behavior', 'psychology', 'analysis'] },
-      { id: 'p31', name: 'Integrated Behaviour Health Counsellor', icon: MessageCircle, color: 'hsl(200, 60%, 50%)', keywords: ['counseling', 'mental health', 'behaviour'] },
-      { id: 'p32', name: 'Health Educator and Counsellors (including Disease Counsellors, Diabetes Educators, Lactation Consultants)', icon: GraduationCap, color: 'hsl(220, 55%, 50%)', keywords: ['education', 'counseling', 'diabetes', 'lactation'] },
-      { id: 'p33', name: 'Social workers (including Clinical Social Worker, Psychiatric Social Worker, Medical Social Worker)', icon: Handshake, color: 'hsl(340, 60%, 55%)', keywords: ['social work', 'welfare', 'community', 'psychiatric'] },
-      { id: 'p34', name: 'Human Immunodeficiency Virus (HIV) Counsellors or Family Planning Counsellors', icon: Heart, color: 'hsl(350, 70%, 55%)', keywords: ['hiv', 'family planning', 'counseling'] },
-      { id: 'p35', name: 'Mental Health Support Workers', icon: Brain, color: 'hsl(265, 55%, 55%)', keywords: ['mental health', 'support'] },
-      { id: 'p36', name: 'Podiatrist', icon: Footprints, color: 'hsl(25, 65%, 50%)', keywords: ['feet', 'podiatry'] },
-      { id: 'p37', name: 'Palliative Care Professionals', icon: Home, color: 'hsl(180, 50%, 45%)', keywords: ['palliative', 'care', 'end of life'] },
-      { id: 'p38', name: 'Movement Therapist (including Art, Dance and Movement Therapist or Recreational Therapist)', icon: Move, color: 'hsl(300, 55%, 55%)', keywords: ['movement', 'therapy', 'dance', 'art', 'recreational'] },
-      { id: 'p39', name: 'Acupuncture Professionals', icon: Zap, color: 'hsl(55, 80%, 48%)', keywords: ['acupuncture', 'alternative medicine'] },
+      { id: 'p25', name: 'Environment Protection Officer', color: 'hsl(120, 60%, 40%)' },
+      { id: 'p26', name: 'Ecologist', color: 'hsl(100, 55%, 42%)' },
+      { id: 'p27', name: 'Community Health promoters', color: 'hsl(195, 65%, 48%)' },
+      { id: 'p28', name: 'Occupational Health and Safety Officer (Inspector)', color: 'hsl(45, 90%, 50%)' },
+      { id: 'p29', name: 'Psychologist (Except Clinical Psychologist covered under RCI for PWD)', color: 'hsl(280, 55%, 55%)' },
+      { id: 'p30', name: 'Behavioural Analyst', color: 'hsl(270, 55%, 55%)' },
+      { id: 'p31', name: 'Integrated Behaviour Health Counsellor', color: 'hsl(200, 60%, 50%)' },
+      { id: 'p32', name: 'Health Educator and Counsellors (including Disease Counsellors, Diabetes Educators, Lactation Consultants)', color: 'hsl(220, 55%, 50%)' },
+      { id: 'p33', name: 'Social workers (including Clinical Social Worker, Psychiatric Social Worker, Medical Social Worker)', color: 'hsl(340, 60%, 55%)' },
+      { id: 'p34', name: 'Human Immunodeficiency Virus (HIV) Counsellors or Family Planning Counsellors', color: 'hsl(350, 70%, 55%)' },
+      { id: 'p35', name: 'Mental Health Support Workers', color: 'hsl(265, 55%, 55%)' },
+      { id: 'p36', name: 'Podiatrist', color: 'hsl(25, 65%, 50%)' },
+      { id: 'p37', name: 'Palliative Care Professionals', color: 'hsl(180, 50%, 45%)' },
+      { id: 'p38', name: 'Movement Therapist (including Art, Dance and Movement Therapist or Recreational Therapist)', color: 'hsl(300, 55%, 55%)' },
+      { id: 'p39', name: 'Acupuncture Professionals', color: 'hsl(55, 80%, 48%)' },
     ],
   },
   {
     id: 'cat8',
     name: 'Medical Radiology, Imaging and Therapeutic Technology Professional',
+    color: 'hsl(250, 60%, 55%)',
     professions: [
-      { id: 'p40', name: 'Medical Physicist', icon: Atom, color: 'hsl(250, 60%, 55%)', keywords: ['physics', 'medical', 'radiation'] },
-      { id: 'p41', name: 'Nuclear Medicine Technologist', icon: Radiation, color: 'hsl(65, 85%, 45%)', keywords: ['nuclear', 'medicine', 'imaging'] },
-      { id: 'p42', name: 'Radiology and Imaging Technologist (Diagnostic Medical Radiographer, Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Mammographer, Diagnostic Medical Sonographers)', icon: ScanLine, color: 'hsl(190, 70%, 45%)', keywords: ['radiology', 'xray', 'imaging', 'mri', 'ct', 'mammography', 'sonography'] },
-      { id: 'p43', name: 'Radiotherapy Technologist', icon: Sun, color: 'hsl(35, 90%, 50%)', keywords: ['radiotherapy', 'cancer', 'treatment'] },
-      { id: 'p44', name: 'Dosimetrist', icon: Gauge, color: 'hsl(30, 45%, 55%)', keywords: ['dosimetry', 'radiation dose', 'treatment planning'] },
+      { id: 'p40', name: 'Medical Physicist', color: 'hsl(250, 60%, 55%)' },
+      { id: 'p41', name: 'Nuclear Medicine Technologist', color: 'hsl(65, 85%, 45%)' },
+      { id: 'p42', name: 'Radiology and Imaging Technologist (Diagnostic Medical Radiographer, Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Mammographer, Diagnostic Medical Sonographers)', color: 'hsl(190, 70%, 45%)' },
+      { id: 'p43', name: 'Radiotherapy Technologist', color: 'hsl(35, 90%, 50%)' },
+      { id: 'p44', name: 'Dosimetrist', color: 'hsl(30, 45%, 55%)' },
     ],
   },
   {
     id: 'cat9',
     name: 'Medical Technologists and Physician Associate',
+    color: 'hsl(210, 70%, 50%)',
     professions: [
-      { id: 'p45', name: 'Biomedical Engineer', icon: Cpu, color: 'hsl(210, 70%, 50%)', keywords: ['biomedical', 'engineering', 'devices'] },
-      { id: 'p46', name: 'Medical Equipment Technologist', icon: Settings, color: 'hsl(225, 50%, 50%)', keywords: ['equipment', 'maintenance'] },
-      { id: 'p47', name: 'Physician Associates', icon: UserCog, color: 'hsl(175, 60%, 42%)', keywords: ['physician', 'assistant', 'pa'] },
-      { id: 'p48', name: 'Cardiovascular Technologists', icon: HeartPulse, color: 'hsl(0, 75%, 50%)', keywords: ['cardio', 'heart', 'vascular'] },
-      { id: 'p49', name: 'Perfusionist', icon: Waves, color: 'hsl(355, 65%, 55%)', keywords: ['perfusion', 'heart-lung', 'bypass'] },
-      { id: 'p50', name: 'Respiratory Technologist', icon: Wind, color: 'hsl(195, 70%, 50%)', keywords: ['respiratory', 'lungs', 'breathing'] },
-      { id: 'p51', name: 'Electrocardiogram (ECG) Technologist or Echocardiogram (ECHO) Technologist', icon: Activity, color: 'hsl(5, 70%, 50%)', keywords: ['ecg', 'ekg', 'heart', 'echo'] },
-      { id: 'p52', name: 'Electroencephalogram (EEG) or Electroneurodiagnostic (END) or Electromyography (EMG) Technologists or Neuro Lab Technologists or Sleep Lab Technologists', icon: BrainCircuit, color: 'hsl(270, 55%, 55%)', keywords: ['eeg', 'brain', 'neuro', 'emg', 'sleep'] },
-      { id: 'p53', name: 'Dialysis Therapy Technologists or Urology Technologists', icon: Pipette, color: 'hsl(185, 65%, 45%)', keywords: ['dialysis', 'kidney', 'renal', 'urology'] },
+      { id: 'p45', name: 'Biomedical Engineer', color: 'hsl(210, 70%, 50%)' },
+      { id: 'p46', name: 'Medical Equipment Technologist', color: 'hsl(225, 50%, 50%)' },
+      { id: 'p47', name: 'Physician Associates', color: 'hsl(175, 60%, 42%)' },
+      { id: 'p48', name: 'Cardiovascular Technologists', color: 'hsl(0, 75%, 50%)' },
+      { id: 'p49', name: 'Perfusionist', color: 'hsl(355, 65%, 55%)' },
+      { id: 'p50', name: 'Respiratory Technologist', color: 'hsl(195, 70%, 50%)' },
+      { id: 'p51', name: 'Electrocardiogram (ECG) Technologist or Echocardiogram (ECHO) Technologist', color: 'hsl(5, 70%, 50%)' },
+      { id: 'p52', name: 'Electroencephalogram (EEG) or Electroneurodiagnostic (END) or Electromyography (EMG) Technologists or Neuro Lab Technologists or Sleep Lab Technologists', color: 'hsl(270, 55%, 55%)' },
+      { id: 'p53', name: 'Dialysis Therapy Technologists or Urology Technologists', color: 'hsl(185, 65%, 45%)' },
     ],
   },
   {
     id: 'cat10',
     name: 'Health Information Management and Health Informatic Professional',
+    color: 'hsl(210, 65%, 50%)',
     professions: [
-      { id: 'p54', name: 'Health Information Management Professional (Including Medical Records Analyst)', icon: Database, color: 'hsl(210, 65%, 50%)', keywords: ['him', 'records', 'data', 'analyst'] },
-      { id: 'p55', name: 'Health Information Management Technologist', icon: FileText, color: 'hsl(200, 55%, 48%)', keywords: ['him', 'technology'] },
-      { id: 'p56', name: 'Clinical Coder', icon: Keyboard, color: 'hsl(230, 55%, 52%)', keywords: ['coding', 'icd', 'medical coding'] },
-      { id: 'p57', name: 'Medical Secretary and Medical Transcriptionist', icon: ClipboardList, color: 'hsl(160, 50%, 45%)', keywords: ['secretary', 'transcription'] },
+      { id: 'p54', name: 'Health Information Management Professional (Including Medical Records Analyst)', color: 'hsl(210, 65%, 50%)' },
+      { id: 'p55', name: 'Health Information Management Technologist', color: 'hsl(200, 55%, 48%)' },
+      { id: 'p56', name: 'Clinical Coder', color: 'hsl(230, 55%, 52%)' },
+      { id: 'p57', name: 'Medical Secretary and Medical Transcriptionist', color: 'hsl(160, 50%, 45%)' },
     ],
   },
 ];
+
+// Helper to convert profession name to icon path
+const getIconPath = (name) => {
+  const filename = name
+    .toLowerCase()
+    .replace(/[()]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `/src/assets/profession-icons/${filename}.png`;
+};
 
 // Flatten all professions for easy access
 const allProfessions = professionCategories.flatMap(cat =>
@@ -234,8 +185,33 @@ const allProfessions = professionCategories.flatMap(cat =>
     ...prof,
     categoryId: cat.id,
     categoryName: cat.name,
+    iconPath: getIconPath(prof.name),
   }))
 );
+
+// Profession Icon component
+const ProfessionIcon = ({ profession, className = "w-8 h-8", style = {} }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <Stethoscope
+        className={className}
+        style={{ color: profession.color, ...style }}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={profession.iconPath}
+      alt={profession.name}
+      className={cn(className, "object-contain")}
+      style={style}
+      onError={() => setHasError(true)}
+    />
+  );
+};
 
 const ProfessionIconsGallery = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -243,7 +219,6 @@ const ProfessionIconsGallery = () => {
   const [selectedIcons, setSelectedIcons] = useState([]);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [isDownloading, setIsDownloading] = useState(false);
-  const iconRefs = useRef({});
 
   // Filter professions based on search and category filters
   const filteredProfessions = useMemo(() => {
@@ -254,7 +229,6 @@ const ProfessionIconsGallery = () => {
       result = result.filter(
         prof =>
           prof.name.toLowerCase().includes(query) ||
-          prof.keywords.some(kw => kw.includes(query)) ||
           prof.categoryName.toLowerCase().includes(query)
       );
     }
@@ -286,61 +260,22 @@ const ProfessionIconsGallery = () => {
     setSelectedIcons([]);
   };
 
-  // Generate SVG string from Lucide icon component
-  const generateSvgString = (IconComponent, color = 'currentColor') => {
-    const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">`;
-    
-    // Create a temporary container to render the icon
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></svg>`;
-    
-    return svgContent;
-  };
-
-  // Download single icon as SVG
-  const downloadSvg = async (profession) => {
-    const IconComponent = profession.icon;
-    const svgElement = document.getElementById(`icon-${profession.id}`);
-    
-    if (svgElement) {
-      const svgData = new XMLSerializer().serializeToString(svgElement);
-      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-      const fileName = `${profession.name.replace(/[^a-zA-Z0-9]/g, '_')}.svg`;
-      saveAs(svgBlob, fileName);
-      toast.success(`Downloaded ${fileName}`);
-    }
-  };
-
   // Download single icon as PNG
   const downloadPng = async (profession) => {
-    const svgElement = document.getElementById(`icon-${profession.id}`);
-    
-    if (svgElement) {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 256;
-      canvas.height = 256;
-
-      const svgData = new XMLSerializer().serializeToString(svgElement);
-      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(svgBlob);
-
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, 256, 256);
-        canvas.toBlob((blob) => {
-          const fileName = `${profession.name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
-          saveAs(blob, fileName);
-          toast.success(`Downloaded ${fileName}`);
-          URL.revokeObjectURL(url);
-        }, 'image/png');
-      };
-      img.src = url;
+    try {
+      const response = await fetch(profession.iconPath);
+      const blob = await response.blob();
+      const fileName = `${profession.name.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      saveAs(blob, fileName);
+      toast.success(`Downloaded ${fileName}`);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download icon');
     }
   };
 
   // Bulk download selected icons
-  const downloadBulk = async (format) => {
+  const downloadBulk = async () => {
     const iconsToDownload = selectedIcons.length > 0
       ? allProfessions.filter(p => selectedIcons.includes(p.id))
       : filteredProfessions;
@@ -355,46 +290,19 @@ const ProfessionIconsGallery = () => {
 
     try {
       for (const profession of iconsToDownload) {
-        const svgElement = document.getElementById(`icon-${profession.id}`);
-        
-        if (svgElement) {
-          const svgData = new XMLSerializer().serializeToString(svgElement);
+        try {
+          const response = await fetch(profession.iconPath);
+          const blob = await response.blob();
           const fileName = profession.name.replace(/[^a-zA-Z0-9]/g, '_');
-
-          if (format === 'svg' || format === 'both') {
-            zip.file(`svg/${fileName}.svg`, svgData);
-          }
-
-          if (format === 'png' || format === 'both') {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 256;
-            canvas.height = 256;
-
-            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(svgBlob);
-
-            await new Promise((resolve) => {
-              const img = new Image();
-              img.onload = () => {
-                ctx.drawImage(img, 0, 0, 256, 256);
-                canvas.toBlob((blob) => {
-                  blob.arrayBuffer().then(buffer => {
-                    zip.file(`png/${fileName}.png`, buffer);
-                    URL.revokeObjectURL(url);
-                    resolve();
-                  });
-                }, 'image/png');
-              };
-              img.src = url;
-            });
-          }
+          zip.file(`${fileName}.png`, blob);
+        } catch (err) {
+          console.warn(`Failed to fetch icon for ${profession.name}`);
         }
       }
 
       const content = await zip.generateAsync({ type: 'blob' });
-      saveAs(content, `NCAHP_Profession_Icons_${format.toUpperCase()}.zip`);
-      toast.success(`Downloaded ${iconsToDownload.length} icons as ${format.toUpperCase()}`);
+      saveAs(content, `NCAHP_Profession_Icons.zip`);
+      toast.success(`Downloaded ${iconsToDownload.length} icons`);
     } catch (error) {
       console.error('Download error:', error);
       toast.error('Failed to download icons');
@@ -436,7 +344,7 @@ const ProfessionIconsGallery = () => {
                 Profession Icons Gallery
               </h1>
               <p className="text-white/80 max-w-2xl mx-auto text-lg font-medium drop-shadow-sm">
-                Download curated icons for all 72 Allied Healthcare Professions in SVG & PNG formats
+                Download curated icons for all 57 Allied Healthcare Professions in PNG format
               </p>
             </motion.div>
 
@@ -456,8 +364,8 @@ const ProfessionIconsGallery = () => {
                 <div className="text-white/70 text-sm">Categories</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 text-center">
-                <div className="text-2xl font-bold text-white">2</div>
-                <div className="text-white/70 text-sm">Formats (SVG/PNG)</div>
+                <div className="text-2xl font-bold text-white">PNG</div>
+                <div className="text-white/70 text-sm">Format</div>
               </div>
             </motion.div>
           </div>
@@ -553,33 +461,15 @@ const ProfessionIconsGallery = () => {
                   </Button>
                 )}
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      size="sm"
-                      className="bg-primary hover:bg-primary/90 gap-2"
-                      disabled={isDownloading}
-                    >
-                      <Package className="w-4 h-4" />
-                      {isDownloading ? 'Downloading...' : 'Bulk Download'}
-                      <ChevronDown className="w-3 h-3" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuCheckboxItem onSelect={() => downloadBulk('svg')}>
-                      <FileCode className="w-4 h-4 mr-2" />
-                      Download as SVG
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem onSelect={() => downloadBulk('png')}>
-                      <FileImage className="w-4 h-4 mr-2" />
-                      Download as PNG
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem onSelect={() => downloadBulk('both')}>
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Both (SVG + PNG)
-                    </DropdownMenuCheckboxItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button
+                  size="sm"
+                  className="bg-primary hover:bg-primary/90 gap-2"
+                  disabled={isDownloading}
+                  onClick={downloadBulk}
+                >
+                  <Package className="w-4 h-4" />
+                  {isDownloading ? 'Downloading...' : 'Bulk Download'}
+                </Button>
               </div>
             </div>
           </div>
@@ -597,7 +487,6 @@ const ProfessionIconsGallery = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               <AnimatePresence mode="popLayout">
                 {filteredProfessions.map((profession, index) => {
-                  const IconComponent = profession.icon;
                   const isSelected = selectedIcons.includes(profession.id);
 
                   return (
@@ -632,11 +521,9 @@ const ProfessionIconsGallery = () => {
                           background: `linear-gradient(135deg, ${profession.color}15, ${profession.color}25)`,
                         }}
                       >
-                        <IconComponent
-                          id={`icon-${profession.id}`}
+                        <ProfessionIcon
+                          profession={profession}
                           className="w-8 h-8"
-                          style={{ color: profession.color }}
-                          strokeWidth={1.5}
                         />
                       </div>
 
@@ -663,18 +550,6 @@ const ProfessionIconsGallery = () => {
                           className="h-6 px-2 text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
-                            downloadSvg(profession);
-                          }}
-                        >
-                          <FileCode className="w-3 h-3 mr-1" />
-                          SVG
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          className="h-6 px-2 text-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
                             downloadPng(profession);
                           }}
                         >
@@ -691,7 +566,6 @@ const ProfessionIconsGallery = () => {
             <div className="space-y-2">
               <AnimatePresence mode="popLayout">
                 {filteredProfessions.map((profession, index) => {
-                  const IconComponent = profession.icon;
                   const isSelected = selectedIcons.includes(profession.id);
 
                   return (
@@ -726,11 +600,9 @@ const ProfessionIconsGallery = () => {
                           background: `linear-gradient(135deg, ${profession.color}15, ${profession.color}25)`,
                         }}
                       >
-                        <IconComponent
-                          id={`icon-${profession.id}`}
+                        <ProfessionIcon
+                          profession={profession}
                           className="w-6 h-6"
-                          style={{ color: profession.color }}
-                          strokeWidth={1.5}
                         />
                       </div>
 
@@ -746,18 +618,6 @@ const ProfessionIconsGallery = () => {
 
                       {/* Download Actions */}
                       <div className="flex items-center gap-2 shrink-0">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 gap-1.5"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            downloadSvg(profession);
-                          }}
-                        >
-                          <FileCode className="w-3.5 h-3.5" />
-                          SVG
-                        </Button>
                         <Button
                           variant="outline"
                           size="sm"
