@@ -250,6 +250,7 @@ const PermanentRegistration = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
+  const [highestStepReached, setHighestStepReached] = useState(1);
   const [isBlocked, setIsBlocked] = useState(hasProvisionalOrInterimStatus);
   const [activeFormType, setActiveFormType] = useState<'main' | '2A' | '2B'>('main');
 
@@ -569,7 +570,9 @@ const PermanentRegistration = () => {
 
   const nextStep = () => {
     if (canProceed() && currentStep < steps.length) {
-      setCurrentStep(prev => prev + 1);
+      const newStep = currentStep + 1;
+      setCurrentStep(newStep);
+      setHighestStepReached(prev => Math.max(prev, newStep));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -743,26 +746,24 @@ const PermanentRegistration = () => {
                 Fee: <strong className="text-accent">₹2,000</strong> (max)
               </span>
 
-              <Button
-                variant="outline"
-                size="sm"
+              <button
+                type="button"
                 onClick={handleManualSave}
                 disabled={isSaving || !hasUnsavedChanges}
-                className="border-white/30 text-white hover:bg-white/10 hover:text-white gap-1"
+                className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white border border-white/40 rounded-md hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Save</span>
-              </Button>
+              </button>
 
-              <Button
-                variant="outline"
-                size="sm"
+              <button
+                type="button"
                 onClick={handleExit}
-                className="border-white/30 text-white hover:bg-white/10 hover:text-white gap-1"
+                className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white border border-white/40 rounded-md hover:bg-white/10 transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Exit</span>
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -802,35 +803,34 @@ const PermanentRegistration = () => {
                 {steps.map((step, index) => {
                   const isActive = step.id === currentStep;
                   const isCompleted = step.id < currentStep;
+                  const isVisited = step.id <= highestStepReached;
+                  const canNavigate = step.id <= highestStepReached && step.id !== currentStep;
                   const StepIcon = step.icon;
 
                   return (
                     <div key={step.id} className="flex items-center">
                       <button
-                        onClick={() => step.id < currentStep && setCurrentStep(step.id)}
-                        disabled={step.id > currentStep}
-                        aria-label={`Step ${step.id}: ${step.title}${isCompleted ? ' (completed)' : isActive ? ' (current)' : ''}`}
+                        onClick={() => canNavigate && setCurrentStep(step.id)}
+                        disabled={!canNavigate && step.id !== currentStep}
+                        aria-label={`Step ${step.id}: ${step.title}${isCompleted ? ' (completed)' : isActive ? ' (current)' : isVisited ? ' (visited)' : ''}`}
                         aria-current={isActive ? 'step' : undefined}
                         className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-1 ${isActive
                           ? 'bg-accent text-white shadow-md shadow-accent/25'
-                          : isCompleted
+                          : isVisited
                             ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
                             : 'bg-muted text-muted-foreground cursor-not-allowed'
                           }`}
                       >
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isActive ? 'bg-white/20' : isCompleted ? 'bg-primary/20' : 'bg-muted-foreground/20'
-                          }`}>
-                          {isCompleted ? (
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                          ) : (
-                            <StepIcon className="w-3.5 h-3.5" />
-                          )}
-                        </div>
+                        {isCompleted ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          <StepIcon className="w-4 h-4" />
+                        )}
                         <span className="text-xs font-medium hidden lg:block">{step.title}</span>
                       </button>
 
                       {index < steps.length - 1 && (
-                        <div className={`w-6 h-0.5 mx-0.5 ${isCompleted ? 'bg-primary' : 'bg-border'
+                        <div className={`w-6 h-0.5 mx-0.5 ${step.id < highestStepReached ? 'bg-primary' : 'bg-border'
                           }`} />
                       )}
                     </div>

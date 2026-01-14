@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { FormData, indianStates, AddressFields } from "../index";
 
@@ -326,21 +326,13 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="perm-state" className="text-sm text-muted-foreground">State</Label>
-              <Select
+              <SearchableSelect
                 value={formData.permanentAddress.state}
                 onValueChange={(value) => updatePermanentAddress("state", value)}
-              >
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select state" />
-                </SelectTrigger>
-                <SelectContent className="max-h-60 bg-white">
-                  {indianStates.map((state) => (
-                    <SelectItem key={state} value={state}>
-                      {state}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                options={indianStates.map(state => ({ value: state, label: state }))}
+                placeholder="Select state"
+                searchPlaceholder="Search states..."
+              />
             </div>
           </div>
         </div>
@@ -423,21 +415,13 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="corr-state" className="text-sm text-muted-foreground">State</Label>
-                  <Select
+                  <SearchableSelect
                     value={formData.correspondenceAddress.state}
                     onValueChange={(value) => updateCorrespondenceAddress("state", value)}
-                  >
-                    <SelectTrigger className="h-11">
-                      <SelectValue placeholder="Select state" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-60 bg-white">
-                      {indianStates.map((state) => (
-                        <SelectItem key={state} value={state}>
-                          {state}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    options={indianStates.map(state => ({ value: state, label: state }))}
+                    placeholder="Select state"
+                    searchPlaceholder="Search states..."
+                  />
                 </div>
               </div>
             </motion.div>
@@ -475,21 +459,16 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
           )}
         </div>
 
-        <Select value={formData.stateOfResidence} onValueChange={(value) => updateFormData("stateOfResidence", value)}>
-          <SelectTrigger className="h-11">
-            <SelectValue placeholder="Select state of residence (as per Aadhaar)" />
-          </SelectTrigger>
-          <SelectContent className="max-h-60 bg-white">
-            {indianStates.map((state) => (
-              <SelectItem key={state} value={state}>
-                {state}
-                {state === formData.stateFromAadhaar && (
-                  <span className="ml-2 text-xs text-primary">(from Aadhaar)</span>
-                )}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <SearchableSelect
+          value={formData.stateOfResidence}
+          onValueChange={(value) => updateFormData("stateOfResidence", value)}
+          options={indianStates.map(state => ({
+            value: state,
+            label: state === formData.stateFromAadhaar ? `${state} (from Aadhaar)` : state
+          }))}
+          placeholder="Select state of residence (as per Aadhaar)"
+          searchPlaceholder="Search states..."
+        />
 
         {/* Different State Warning & Upload */}
         <AnimatePresence>
