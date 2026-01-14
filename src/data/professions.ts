@@ -154,8 +154,8 @@ export const professionCategories: ProfessionCategory[] = [
   },
 ];
 
-// Base path for profession icons
-const ICON_BASE_PATH = "/src/assets/profession-icons/";
+// Base path for profession icons (served from public folder)
+const ICON_BASE_PATH = "/profession-icons/";
 
 // Flattened list of all professions with category info (exactly 57 professions)
 export const allProfessions: Profession[] = professionCategories.flatMap((cat) =>
