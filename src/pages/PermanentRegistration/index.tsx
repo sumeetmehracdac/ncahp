@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { 
-  AlertTriangle, 
-  CheckCircle2, 
-  ChevronLeft, 
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   FileCheck,
   User,
@@ -17,11 +17,18 @@ import {
   CreditCard,
   Shield,
   Plane,
-  Globe
+  Globe,
+  Save,
+  X,
+  HelpCircle,
+  Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ncahpLogo from '@/assets/ncahp-logo.png';
+
+// Auto-save key for localStorage
+const AUTOSAVE_KEY = 'ncahp_permanent_registration_draft';
 
 // Import step components - Main form
 import RegistrationTypeStep from './steps/RegistrationTypeStep';
@@ -124,7 +131,7 @@ export interface FormData {
   // Screen 1 - Registration Type
   registrationType: string;
   profession: string;
-  
+
   // Screen 2 - Personal Info (1-6 are read-only from registration)
   name: string;
   gender: string;
@@ -145,24 +152,24 @@ export interface FormData {
   stateOfResidence: string;
   stateFromAadhaar: string;
   differentStateProof: File | null;
-  
+
   // Screen 3 - Education History
   educationHistory: EducationEntry[];
-  
+
   // Screen 4 - Healthcare Qualification
   healthcareQualifications: HealthcareQualification[];
   otherQualifications: HealthcareQualification[];
-  
+
   // Screen 5 - Internship/Clinical Training
   internships: InternshipEntry[];
-  
+
   // Screen 6 - Professional Experience
   experiences: ExperienceEntry[];
-  
+
   // Screen 7 - Practice Geography
   practiceInOtherState: boolean;
   practiceStates: PracticeState[];
-  
+
   // Screen 8 - Document Upload
   provisionalDegree: File | null;
   finalDegree: File | null;
@@ -171,7 +178,7 @@ export interface FormData {
   curriculumSoftCopy: File | null;
   experienceEvidence: File | null;
   validIdProof: File | null;
-  
+
   // Screen 9 - Final
   aadhaarConsent: boolean;
   declarationAccepted: boolean;
@@ -245,7 +252,14 @@ const PermanentRegistration = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isBlocked, setIsBlocked] = useState(hasProvisionalOrInterimStatus);
   const [activeFormType, setActiveFormType] = useState<'main' | '2A' | '2B'>('main');
-  
+
+  // UI/UX Enhancement states
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const formContentRef = useRef<HTMLDivElement>(null);
+
   // Main form data
   const [formData, setFormData] = useState<FormData>({
     registrationType: '',
@@ -309,13 +323,119 @@ const PermanentRegistration = () => {
 
   // Form 2A data
   const [form2AData, setForm2AData] = useState<Form2AData>(initialForm2AData);
-  
+
   // Form 2B data
   const [form2BData, setForm2BData] = useState<Form2BData>(initialForm2BData);
+  // Auto-save effect - saves to localStorage every 30 seconds when there are changes
+  useEffect(() => {
+    const saveToLocalStorage = () => {
+      if (hasUnsavedChanges) {
+        setIsSaving(true);
+        // Serialize form data (excluding File objects)
+        const serializableData = {
+          formData: {
+            ...formData,
+            photo: formData.photo?.name || null,
+            differentStateProof: formData.differentStateProof?.name || null,
+            provisionalDegree: formData.provisionalDegree?.name || null,
+            finalDegree: formData.finalDegree?.name || null,
+            internshipCertificate: formData.internshipCertificate?.name || null,
+            transcripts: formData.transcripts?.name || null,
+            curriculumSoftCopy: formData.curriculumSoftCopy?.name || null,
+            experienceEvidence: formData.experienceEvidence?.name || null,
+            validIdProof: formData.validIdProof?.name || null,
+          },
+          currentStep,
+          activeFormType,
+          savedAt: new Date().toISOString(),
+        };
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(serializableData));
+        setLastSaved(new Date());
+        setHasUnsavedChanges(false);
+        setIsSaving(false);
+        toast({
+          title: 'Draft Saved',
+          description: 'Your progress has been auto-saved.',
+          duration: 2000,
+        });
+      }
+    };
+
+    const autoSaveInterval = setInterval(saveToLocalStorage, 30000); // 30 seconds
+    return () => clearInterval(autoSaveInterval);
+  }, [hasUnsavedChanges, formData, currentStep, activeFormType, toast]);
+
+  // Load saved draft on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(AUTOSAVE_KEY);
+    if (savedDraft) {
+      try {
+        const parsed = JSON.parse(savedDraft);
+        if (parsed.formData && parsed.savedAt) {
+          const savedDate = new Date(parsed.savedAt);
+          const timeDiff = Date.now() - savedDate.getTime();
+          // Only restore if saved within last 24 hours
+          if (timeDiff < 24 * 60 * 60 * 1000) {
+            toast({
+              title: 'Draft Restored',
+              description: `Your previous draft from ${savedDate.toLocaleString()} has been restored.`,
+              duration: 4000,
+            });
+            setFormData(prev => ({ ...prev, ...parsed.formData, photo: null }));
+            setCurrentStep(parsed.currentStep || 1);
+            setActiveFormType(parsed.activeFormType || 'main');
+            setLastSaved(savedDate);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to parse saved draft:', e);
+      }
+    }
+  }, []);
+
+  // Manual save function
+  const handleManualSave = useCallback(() => {
+    setIsSaving(true);
+    const serializableData = {
+      formData: {
+        ...formData,
+        photo: formData.photo?.name || null,
+        differentStateProof: formData.differentStateProof?.name || null,
+        provisionalDegree: formData.provisionalDegree?.name || null,
+        finalDegree: formData.finalDegree?.name || null,
+        internshipCertificate: formData.internshipCertificate?.name || null,
+        transcripts: formData.transcripts?.name || null,
+        curriculumSoftCopy: formData.curriculumSoftCopy?.name || null,
+        experienceEvidence: formData.experienceEvidence?.name || null,
+        validIdProof: formData.validIdProof?.name || null,
+      },
+      currentStep,
+      activeFormType,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(serializableData));
+    setLastSaved(new Date());
+    setHasUnsavedChanges(false);
+    setIsSaving(false);
+    toast({
+      title: 'Draft Saved Successfully',
+      description: 'Your progress has been saved. You can safely exit and resume later.',
+    });
+  }, [formData, currentStep, activeFormType, toast]);
+
+  // Handle exit with unsaved changes warning
+  const handleExit = useCallback(() => {
+    if (hasUnsavedChanges) {
+      setShowExitModal(true);
+    } else {
+      navigate('/');
+    }
+  }, [hasUnsavedChanges, navigate]);
 
   const updateFormData = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
+    setHasUnsavedChanges(true);
+
     // Detect form type change
     if (field === 'registrationType') {
       if (value === '2A') {
@@ -332,10 +452,12 @@ const PermanentRegistration = () => {
 
   const updateForm2AData = <K extends keyof Form2AData>(field: K, value: Form2AData[K]) => {
     setForm2AData(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   };
 
   const updateForm2BData = <K extends keyof Form2BData>(field: K, value: Form2BData[K]) => {
     setForm2BData(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   };
 
   // Get current steps based on form type
@@ -362,16 +484,16 @@ const PermanentRegistration = () => {
         return formData.registrationType !== '' && formData.profession !== '';
       case 2:
         return formData.placeOfBirth !== '' &&
-               formData.fatherName !== '' &&
-               formData.motherName !== '' &&
-               formData.citizenshipType !== '' &&
-               formData.permanentAddress.addressLine1 !== '' &&
-               formData.permanentAddress.city !== '' &&
-               formData.permanentAddress.pincode !== '' &&
-               formData.permanentAddress.district !== '' &&
-               formData.permanentAddress.state !== '' &&
-               formData.stateOfResidence !== '' &&
-               (formData.stateOfResidence === formData.stateFromAadhaar || formData.differentStateProof !== null);
+          formData.fatherName !== '' &&
+          formData.motherName !== '' &&
+          formData.citizenshipType !== '' &&
+          formData.permanentAddress.addressLine1 !== '' &&
+          formData.permanentAddress.city !== '' &&
+          formData.permanentAddress.pincode !== '' &&
+          formData.permanentAddress.district !== '' &&
+          formData.permanentAddress.state !== '' &&
+          formData.stateOfResidence !== '' &&
+          (formData.stateOfResidence === formData.stateFromAadhaar || formData.differentStateProof !== null);
       case 3:
         return formData.educationHistory.some(e => e.schoolName !== '' && e.board !== '');
       case 4:
@@ -396,15 +518,15 @@ const PermanentRegistration = () => {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
       case 2:
-        return form2AData.firstName !== '' && 
-               form2AData.lastName !== '' && 
-               form2AData.nationality !== '' &&
-               form2AData.permanentAddress.addressLine1 !== '';
+        return form2AData.firstName !== '' &&
+          form2AData.lastName !== '' &&
+          form2AData.nationality !== '' &&
+          form2AData.permanentAddress.addressLine1 !== '';
       case 3:
         return form2AData.practiceStates.length > 0;
       case 4:
-        return form2AData.passportDetails.passportNumber !== '' && 
-               form2AData.visaDetails.visaNumber !== '';
+        return form2AData.passportDetails.passportNumber !== '' &&
+          form2AData.visaDetails.visaNumber !== '';
       case 5:
         return form2AData.academicQualifications.some(q => q.qualificationName !== '');
       case 6:
@@ -425,9 +547,9 @@ const PermanentRegistration = () => {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
       case 2:
-        return form2BData.firstName !== '' && 
-               form2BData.lastName !== '' && 
-               form2BData.permanentAddress.addressLine1 !== '';
+        return form2BData.firstName !== '' &&
+          form2BData.lastName !== '' &&
+          form2BData.permanentAddress.addressLine1 !== '';
       case 3:
         return !form2BData.practiceInOtherState || form2BData.practiceStates.length > 0;
       case 4:
@@ -483,7 +605,7 @@ const PermanentRegistration = () => {
             Access Restricted
           </h1>
           <p className="text-muted-foreground mb-6">
-            You currently hold a <strong className="text-red-600">Provisional</strong> or <strong className="text-red-600">Interim</strong> registration status. 
+            You currently hold a <strong className="text-red-600">Provisional</strong> or <strong className="text-red-600">Interim</strong> registration status.
             Please complete or withdraw your existing registration before applying for Permanent Registration.
           </p>
           <Button onClick={() => navigate('/')} variant="outline" className="mr-3">
@@ -548,7 +670,7 @@ const PermanentRegistration = () => {
           return null;
       }
     }
-    
+
     // Main form steps
     const commonProps = { formData, updateFormData };
     switch (currentStep) {
@@ -593,75 +715,75 @@ const PermanentRegistration = () => {
                 <p className="text-xs text-white/80">National Commission for Allied and Healthcare Professions</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-white/90 hidden md:block">
-                Application Fee: <strong className="text-accent">₹2,000</strong> (max)
-              </span>
-              <Button variant="outline" size="sm" onClick={() => navigate('/')} className="border-white/30 text-white hover:bg-white/10 hover:text-white">
-                Save & Exit
-              </Button>
-            </div>
+            <div className=\"flex items-center gap-2\">\n              {/* Save status indicator */}\n              {isSaving ? (\n                <span className=\"text-xs text-white/70 flex items-center gap-1\">\n                  <motion.div\n                    animate={{ rotate: 360 }}\n                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}\n                  >\n                    <Save className=\"w-3 h-3\" />\n                  </motion.div>\n                  Saving...\n                </span>\n              ) : hasUnsavedChanges ? (\n                <span className=\"text-xs text-amber-300 flex items-center gap-1\">\n                  <AlertTriangle className=\"w-3 h-3\" />\n                  Unsaved changes\n                </span>\n              ) : lastSaved ? (\n                <span className=\"text-xs text-green-300 hidden md:flex items-center gap-1\">\n                  <CheckCircle2 className=\"w-3 h-3\" />\n                  Saved\n                </span>\n              ) : null}\n              \n              <span className=\"text-sm text-white/90 hidden lg:block\">\n                Fee: <strong className=\"text-accent\">₹2,000</strong> (max)\n              </span>\n              \n              <Button \n                variant=\"outline\" \n                size=\"sm\" \n                onClick={handleManualSave}\n                disabled={isSaving || !hasUnsavedChanges}\n                className=\"border-white/30 text-white hover:bg-white/10 hover:text-white gap-1\"\n              >\n                <Save className=\"w-3.5 h-3.5\" />\n                <span className=\"hidden sm:inline\">Save</span>\n              </Button>\n              \n              <Button \n                variant=\"outline\" \n                size=\"sm\" \n                onClick={handleExit}\n                className=\"border-white/30 text-white hover:bg-white/10 hover:text-white gap-1\"\n              >\n                <X className=\"w-3.5 h-3.5\" />\n                <span className=\"hidden sm:inline\">Exit</span>\n              </Button>\n            </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Progress Tracker */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
+      {/* Sticky Progress Tracker - floats below header */}
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg md:text-xl font-display font-semibold text-foreground">
                 {getFormTypeLabel()}
               </h2>
               {activeFormType !== 'main' && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  {activeFormType === '2A' ? 'Foreign nationals with foreign qualification' : 'Indian nationals with foreign qualification'}
-                </p>
+                <span className="text-xs text-muted-foreground hidden md:inline">
+                  {activeFormType === '2A' ? '(Foreign nationals)' : '(Indian nationals with foreign qualification)'}
+                </span>
               )}
             </div>
-            <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-              Step {currentStep} of {steps.length}
-            </span>
+            <div className="flex items-center gap-2">
+              {lastSaved && (
+                <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  Saved {lastSaved.toLocaleTimeString()}
+                </span>
+              )}
+              <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                Step {currentStep} of {steps.length}
+              </span>
+            </div>
           </div>
-          
+
           {/* Step Progress Bar */}
           <div className="relative">
-            <div className="overflow-x-auto pb-2 -mx-4 px-4">
-              <div className="flex items-center min-w-max gap-2">
+            <div className="overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
+              <div className="flex items-center min-w-max gap-1" role="navigation" aria-label="Form progress">
                 {steps.map((step, index) => {
                   const isActive = step.id === currentStep;
                   const isCompleted = step.id < currentStep;
                   const StepIcon = step.icon;
-                  
+
                   return (
                     <div key={step.id} className="flex items-center">
                       <button
                         onClick={() => step.id < currentStep && setCurrentStep(step.id)}
                         disabled={step.id > currentStep}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
-                          isActive 
-                            ? 'bg-accent text-white shadow-lg shadow-accent/25' 
-                            : isCompleted
-                              ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
-                              : 'bg-muted text-muted-foreground cursor-not-allowed'
-                        }`}
+                        aria-label={`Step ${step.id}: ${step.title}${isCompleted ? ' (completed)' : isActive ? ' (current)' : ''}`}
+                        aria-current={isActive ? 'step' : undefined}
+                        className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-1 ${isActive
+                          ? 'bg-accent text-white shadow-md shadow-accent/25'
+                          : isCompleted
+                            ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
+                            : 'bg-muted text-muted-foreground cursor-not-allowed'
+                          }`}
                       >
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center ${
-                          isActive ? 'bg-white/20' : isCompleted ? 'bg-primary/20' : 'bg-muted-foreground/20'
-                        }`}>
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isActive ? 'bg-white/20' : isCompleted ? 'bg-primary/20' : 'bg-muted-foreground/20'
+                          }`}>
                           {isCompleted ? (
-                            <CheckCircle2 className="w-4 h-4" />
+                            <CheckCircle2 className="w-3.5 h-3.5" />
                           ) : (
-                            <StepIcon className="w-4 h-4" />
+                            <StepIcon className="w-3.5 h-3.5" />
                           )}
                         </div>
-                        <span className="text-sm font-medium hidden lg:block">{step.title}</span>
+                        <span className="text-xs font-medium hidden lg:block">{step.title}</span>
                       </button>
-                      
+
                       {index < steps.length - 1 && (
-                        <div className={`w-8 h-0.5 mx-1 ${
-                          isCompleted ? 'bg-primary' : 'bg-border'
-                        }`} />
+                        <div className={`w-6 h-0.5 mx-0.5 ${isCompleted ? 'bg-primary' : 'bg-border'
+                          }`} />
                       )}
                     </div>
                   );
@@ -670,6 +792,9 @@ const PermanentRegistration = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" ref={formContentRef}>
 
         {/* Step Content */}
         <AnimatePresence mode="wait">
@@ -696,7 +821,7 @@ const PermanentRegistration = () => {
             <ChevronLeft className="w-4 h-4" />
             Previous
           </Button>
-          
+
           <div className="flex items-center gap-3">
             {currentStep < steps.length ? (
               <Button
