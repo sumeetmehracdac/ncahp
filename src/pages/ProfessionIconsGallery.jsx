@@ -36,168 +36,26 @@ import Footer from '@/components/layout/Footer';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { professionCategories as dataProfessionCategories, allProfessions as dataAllProfessions, getIconPath } from '@/data/professions';
 
-// All 57 allied and healthcare professions organized by 10 categories with PNG icons
-const professionCategories = [
-  {
-    id: 'cat1',
-    name: 'Medical Laboratory and Life Sciences',
-    color: 'hsl(280, 70%, 55%)',
-    professions: [
-      { id: 'p1', name: 'Biotechnologist', color: 'hsl(280, 70%, 55%)' },
-      { id: 'p2', name: 'Biochemist (nonclinical)', color: 'hsl(200, 75%, 45%)' },
-      { id: 'p3', name: 'Cell Geneticist', color: 'hsl(320, 65%, 50%)' },
-      { id: 'p4', name: 'Microbiologist (nonclinical)', color: 'hsl(160, 70%, 45%)' },
-      { id: 'p5', name: 'Molecular Biologist (nonclinical)', color: 'hsl(210, 70%, 50%)' },
-      { id: 'p6', name: 'Molecular Geneticist', color: 'hsl(300, 65%, 52%)' },
-      { id: 'p7', name: 'Cytotechnologist', color: 'hsl(250, 70%, 55%)' },
-      { id: 'p8', name: 'Forensic Science Technologist', color: 'hsl(10, 75%, 50%)' },
-      { id: 'p9', name: 'Histotechnologist', color: 'hsl(340, 70%, 55%)' },
-      { id: 'p10', name: 'Hemato Technologist', color: 'hsl(0, 75%, 50%)' },
-      { id: 'p11', name: 'Medical Lab Technologist', color: 'hsl(190, 70%, 45%)' },
-    ],
-  },
-  {
-    id: 'cat2',
-    name: 'Trauma, Burn Care and Surgical/Anesthesia related technology',
-    color: 'hsl(0, 80%, 55%)',
-    professions: [
-      { id: 'p12', name: 'Advance Care Paramedic', color: 'hsl(0, 80%, 55%)' },
-      { id: 'p13', name: 'Burn Care Technologist', color: 'hsl(25, 90%, 50%)' },
-      { id: 'p14', name: 'Emergency Medical Technologist (Paramedic)', color: 'hsl(350, 85%, 50%)' },
-      { id: 'p15', name: 'Anaesthesia Assistants and Technologists', color: 'hsl(210, 60%, 50%)' },
-      { id: 'p16', name: 'Operation Theatre (OT) Technologists', color: 'hsl(165, 55%, 45%)' },
-      { id: 'p17', name: 'Endoscopy and Laparoscopy Technologists', color: 'hsl(240, 50%, 55%)' },
-    ],
-  },
-  {
-    id: 'cat3',
-    name: 'Physiotherapy Professional',
-    color: 'hsl(142, 70%, 40%)',
-    professions: [
-      { id: 'p18', name: 'Physiotherapist', color: 'hsl(142, 70%, 40%)' },
-    ],
-  },
-  {
-    id: 'cat4',
-    name: 'Nutrition Science Professional',
-    color: 'hsl(5, 75%, 55%)',
-    professions: [
-      { id: 'p19', name: 'Dietician (including Clinical Dietician, Food Service Dietician)', color: 'hsl(5, 75%, 55%)' },
-      { id: 'p20', name: 'Nutritionist (including Public Health Nutritionist, Sports Nutritionist)', color: 'hsl(85, 70%, 45%)' },
-    ],
-  },
-  {
-    id: 'cat5',
-    name: 'Ophthalmic Sciences Professional',
-    color: 'hsl(200, 80%, 50%)',
-    professions: [
-      { id: 'p21', name: 'Optometrist', color: 'hsl(200, 80%, 50%)' },
-      { id: 'p22', name: 'Ophthalmic Assistant', color: 'hsl(185, 60%, 45%)' },
-      { id: 'p23', name: 'Vision Technician', color: 'hsl(215, 65%, 50%)' },
-    ],
-  },
-  {
-    id: 'cat6',
-    name: 'Occupational Therapy Professional',
-    color: 'hsl(35, 80%, 50%)',
-    professions: [
-      { id: 'p24', name: 'Occupational Therapist', color: 'hsl(35, 80%, 50%)' },
-    ],
-  },
-  {
-    id: 'cat7',
-    name: 'Community Care, Behavioural Health Sciences and other Professionals',
-    color: 'hsl(120, 60%, 40%)',
-    professions: [
-      { id: 'p25', name: 'Environment Protection Officer', color: 'hsl(120, 60%, 40%)' },
-      { id: 'p26', name: 'Ecologist', color: 'hsl(100, 55%, 42%)' },
-      { id: 'p27', name: 'Community Health promoters', color: 'hsl(195, 65%, 48%)' },
-      { id: 'p28', name: 'Occupational Health and Safety Officer (Inspector)', color: 'hsl(45, 90%, 50%)' },
-      { id: 'p29', name: 'Psychologist (Except Clinical Psychologist covered under RCI for PWD)', color: 'hsl(280, 55%, 55%)' },
-      { id: 'p30', name: 'Behavioural Analyst', color: 'hsl(270, 55%, 55%)' },
-      { id: 'p31', name: 'Integrated Behaviour Health Counsellor', color: 'hsl(200, 60%, 50%)' },
-      { id: 'p32', name: 'Health Educator and Counsellors (including Disease Counsellors, Diabetes Educators, Lactation Consultants)', color: 'hsl(220, 55%, 50%)' },
-      { id: 'p33', name: 'Social workers (including Clinical Social Worker, Psychiatric Social Worker, Medical Social Worker)', color: 'hsl(340, 60%, 55%)' },
-      { id: 'p34', name: 'Human Immunodeficiency Virus (HIV) Counsellors or Family Planning Counsellors', color: 'hsl(350, 70%, 55%)' },
-      { id: 'p35', name: 'Mental Health Support Workers', color: 'hsl(265, 55%, 55%)' },
-      { id: 'p36', name: 'Podiatrist', color: 'hsl(25, 65%, 50%)' },
-      { id: 'p37', name: 'Palliative Care Professionals', color: 'hsl(180, 50%, 45%)' },
-      { id: 'p38', name: 'Movement Therapist (including Art, Dance and Movement Therapist or Recreational Therapist)', color: 'hsl(300, 55%, 55%)' },
-      { id: 'p39', name: 'Acupuncture Professionals', color: 'hsl(55, 80%, 48%)' },
-    ],
-  },
-  {
-    id: 'cat8',
-    name: 'Medical Radiology, Imaging and Therapeutic Technology Professional',
-    color: 'hsl(250, 60%, 55%)',
-    professions: [
-      { id: 'p40', name: 'Medical Physicist', color: 'hsl(250, 60%, 55%)' },
-      { id: 'p41', name: 'Nuclear Medicine Technologist', color: 'hsl(65, 85%, 45%)' },
-      { id: 'p42', name: 'Radiology and Imaging Technologist (Diagnostic Medical Radiographer, Magnetic Resonance Imaging (MRI), Computed Tomography (CT), Mammographer, Diagnostic Medical Sonographers)', color: 'hsl(190, 70%, 45%)' },
-      { id: 'p43', name: 'Radiotherapy Technologist', color: 'hsl(35, 90%, 50%)' },
-      { id: 'p44', name: 'Dosimetrist', color: 'hsl(30, 45%, 55%)' },
-    ],
-  },
-  {
-    id: 'cat9',
-    name: 'Medical Technologists and Physician Associate',
-    color: 'hsl(210, 70%, 50%)',
-    professions: [
-      { id: 'p45', name: 'Biomedical Engineer', color: 'hsl(210, 70%, 50%)' },
-      { id: 'p46', name: 'Medical Equipment Technologist', color: 'hsl(225, 50%, 50%)' },
-      { id: 'p47', name: 'Physician Associates', color: 'hsl(175, 60%, 42%)' },
-      { id: 'p48', name: 'Cardiovascular Technologists', color: 'hsl(0, 75%, 50%)' },
-      { id: 'p49', name: 'Perfusionist', color: 'hsl(355, 65%, 55%)' },
-      { id: 'p50', name: 'Respiratory Technologist', color: 'hsl(195, 70%, 50%)' },
-      { id: 'p51', name: 'Electrocardiogram (ECG) Technologist or Echocardiogram (ECHO) Technologist', color: 'hsl(5, 70%, 50%)' },
-      { id: 'p52', name: 'Electroencephalogram (EEG) or Electroneurodiagnostic (END) or Electromyography (EMG) Technologists or Neuro Lab Technologists or Sleep Lab Technologists', color: 'hsl(270, 55%, 55%)' },
-      { id: 'p53', name: 'Dialysis Therapy Technologists or Urology Technologists', color: 'hsl(185, 65%, 45%)' },
-    ],
-  },
-  {
-    id: 'cat10',
-    name: 'Health Information Management and Health Informatic Professional',
-    color: 'hsl(210, 65%, 50%)',
-    professions: [
-      { id: 'p54', name: 'Health Information Management Professional (Including Medical Records Analyst)', color: 'hsl(210, 65%, 50%)' },
-      { id: 'p55', name: 'Health Information Management Technologist', color: 'hsl(200, 55%, 48%)' },
-      { id: 'p56', name: 'Clinical Coder', color: 'hsl(230, 55%, 52%)' },
-      { id: 'p57', name: 'Medical Secretary and Medical Transcriptionist', color: 'hsl(160, 50%, 45%)' },
-    ],
-  },
-];
+// Use the data from professions.ts
+const professionCategories = dataProfessionCategories;
 
-// Helper to convert profession name to icon path
-const getIconPath = (name) => {
-  const filename = name
-    .toLowerCase()
-    .replace(/[()]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-  return `/src/assets/profession-icons/${filename}.png`;
-};
-
-// Flatten all professions for easy access
-const allProfessions = professionCategories.flatMap(cat =>
-  cat.professions.map(prof => ({
-    ...prof,
-    categoryId: cat.id,
-    categoryName: cat.name,
-    iconPath: getIconPath(prof.name),
-  }))
-);
+// Flatten all professions with iconPath computed
+const allProfessions = dataAllProfessions.map(prof => ({
+  ...prof,
+  iconPath: getIconPath(prof.iconFile),
+}));
 
 // Profession Icon component
-const ProfessionIcon = ({ profession, className = "w-8 h-8", style = {} }) => {
+const ProfessionIcon = ({ profession, className = "w-8 h-8" }) => {
   const [hasError, setHasError] = useState(false);
 
   if (hasError) {
     return (
       <Stethoscope
         className={className}
-        style={{ color: profession.color, ...style }}
+        style={{ color: profession.color }}
       />
     );
   }
@@ -207,7 +65,6 @@ const ProfessionIcon = ({ profession, className = "w-8 h-8", style = {} }) => {
       src={profession.iconPath}
       alt={profession.name}
       className={cn(className, "object-contain")}
-      style={style}
       onError={() => setHasError(true)}
     />
   );
@@ -413,10 +270,6 @@ const ProfessionIconsGallery = () => {
                           );
                         }}
                       >
-                        <span
-                          className="w-2 h-2 rounded-full mr-2"
-                          style={{ backgroundColor: cat.color }}
-                        />
                         <span className="truncate text-sm">{cat.name}</span>
                       </DropdownMenuCheckboxItem>
                     ))}
@@ -668,15 +521,6 @@ const ProfessionIconsGallery = () => {
                     selectedCategories.includes(cat.id) && 'ring-2 ring-primary'
                   )}
                 >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                    style={{ background: `${cat.color}20` }}
-                  >
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                  </div>
                   <h3 className="font-medium text-sm line-clamp-2 mb-1">{cat.name}</h3>
                   <p className="text-xs text-muted-foreground">
                     {cat.professions.length} profession{cat.professions.length !== 1 ? 's' : ''}

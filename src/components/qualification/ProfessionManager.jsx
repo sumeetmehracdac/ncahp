@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { professionCategories, allProfessions } from '@/data/professions';
+import { professionCategories, allProfessions, getIconPath } from '@/data/professions';
 
 // Qualifications for profession linking
 const QUALIFICATIONS = [
@@ -20,19 +20,8 @@ const QUALIFICATIONS = [
   { id: 5, label: 'Diploma in Physiotherapy (2 yrs)' },
 ];
 
-// Helper to convert profession name to icon path
-const getIconPath = (name) => {
-  const filename = name
-    .toLowerCase()
-    .replace(/[()]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-  return `/src/assets/profession-icons/${filename}.png`;
-};
-
 // Profession Icon component
-const ProfessionIcon = ({ name, color, className = "w-6 h-6" }) => {
+const ProfessionIcon = ({ iconFile, color, className = "w-6 h-6" }) => {
   const [hasError, setHasError] = useState(false);
 
   if (hasError) {
@@ -41,8 +30,8 @@ const ProfessionIcon = ({ name, color, className = "w-6 h-6" }) => {
 
   return (
     <img
-      src={getIconPath(name)}
-      alt={name}
+      src={getIconPath(iconFile)}
+      alt="Profession icon"
       className={cn(className, "object-contain")}
       onError={() => setHasError(true)}
     />
@@ -177,7 +166,7 @@ const ProfessionManager = () => {
                       style={{ backgroundColor: `${profession.color}15` }}
                     >
                       <ProfessionIcon
-                        name={profession.name}
+                        iconFile={profession.iconFile}
                         color={profession.color}
                         className="w-6 h-6"
                       />

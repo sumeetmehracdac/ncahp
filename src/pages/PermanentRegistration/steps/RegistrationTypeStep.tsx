@@ -4,7 +4,8 @@ import { FileCheck, Check, Stethoscope } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { FormData } from "../index";
 import ProfessionSelect from "@/components/ProfessionSelect";
-import { getProfessionByName, type Profession } from "@/data/professions";
+import { getProfessionByName, getIconPath, type Profession } from "@/data/professions";
+import { cn } from "@/lib/utils";
 
 interface Props {
   formData: FormData;
@@ -29,9 +30,9 @@ const ProfessionIcon = ({
 
   return (
     <img
-      src={profession.iconPath}
+      src={getIconPath(profession.iconFile)}
       alt={profession.name}
-      className={`${className} object-contain`}
+      className={cn(className, "object-contain")}
       style={style}
       onError={() => setHasError(true)}
     />

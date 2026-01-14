@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { professionCategories, allProfessions, getProfessionByName, type Profession } from '@/data/professions';
+import { professionCategories, allProfessions, getProfessionByName, getIconPath, type Profession } from '@/data/professions';
 
 interface ProfessionSelectProps {
   value: string;
@@ -33,7 +33,7 @@ const ProfessionIcon = ({
 
   return (
     <img
-      src={profession.iconPath}
+      src={getIconPath(profession.iconFile)}
       alt={profession.name}
       className={cn(className, "object-contain")}
       style={style}
