@@ -51,10 +51,10 @@ const ExperienceStep2A = ({ formData, updateFormData }: Props) => {
           <Briefcase className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Professional Experience
+          Allied and Healthcare Professional Experience
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Provide details of your professional experience (if any). This section is optional.
+          Provide details of your allied and healthcare professional experience (if any). This section is optional.
         </p>
       </div>
 
@@ -63,7 +63,7 @@ const ExperienceStep2A = ({ formData, updateFormData }: Props) => {
         {formData.experiences.length === 0 ? (
           <div className="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-border">
             <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground mb-2">No professional experience added</p>
+            <p className="text-muted-foreground mb-2">No allied and healthcare professional experience added</p>
             <p className="text-sm text-muted-foreground mb-4">This section is optional</p>
             <Button type="button" variant="outline" onClick={addExperience}>
               <Plus className="w-4 h-4 mr-2" />

@@ -44,7 +44,7 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
           <GraduationCap className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Academic Qualification</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Enter your foreign academic qualifications in healthcare.</p>
+        <p className="text-muted-foreground max-w-xl mx-auto">Enter your foreign academic qualifications in allied and healthcare professions.</p>
       </div>
 
       <div className="space-y-6">

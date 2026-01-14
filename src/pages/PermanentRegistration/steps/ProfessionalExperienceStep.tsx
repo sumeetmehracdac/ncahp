@@ -80,10 +80,10 @@ const ProfessionalExperienceStep = ({ formData, updateFormData }: Props) => {
           <Building2 className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Professional Experience
+          Allied and Healthcare Professional Experience
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Enter details of your professional work experience in the allied healthcare sector (if any).
+          Enter details of your work experience in the allied and healthcare sector (if any).
         </p>
       </div>
 
@@ -91,8 +91,8 @@ const ProfessionalExperienceStep = ({ formData, updateFormData }: Props) => {
       <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200">
         <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-blue-800">
-          <p className="font-medium mb-1">Optional Section</p>
-          <p>Add your professional experience if you have worked in a relevant healthcare setting after completing your qualification. 
+        <p className="font-medium mb-1">Optional Section</p>
+          <p>Add your experience if you have worked in a relevant allied and healthcare setting after completing your qualification. 
           Skip if not applicable.</p>
         </div>
       </div>
@@ -107,7 +107,7 @@ const ProfessionalExperienceStep = ({ formData, updateFormData }: Props) => {
           <Building2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-medium text-foreground mb-2">No experience added</h3>
           <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
-            Click below to add your professional work experience in the healthcare sector.
+            Click below to add your work experience in the allied and healthcare sector.
           </p>
           <Button onClick={addExperience} className="bg-primary hover:bg-primary-dark">
             <Plus className="w-4 h-4 mr-2" />

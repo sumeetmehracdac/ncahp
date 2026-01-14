@@ -43,7 +43,7 @@ const ReviewSubmitStep = ({ formData, updateFormData, onSubmit }: Props) => {
       icon: <FileText className="w-4 h-4" />,
       items: [
         { label: 'Registration Type', value: formData.registrationType },
-        { label: 'Profession', value: formData.profession }
+        { label: 'Allied and Healthcare Profession', value: formData.profession }
       ]
     },
     {
@@ -85,7 +85,7 @@ const ReviewSubmitStep = ({ formData, updateFormData, onSubmit }: Props) => {
     },
     {
       id: 'experience',
-      title: 'Professional Experience',
+      title: 'Allied and Healthcare Professional Experience',
       icon: <Briefcase className="w-4 h-4" />,
       items: formData.experiences.length > 0 
         ? formData.experiences.map((exp, i) => ({

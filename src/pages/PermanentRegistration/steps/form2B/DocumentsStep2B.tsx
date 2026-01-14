@@ -11,7 +11,7 @@ const documentsList: { key: keyof Form2BDocuments; label: string; required: bool
   { key: 'transcripts', label: 'Transcripts', required: true },
   { key: 'undergradSyllabus', label: 'Attested syllabus of Undergraduate program', required: true },
   { key: 'postgradSyllabus', label: 'Attested syllabus of Postgraduate program (if applicable)', required: false },
-  { key: 'professionalRegistration', label: 'Professional Registration number (if applicable)', required: false },
+  { key: 'professionalRegistration', label: 'Allied and Healthcare Professional Registration number (if applicable)', required: false },
   { key: 'proofOfAddress', label: 'Proof of Address', required: true },
   { key: 'equivalenceCertificate', label: 'Equivalence Certificate (if applicable)', required: false },
   { key: 'medicalFitness', label: 'Medical/Fitness Certificate including vaccination details', required: true },
