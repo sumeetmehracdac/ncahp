@@ -54,10 +54,10 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
           <FileCheck className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Registration Type & Allied and Healthcare Profession
+          Registration Type & Allied/ Healthcare Profession
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Select your registration type and the allied and healthcare profession you wish to register for.
+          Select your registration type and the allied or healthcare profession you wish to register for.
         </p>
       </div>
 
