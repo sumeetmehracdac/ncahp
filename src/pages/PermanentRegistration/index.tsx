@@ -715,7 +715,55 @@ const PermanentRegistration = () => {
                 <p className="text-xs text-white/80">National Commission for Allied and Healthcare Professions</p>
               </div>
             </div>
-            <div className=\"flex items-center gap-2\">\n              {/* Save status indicator */}\n              {isSaving ? (\n                <span className=\"text-xs text-white/70 flex items-center gap-1\">\n                  <motion.div\n                    animate={{ rotate: 360 }}\n                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}\n                  >\n                    <Save className=\"w-3 h-3\" />\n                  </motion.div>\n                  Saving...\n                </span>\n              ) : hasUnsavedChanges ? (\n                <span className=\"text-xs text-amber-300 flex items-center gap-1\">\n                  <AlertTriangle className=\"w-3 h-3\" />\n                  Unsaved changes\n                </span>\n              ) : lastSaved ? (\n                <span className=\"text-xs text-green-300 hidden md:flex items-center gap-1\">\n                  <CheckCircle2 className=\"w-3 h-3\" />\n                  Saved\n                </span>\n              ) : null}\n              \n              <span className=\"text-sm text-white/90 hidden lg:block\">\n                Fee: <strong className=\"text-accent\">₹2,000</strong> (max)\n              </span>\n              \n              <Button \n                variant=\"outline\" \n                size=\"sm\" \n                onClick={handleManualSave}\n                disabled={isSaving || !hasUnsavedChanges}\n                className=\"border-white/30 text-white hover:bg-white/10 hover:text-white gap-1\"\n              >\n                <Save className=\"w-3.5 h-3.5\" />\n                <span className=\"hidden sm:inline\">Save</span>\n              </Button>\n              \n              <Button \n                variant=\"outline\" \n                size=\"sm\" \n                onClick={handleExit}\n                className=\"border-white/30 text-white hover:bg-white/10 hover:text-white gap-1\"\n              >\n                <X className=\"w-3.5 h-3.5\" />\n                <span className=\"hidden sm:inline\">Exit</span>\n              </Button>\n            </div>
+            <div className="flex items-center gap-2">
+              {/* Save status indicator */}
+              {isSaving ? (
+                <span className="text-xs text-white/70 flex items-center gap-1">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Save className="w-3 h-3" />
+                  </motion.div>
+                  Saving...
+                </span>
+              ) : hasUnsavedChanges ? (
+                <span className="text-xs text-amber-300 flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  Unsaved changes
+                </span>
+              ) : lastSaved ? (
+                <span className="text-xs text-green-300 hidden md:flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" />
+                  Saved
+                </span>
+              ) : null}
+
+              <span className="text-sm text-white/90 hidden lg:block">
+                Fee: <strong className="text-accent">₹2,000</strong> (max)
+              </span>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleManualSave}
+                disabled={isSaving || !hasUnsavedChanges}
+                className="border-white/30 text-white hover:bg-white/10 hover:text-white gap-1"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Save</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExit}
+                className="border-white/30 text-white hover:bg-white/10 hover:text-white gap-1"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Exit</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -855,6 +903,72 @@ const PermanentRegistration = () => {
           </span>
         </div>
       </div>
+
+      {/* Exit Confirmation Modal */}
+      <AnimatePresence>
+        {showExitModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowExitModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                  <AlertTriangle className="w-6 h-6 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Unsaved Changes</h3>
+                  <p className="text-sm text-muted-foreground">You have unsaved changes that will be lost.</p>
+                </div>
+              </div>
+
+              <p className="text-sm text-muted-foreground mb-6">
+                Would you like to save your progress before leaving? You can continue later from where you left off.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    localStorage.removeItem(AUTOSAVE_KEY);
+                    navigate('/');
+                  }}
+                  className="flex-1 text-destructive hover:text-destructive hover:bg-destructive/5"
+                >
+                  Discard & Exit
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleManualSave();
+                    setShowExitModal(false);
+                    navigate('/');
+                  }}
+                  className="flex-1 bg-primary hover:bg-primary-dark"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Save & Exit
+                </Button>
+              </div>
+
+              <button
+                onClick={() => setShowExitModal(false)}
+                className="mt-4 w-full text-center text-sm text-muted-foreground hover:text-foreground"
+              >
+                Continue editing
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

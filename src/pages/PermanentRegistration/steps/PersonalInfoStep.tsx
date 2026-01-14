@@ -16,6 +16,21 @@ interface Props {
 
 const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  // Validation helpers
+  const validatePincode = (pincode: string) => {
+    if (!pincode) return null; // Not filled yet
+    if (!/^\d{6}$/.test(pincode)) return 'Pincode must be 6 digits';
+    return null;
+  };
+
+  const getFieldError = (field: string, value: string, required: boolean = false) => {
+    if (!touched[field]) return null;
+    if (required && !value) return 'This field is required';
+    if (field.includes('pincode')) return validatePincode(value);
+    return null;
+  };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,9 +116,8 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         <div className="flex items-start gap-6">
           <div className="relative group">
             <div
-              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${
-                photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
-              }`}
+              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
+                }`}
             >
               {photoPreview ? (
                 <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
@@ -192,11 +206,10 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
         >
           <Label
             htmlFor="birth"
-            className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.citizenshipType === "birth"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50"
-            }`}
+            className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.citizenshipType === "birth"
+              ? "border-primary bg-primary/5"
+              : "border-border hover:border-primary/50"
+              }`}
           >
             <RadioGroupItem value="birth" id="birth" />
             <div>
@@ -206,11 +219,10 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
           </Label>
           <Label
             htmlFor="domicile"
-            className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.citizenshipType === "domicile"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50"
-            }`}
+            className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.citizenshipType === "domicile"
+              ? "border-primary bg-primary/5"
+              : "border-border hover:border-primary/50"
+              }`}
           >
             <RadioGroupItem value="domicile" id="domicile" />
             <div>
@@ -286,10 +298,21 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                 id="perm-pincode"
                 placeholder="6-digit Pincode"
                 value={formData.permanentAddress.pincode}
-                onChange={(e) => updatePermanentAddress("pincode", e.target.value)}
-                className="h-11"
+                onChange={(e) => {
+                  // Only allow digits
+                  const value = e.target.value.replace(/\D/g, '');
+                  updatePermanentAddress("pincode", value);
+                }}
+                onBlur={() => setTouched(prev => ({ ...prev, 'perm-pincode': true }))}
+                className={`h-11 ${getFieldError('perm-pincode', formData.permanentAddress.pincode) ? 'border-destructive focus:ring-destructive/50' : ''}`}
                 maxLength={6}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                aria-describedby="perm-pincode-error"
               />
+              {getFieldError('perm-pincode', formData.permanentAddress.pincode) && (
+                <p id="perm-pincode-error" className="text-xs text-destructive">{getFieldError('perm-pincode', formData.permanentAddress.pincode)}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="perm-district" className="text-sm text-muted-foreground">District</Label>
@@ -502,11 +525,10 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                   <div
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed transition-all ${
-                      formData.differentStateProof
-                        ? "border-green-500 bg-green-50"
-                        : "border-border hover:border-primary/50"
-                    }`}
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 border-dashed transition-all ${formData.differentStateProof
+                      ? "border-green-500 bg-green-50"
+                      : "border-border hover:border-primary/50"
+                      }`}
                   >
                     {formData.differentStateProof ? (
                       <>

@@ -95,42 +95,48 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
         <Label className="text-base font-semibold text-foreground">
           Type of Registration <span className="text-destructive">*</span>
         </Label>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {registrationTypes.map((type) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="group" aria-labelledby="registration-type-label">
+          {registrationTypes.map((type, index) => (
             <motion.button
               key={type.value}
               type="button"
+              role="radio"
+              aria-checked={formData.registrationType === type.value}
+              aria-describedby={`desc-${type.value}`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => updateFormData("registrationType", type.value)}
-              className={`p-4 rounded-xl border-2 text-left transition-all ${
-                formData.registrationType === type.value
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  updateFormData("registrationType", type.value);
+                }
+              }}
+              className={`p-4 rounded-xl border-2 text-left transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 ${formData.registrationType === type.value
                   ? "border-accent bg-accent/5 shadow-lg shadow-accent/10"
                   : "border-border bg-card hover:border-accent/50 hover:bg-muted/50"
-              }`}
+                }`}
             >
               <div className="flex items-start justify-between mb-1">
                 <span
-                  className={`text-xs font-bold uppercase tracking-wide ${
-                    formData.registrationType === type.value ? "text-accent" : "text-primary"
-                  }`}
+                  className={`text-xs font-bold uppercase tracking-wide ${formData.registrationType === type.value ? "text-accent" : "text-primary"
+                    }`}
                 >
                   {type.formType}
                 </span>
                 {formData.registrationType === type.value && (
-                  <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-5 h-5 bg-accent rounded-full flex items-center justify-center flex-shrink-0" aria-hidden="true">
                     <Check className="w-3 h-3 text-white" />
                   </div>
                 )}
               </div>
               <p
-                className={`font-semibold mb-1 ${
-                  formData.registrationType === type.value ? "text-accent" : "text-foreground"
-                }`}
+                className={`font-semibold mb-1 ${formData.registrationType === type.value ? "text-accent" : "text-foreground"
+                  }`}
               >
                 {type.label}
               </p>
-              <p className="text-xs text-muted-foreground leading-relaxed">{type.description}</p>
+              <p id={`desc-${type.value}`} className="text-xs text-muted-foreground leading-relaxed">{type.description}</p>
             </motion.button>
           ))}
         </div>
