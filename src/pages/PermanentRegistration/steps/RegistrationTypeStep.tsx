@@ -16,7 +16,7 @@ interface Props {
 const ProfessionIcon = ({
   profession,
   className = "w-6 h-6",
-  style = {}
+  style = {},
 }: {
   profession: Profession;
   className?: string;
@@ -83,7 +83,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
           <FileCheck className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Registration Type & Allied/ Healthcare Profession
+          Registration Type for Allied and Healthcare Professionals
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Select your registration type and the allied or healthcare profession you wish to register for.
@@ -103,15 +103,17 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => updateFormData("registrationType", type.value)}
-              className={`p-4 rounded-xl border-2 text-left transition-all ${formData.registrationType === type.value
+              className={`p-4 rounded-xl border-2 text-left transition-all ${
+                formData.registrationType === type.value
                   ? "border-accent bg-accent/5 shadow-lg shadow-accent/10"
                   : "border-border bg-card hover:border-accent/50 hover:bg-muted/50"
-                }`}
+              }`}
             >
               <div className="flex items-start justify-between mb-1">
                 <span
-                  className={`text-xs font-bold uppercase tracking-wide ${formData.registrationType === type.value ? "text-accent" : "text-primary"
-                    }`}
+                  className={`text-xs font-bold uppercase tracking-wide ${
+                    formData.registrationType === type.value ? "text-accent" : "text-primary"
+                  }`}
                 >
                   {type.formType}
                 </span>
@@ -122,8 +124,9 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 )}
               </div>
               <p
-                className={`font-semibold mb-1 ${formData.registrationType === type.value ? "text-accent" : "text-foreground"
-                  }`}
+                className={`font-semibold mb-1 ${
+                  formData.registrationType === type.value ? "text-accent" : "text-foreground"
+                }`}
               >
                 {type.label}
               </p>
@@ -176,10 +179,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
                 className="w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: `${selectedProfession.color}15` }}
               >
-                <ProfessionIcon
-                  profession={selectedProfession}
-                  className="w-6 h-6"
-                />
+                <ProfessionIcon profession={selectedProfession} className="w-6 h-6" />
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">Allied and Healthcare Profession</span>
