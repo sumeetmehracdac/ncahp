@@ -260,6 +260,9 @@ const PermanentRegistration = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const formContentRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   // Main form data
   const [formData, setFormData] = useState<FormData>({
@@ -393,6 +396,30 @@ const PermanentRegistration = () => {
       }
     }
   }, []);
+
+  // Check if progress bar can scroll
+  const checkProgressBarScroll = useCallback(() => {
+    const el = progressBarRef.current;
+    if (el) {
+      setCanScrollLeft(el.scrollLeft > 0);
+      setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkProgressBarScroll();
+    window.addEventListener('resize', checkProgressBarScroll);
+    return () => window.removeEventListener('resize', checkProgressBarScroll);
+  }, [checkProgressBarScroll, currentStep]);
+
+  const scrollProgressBar = (direction: 'left' | 'right') => {
+    const el = progressBarRef.current;
+    if (el) {
+      const scrollAmount = 150;
+      el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+      setTimeout(checkProgressBarScroll, 300);
+    }
+  };
 
   // Manual save function
   const handleManualSave = useCallback(() => {
@@ -797,9 +824,24 @@ const PermanentRegistration = () => {
           </div>
 
           {/* Step Progress Bar */}
-          <div className="relative">
-            <div className="overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
-              <div className="flex items-center min-w-max gap-1" role="navigation" aria-label="Form progress">
+          <div className="relative flex items-center gap-1">
+            {/* Left scroll arrow */}
+            {canScrollLeft && (
+              <button
+                onClick={() => scrollProgressBar('left')}
+                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+              </button>
+            )}
+
+            <div
+              ref={progressBarRef}
+              onScroll={checkProgressBarScroll}
+              className="flex-1 overflow-x-auto pb-1 scrollbar-hide"
+            >
+              <div className="flex items-center min-w-max gap-1 px-1" role="navigation" aria-label="Form progress">
                 {steps.map((step, index) => {
                   const isActive = step.id === currentStep;
                   const isCompleted = step.id < currentStep;
@@ -838,6 +880,17 @@ const PermanentRegistration = () => {
                 })}
               </div>
             </div>
+
+            {/* Right scroll arrow */}
+            {canScrollRight && (
+              <button
+                onClick={() => scrollProgressBar('right')}
+                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+              </button>
+            )}
           </div>
         </div>
       </div>
