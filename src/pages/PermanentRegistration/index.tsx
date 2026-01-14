@@ -415,9 +415,28 @@ const PermanentRegistration = () => {
   const scrollProgressBar = (direction: 'left' | 'right') => {
     const el = progressBarRef.current;
     if (el) {
-      const scrollAmount = 150;
-      el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
-      setTimeout(checkProgressBarScroll, 300);
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const currentScroll = el.scrollLeft;
+
+      // Calculate how much we can scroll in the given direction
+      let scrollAmount = 150;
+      if (direction === 'left') {
+        // Don't scroll more than what's available on the left
+        scrollAmount = Math.min(scrollAmount, currentScroll);
+      } else {
+        // Don't scroll more than what's available on the right
+        scrollAmount = Math.min(scrollAmount, maxScroll - currentScroll);
+      }
+
+      if (scrollAmount > 0) {
+        el.scrollTo({
+          left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+
+      // Check scroll state after animation
+      setTimeout(checkProgressBarScroll, 350);
     }
   };
 
