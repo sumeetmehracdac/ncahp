@@ -848,7 +848,7 @@ const PermanentRegistration = () => {
             {canScrollLeft && (
               <button
                 onClick={() => scrollProgressBar('left')}
-                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                className="flex-shrink-0 w-8 h-8 mr-2 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm hover:bg-muted transition-colors"
                 aria-label="Scroll left"
               >
                 <ChevronLeft className="w-4 h-4 text-muted-foreground" />
@@ -904,7 +904,7 @@ const PermanentRegistration = () => {
             {canScrollRight && (
               <button
                 onClick={() => scrollProgressBar('right')}
-                className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                className="flex-shrink-0 w-8 h-8 ml-2 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm hover:bg-muted transition-colors"
                 aria-label="Scroll right"
               >
                 <ChevronRight className="w-4 h-4 text-muted-foreground" />
