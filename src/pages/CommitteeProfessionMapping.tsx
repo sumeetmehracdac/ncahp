@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -49,6 +49,7 @@ import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { professionCategories, allProfessions, getIconPath } from "@/data/professions";
+import CommitteeMappingSkeleton from "@/components/skeletons/CommitteeMappingSkeleton";
 
 // Sample committees data
 interface Committee {
@@ -78,6 +79,9 @@ type MappingsType = Record<string, Set<string>>;
 const CommitteeProfessionMapping = () => {
   const { toast } = useToast();
 
+  // Loading state
+  const [isLoading, setIsLoading] = useState(true);
+
   // State
   const [committees, setCommittees] = useState<Committee[]>(sampleCommittees);
   const [mappings, setMappings] = useState<MappingsType>({});
@@ -93,6 +97,14 @@ const CommitteeProfessionMapping = () => {
   const [editingCommittee, setEditingCommittee] = useState<Committee | null>(null);
   const [newCommitteeName, setNewCommitteeName] = useState("");
   const [newCommitteeDesc, setNewCommitteeDesc] = useState("");
+
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Get mapped profession IDs for selected committee
   const selectedMappings = useMemo(() => {
@@ -258,6 +270,17 @@ const CommitteeProfessionMapping = () => {
 
   // Get selected committee object
   const selectedCommitteeData = committees.find(c => c.id === selectedCommittee);
+
+  // Show skeleton while loading
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <Header />
+        <CommitteeMappingSkeleton />
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
