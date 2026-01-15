@@ -1,11 +1,11 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Search, 
-  Plus, 
-  X, 
-  Users, 
-  Link2, 
+import {
+  Search,
+  Plus,
+  X,
+  Users,
+  Link2,
   Link2Off,
   CheckCircle2,
   Circle,
@@ -77,7 +77,7 @@ type MappingsType = Record<string, Set<string>>;
 
 const CommitteeProfessionMapping = () => {
   const { toast } = useToast();
-  
+
   // State
   const [committees, setCommittees] = useState<Committee[]>(sampleCommittees);
   const [mappings, setMappings] = useState<MappingsType>({});
@@ -87,7 +87,7 @@ const CommitteeProfessionMapping = () => {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(professionCategories.map(c => c.id)));
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showOnlyMapped, setShowOnlyMapped] = useState(false);
-  
+
   // Dialog states
   const [isAddCommitteeOpen, setIsAddCommitteeOpen] = useState(false);
   const [editingCommittee, setEditingCommittee] = useState<Committee | null>(null);
@@ -102,9 +102,17 @@ const CommitteeProfessionMapping = () => {
 
   // Filter professions
   const filteredCategories = useMemo(() => {
+    const searchLower = searchProfession.toLowerCase();
     return professionCategories.map(category => {
+      // Check if category name or shortName matches the search
+      const categoryMatchesSearch =
+        category.name.toLowerCase().includes(searchLower) ||
+        category.shortName.toLowerCase().includes(searchLower);
+
       const filteredProfessions = category.professions.filter(prof => {
-        const matchesSearch = prof.name.toLowerCase().includes(searchProfession.toLowerCase());
+        // Include profession if either profession name matches OR category matches
+        const professionMatchesSearch = prof.name.toLowerCase().includes(searchLower);
+        const matchesSearch = professionMatchesSearch || categoryMatchesSearch;
         const isMapped = selectedMappings.has(prof.id);
         const matchesMappedFilter = !showOnlyMapped || isMapped;
         return matchesSearch && matchesMappedFilter;
@@ -115,7 +123,7 @@ const CommitteeProfessionMapping = () => {
 
   // Filter committees
   const filteredCommittees = useMemo(() => {
-    return committees.filter(c => 
+    return committees.filter(c =>
       c.name.toLowerCase().includes(searchCommittee.toLowerCase()) ||
       c.shortName.toLowerCase().includes(searchCommittee.toLowerCase())
     );
@@ -148,7 +156,7 @@ const CommitteeProfessionMapping = () => {
     setMappings(prev => {
       const current = prev[selectedCommittee] || new Set<string>();
       const updated = new Set(current);
-      
+
       if (updated.has(professionId)) {
         updated.delete(professionId);
       } else {
@@ -169,7 +177,7 @@ const CommitteeProfessionMapping = () => {
     setMappings(prev => {
       const current = prev[selectedCommittee] || new Set<string>();
       const updated = new Set(current);
-      
+
       category.professions.forEach(prof => {
         if (shouldMap) {
           updated.add(prof.id);
@@ -212,7 +220,7 @@ const CommitteeProfessionMapping = () => {
   // Add new committee
   const handleAddCommittee = () => {
     if (!newCommitteeName.trim()) return;
-    
+
     const newCommittee: Committee = {
       id: `c${Date.now()}`,
       name: newCommitteeName,
@@ -220,12 +228,12 @@ const CommitteeProfessionMapping = () => {
       description: newCommitteeDesc || "New committee",
       color: `hsl(${Math.random() * 360}, 65%, 50%)`,
     };
-    
+
     setCommittees(prev => [...prev, newCommittee]);
     setNewCommitteeName("");
     setNewCommitteeDesc("");
     setIsAddCommitteeOpen(false);
-    
+
     toast({
       title: "Committee added",
       description: newCommittee.name,
@@ -242,7 +250,7 @@ const CommitteeProfessionMapping = () => {
       const { [committeeId]: removed, ...rest } = prev;
       return rest;
     });
-    
+
     toast({
       title: "Committee deleted",
     });
@@ -254,12 +262,12 @@ const CommitteeProfessionMapping = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
-        
+
         <div className="container mx-auto px-4 py-12 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -275,12 +283,12 @@ const CommitteeProfessionMapping = () => {
                 Many-to-Many Mapping
               </Badge>
             </div>
-            
+
             <h1 className="text-3xl md:text-4xl font-serif font-bold mb-3">
               Committee-Profession Mapping
             </h1>
             <p className="text-lg text-white/80 max-w-2xl">
-              Define which allied and healthcare professions fall under each regulatory committee's purview. 
+              Define which allied and healthcare professions fall under each regulatory committee's purview.
               Create seamless connections for effective governance.
             </p>
 
@@ -311,9 +319,9 @@ const CommitteeProfessionMapping = () => {
       {/* Main Content */}
       <section className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-12 gap-6">
-          
+
           {/* Left Panel - Committees */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
@@ -327,8 +335,8 @@ const CommitteeProfessionMapping = () => {
                     <Building2 className="h-5 w-5 text-primary" />
                     Committees
                   </h2>
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     onClick={() => setIsAddCommitteeOpen(true)}
                     className="gap-1"
                   >
@@ -336,7 +344,7 @@ const CommitteeProfessionMapping = () => {
                     Add
                   </Button>
                 </div>
-                
+
                 {/* Committee Search */}
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -356,7 +364,7 @@ const CommitteeProfessionMapping = () => {
                     {filteredCommittees.map((committee, index) => {
                       const isSelected = selectedCommittee === committee.id;
                       const mappingCount = getMappingCount(committee.id);
-                      
+
                       return (
                         <motion.div
                           key={committee.id}
@@ -368,8 +376,8 @@ const CommitteeProfessionMapping = () => {
                           className={`
                             group relative p-4 rounded-xl cursor-pointer transition-all duration-200
                             border-2
-                            ${isSelected 
-                              ? 'bg-primary/5 border-primary shadow-md shadow-primary/10' 
+                            ${isSelected
+                              ? 'bg-primary/5 border-primary shadow-md shadow-primary/10'
                               : 'bg-background border-transparent hover:border-border hover:bg-muted/50'
                             }
                           `}
@@ -379,16 +387,16 @@ const CommitteeProfessionMapping = () => {
                             absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full transition-all duration-200
                             ${isSelected ? 'bg-primary' : 'bg-transparent'}
                           `} />
-                          
+
                           <div className="flex items-start gap-3">
                             {/* Committee Icon */}
-                            <div 
+                            <div
                               className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0"
                               style={{ backgroundColor: committee.color }}
                             >
                               {committee.shortName}
                             </div>
-                            
+
                             <div className="flex-1 min-w-0">
                               <h3 className="font-medium text-sm leading-tight mb-1 truncate">
                                 {committee.name}
@@ -396,15 +404,15 @@ const CommitteeProfessionMapping = () => {
                               <p className="text-xs text-muted-foreground line-clamp-2">
                                 {committee.description}
                               </p>
-                              
+
                               {/* Mapping count badge */}
                               {mappingCount > 0 && (
-                                <Badge 
-                                  variant="secondary" 
+                                <Badge
+                                  variant="secondary"
                                   className="mt-2 text-xs"
-                                  style={{ 
+                                  style={{
                                     backgroundColor: `${committee.color}20`,
-                                    color: committee.color 
+                                    color: committee.color
                                   }}
                                 >
                                   <Link2 className="h-3 w-3 mr-1" />
@@ -413,27 +421,9 @@ const CommitteeProfessionMapping = () => {
                               )}
                             </div>
 
-                            {/* Actions */}
-                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-7 w-7"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleDeleteCommittee(committee.id);
-                                    }}
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                                  </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>Delete committee</TooltipContent>
-                              </Tooltip>
-                            </div>
+
                           </div>
-                          
+
                           {/* Selected checkmark */}
                           {isSelected && (
                             <motion.div
@@ -454,7 +444,7 @@ const CommitteeProfessionMapping = () => {
           </motion.div>
 
           {/* Right Panel - Professions */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
@@ -471,7 +461,7 @@ const CommitteeProfessionMapping = () => {
                       {allProfessions.length} total
                     </Badge>
                   </h2>
-                  
+
                   <div className="flex items-center gap-2">
                     {/* View Toggle */}
                     <div className="flex items-center bg-muted rounded-lg p-1">
@@ -492,7 +482,7 @@ const CommitteeProfessionMapping = () => {
                         <List className="h-4 w-4" />
                       </Button>
                     </div>
-                    
+
                     {/* Filter: Show Mapped Only */}
                     <Button
                       variant={showOnlyMapped ? "secondary" : "outline"}
@@ -506,7 +496,7 @@ const CommitteeProfessionMapping = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 {/* Search */}
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -517,7 +507,7 @@ const CommitteeProfessionMapping = () => {
                     className="pl-9 bg-background"
                   />
                 </div>
-                
+
                 {/* Selected Committee Indicator */}
                 {selectedCommitteeData && (
                   <motion.div
@@ -525,7 +515,7 @@ const CommitteeProfessionMapping = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20"
                   >
-                    <div 
+                    <div
                       className="w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-xs"
                       style={{ backgroundColor: selectedCommitteeData.color }}
                     >
@@ -544,7 +534,7 @@ const CommitteeProfessionMapping = () => {
                     </Badge>
                   </motion.div>
                 )}
-                
+
                 {!selectedCommittee && (
                   <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-muted/50 border border-dashed">
                     <ArrowRight className="h-5 w-5 text-muted-foreground" />
@@ -563,7 +553,7 @@ const CommitteeProfessionMapping = () => {
                     const isFullyMapped = isCategoryFullyMapped(category.id);
                     const isPartiallyMapped = isCategoryPartiallyMapped(category.id);
                     const mappedInCategory = category.professions.filter(p => selectedMappings.has(p.id)).length;
-                    
+
                     return (
                       <Collapsible
                         key={category.id}
@@ -581,9 +571,9 @@ const CommitteeProfessionMapping = () => {
                               <div className="flex items-center gap-3">
                                 <div className={`
                                   w-8 h-8 rounded-lg flex items-center justify-center
-                                  ${isFullyMapped ? 'bg-green-100 text-green-600' : 
-                                    isPartiallyMapped ? 'bg-amber-100 text-amber-600' : 
-                                    'bg-muted text-muted-foreground'}
+                                  ${isFullyMapped ? 'bg-green-100 text-green-600' :
+                                    isPartiallyMapped ? 'bg-amber-100 text-amber-600' :
+                                      'bg-muted text-muted-foreground'}
                                 `}>
                                   {isExpanded ? (
                                     <ChevronDown className="h-5 w-5" />
@@ -591,7 +581,7 @@ const CommitteeProfessionMapping = () => {
                                     <ChevronRight className="h-5 w-5" />
                                   )}
                                 </div>
-                                
+
                                 <div className="text-left">
                                   <h3 className="font-medium text-sm">
                                     {category.shortName}
@@ -640,14 +630,14 @@ const CommitteeProfessionMapping = () => {
                           <CollapsibleContent>
                             <div className={`
                               p-4
-                              ${viewMode === "grid" 
-                                ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" 
+                              ${viewMode === "grid"
+                                ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3"
                                 : "space-y-2"
                               }
                             `}>
                               {category.professions.map((profession) => {
                                 const isMapped = selectedMappings.has(profession.id);
-                                
+
                                 return (
                                   <motion.div
                                     key={profession.id}
@@ -657,19 +647,19 @@ const CommitteeProfessionMapping = () => {
                                     className={`
                                       group relative flex items-center gap-3 p-3 rounded-xl cursor-pointer
                                       transition-all duration-200 border-2
-                                      ${isMapped 
-                                        ? 'bg-primary/5 border-primary shadow-sm' 
+                                      ${isMapped
+                                        ? 'bg-primary/5 border-primary shadow-sm'
                                         : 'bg-muted/30 border-transparent hover:border-border hover:bg-muted/50'
                                       }
                                       ${!selectedCommittee ? 'opacity-60 cursor-not-allowed' : ''}
                                     `}
                                   >
                                     {/* Profession Icon */}
-                                    <div 
+                                    <div
                                       className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm"
                                       style={{ borderColor: profession.color, borderWidth: '2px' }}
                                     >
-                                      <img 
+                                      <img
                                         src={getIconPath(profession.iconFile)}
                                         alt={profession.name}
                                         className="w-7 h-7 object-contain"
@@ -678,7 +668,7 @@ const CommitteeProfessionMapping = () => {
                                         }}
                                       />
                                     </div>
-                                    
+
                                     <div className="flex-1 min-w-0">
                                       <p className="text-sm font-medium leading-tight line-clamp-2">
                                         {profession.name}
@@ -689,8 +679,8 @@ const CommitteeProfessionMapping = () => {
                                     <div className={`
                                       w-6 h-6 rounded-full flex items-center justify-center shrink-0
                                       transition-all duration-200
-                                      ${isMapped 
-                                        ? 'bg-primary text-primary-foreground' 
+                                      ${isMapped
+                                        ? 'bg-primary text-primary-foreground'
                                         : 'bg-muted group-hover:bg-muted-foreground/20'
                                       }
                                     `}>
@@ -728,7 +718,7 @@ const CommitteeProfessionMapping = () => {
               Create a new committee for profession mapping.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Committee Name</label>
