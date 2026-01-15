@@ -409,11 +409,7 @@ const CommitteeProfessionMapping = () => {
                               {mappingCount > 0 && (
                                 <Badge
                                   variant="secondary"
-                                  className="mt-2 text-xs"
-                                  style={{
-                                    backgroundColor: `${committee.color}20`,
-                                    color: committee.color
-                                  }}
+                                  className="mt-2 text-xs font-medium"
                                 >
                                   <Link2 className="h-3 w-3 mr-1" />
                                   {mappingCount} mapped
