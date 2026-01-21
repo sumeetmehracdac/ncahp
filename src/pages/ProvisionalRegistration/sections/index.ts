@@ -1,0 +1,9 @@
+export { default as PersonalInfoSection } from './PersonalInfoSection';
+export { default as AcademicQualificationSection } from './AcademicQualificationSection';
+export { default as HealthcareQualificationSection } from './HealthcareQualificationSection';
+export { default as InternshipSection } from './InternshipSection';
+export { default as WorkExperienceSection } from './WorkExperienceSection';
+export { default as PracticeLocationSection } from './PracticeLocationSection';
+export { default as UploadsSection } from './UploadsSection';
+export { default as DeclarationSection } from './DeclarationSection';
+export { default as ReviewSubmitSection } from './ReviewSubmitSection';
