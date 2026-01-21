@@ -14,6 +14,7 @@ import QualificationProfessionManagement from "./pages/QualificationProfessionMa
 import ProfessionIconsGallery from "./pages/ProfessionIconsGallery.jsx";
 import PermanentRegistration from "./pages/PermanentRegistration";
 import CommitteeProfessionMapping from "./pages/CommitteeProfessionMapping";
+import AdditionalRegistration from "./pages/AdditionalRegistration";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/profession-icons" element={<ProfessionIconsGallery />} />
           <Route path="/permanent-registration" element={<PermanentRegistration />} />
           <Route path="/committee-profession-mapping" element={<CommitteeProfessionMapping />} />
+          <Route path="/additional-registration" element={<AdditionalRegistration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
