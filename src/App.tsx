@@ -16,6 +16,7 @@ import PermanentRegistration from "./pages/PermanentRegistration";
 import ProvisionalRegistration from "./pages/ProvisionalRegistration";
 import CommitteeProfessionMapping from "./pages/CommitteeProfessionMapping";
 import AdditionalRegistration from "./pages/AdditionalRegistration";
+import ProposalSubmission from "./pages/ProposalSubmission";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/provisional-registration" element={<ProvisionalRegistration />} />
           <Route path="/committee-profession-mapping" element={<CommitteeProfessionMapping />} />
           <Route path="/additional-registration" element={<AdditionalRegistration />} />
+          <Route path="/proposal-submission" element={<ProposalSubmission />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
