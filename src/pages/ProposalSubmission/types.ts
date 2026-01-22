@@ -16,6 +16,7 @@ export interface COPIDetail {
 
 export interface ProposalDetailsData {
   fundingOrganisation: string;
+  projectTitle: string;
   totalOutlay: string;
   workOrderNumber: string;
   workOrderDate: string;
@@ -165,6 +166,7 @@ export interface ProposalFormState {
 // Initial state factories
 export const createInitialProposalDetails = (): ProposalDetailsData => ({
   fundingOrganisation: 'All India Institute of Medical Sciences (AIIMS)',
+  projectTitle: '',
   totalOutlay: '',
   workOrderNumber: '',
   workOrderDate: '',

@@ -87,10 +87,10 @@ const ProposalDetailsForm = ({ data, updateData, onContinue }: ProposalDetailsFo
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-r from-primary to-primary-dark rounded-2xl p-6 text-white shadow-xl"
+                className="bg-primary backdrop-blur-sm rounded-2xl p-6 text-white shadow-xl border border-primary-dark/20"
             >
                 <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                    <div className="w-16 h-16 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
                         <FileCheck className="w-8 h-8" />
                     </div>
                     <div>
@@ -107,16 +107,6 @@ const ProposalDetailsForm = ({ data, updateData, onContinue }: ProposalDetailsFo
                 transition={{ delay: 0.1 }}
                 className="bg-white rounded-2xl shadow-lg border border-border overflow-hidden"
             >
-                {/* Funding Organisation Header */}
-                <div className="bg-muted/50 px-6 py-4 border-b border-border">
-                    <div className="flex items-center gap-3">
-                        <Building2 className="w-5 h-5 text-primary" />
-                        <div>
-                            <p className="text-sm text-muted-foreground">Funding Organisation</p>
-                            <p className="font-semibold text-foreground">{data.fundingOrganisation}</p>
-                        </div>
-                    </div>
-                </div>
 
                 <div className="p-6 space-y-8">
                     {/* Financial & Administrative Details */}
@@ -237,6 +227,20 @@ const ProposalDetailsForm = ({ data, updateData, onContinue }: ProposalDetailsFo
                         </h2>
 
                         <div className="space-y-6">
+                            {/* Project Title */}
+                            <div className="space-y-2">
+                                <Label htmlFor="projectTitle" className="text-sm font-medium">
+                                    Project Title <span className="text-destructive">*</span>
+                                </Label>
+                                <Input
+                                    id="projectTitle"
+                                    type="text"
+                                    placeholder="Enter the title of your research project"
+                                    value={data.projectTitle}
+                                    onChange={(e) => updateData('projectTitle', e.target.value)}
+                                />
+                            </div>
+
                             {/* Objective */}
                             <div className="space-y-2">
                                 <Label htmlFor="objective" className="text-sm font-medium">
