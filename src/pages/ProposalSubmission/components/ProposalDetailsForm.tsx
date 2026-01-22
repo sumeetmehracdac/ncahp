@@ -459,7 +459,7 @@ const ProposalDetailsForm = ({ data, updateData, onContinue }: ProposalDetailsFo
                     onClick={onContinue}
                     className="gap-2 bg-accent hover:bg-accent-hover text-white shadow-lg shadow-accent/25 px-8"
                 >
-                    Continue to Budget Submission
+                    Continue to Budget Portal
                     <ChevronRight className="w-4 h-4" />
                 </Button>
             </div>

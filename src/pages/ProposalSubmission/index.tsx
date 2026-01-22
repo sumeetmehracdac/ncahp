@@ -149,7 +149,7 @@ const ProposalSubmission = () => {
                                 }`}
                         >
                             <Calculator className="w-4 h-4" />
-                            <span>Budget Submission</span>
+                            <span>Budget Portal</span>
                         </button>
                     </div>
                 </div>

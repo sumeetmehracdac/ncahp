@@ -70,8 +70,8 @@ export interface PersonnelDesignation {
 }
 
 export const PERSONNEL_DESIGNATIONS: PersonnelDesignation[] = [
-  { value: 'JRF-SRF-RA', label: 'JOM-Research Fellowship JRF SRF RA' },
-  { value: 'OTHER', label: 'JOM- Research Personnel other than JRF SRF RA' },
+  { value: 'JRF-SRF-RA', label: 'Research Fellowship JRF SRF RA' },
+  { value: 'OTHER', label: 'Research Personnel other than JRF SRF RA' },
 ];
 
 export interface PersonnelEmolument {
