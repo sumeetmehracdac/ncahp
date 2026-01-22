@@ -238,7 +238,7 @@ const BudgetMaster = ({ data, updateData, currentStep, setCurrentStep, onBack }:
                     className="bg-white rounded-2xl shadow-lg border border-border overflow-hidden"
                 >
                     {/* Step Header */}
-                    <div className="bg-gradient-to-r from-primary to-primary-dark px-6 py-4">
+                    <div className="bg-primary backdrop-blur-sm px-6 py-4 border-b border-primary-dark/20">
                         <h2 className="text-xl font-display font-bold text-white">
                             {BUDGET_STEPS[currentStep - 1].title}
                         </h2>
