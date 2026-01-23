@@ -59,20 +59,16 @@ export interface Form2BDeclaration {
 }
 
 export interface Form2BDocuments {
-  transcripts: File | null;
-  undergradSyllabus: File | null;
-  postgradSyllabus: File | null;
-  professionalRegistration: File | null;
-  proofOfAddress: File | null;
-  equivalenceCertificate: File | null;
+  validIdProof: File | null;
   medicalFitness: File | null;
+  endorsementLetter: File | null;
 }
 
 export interface Form2BData {
   // Step 1: Registration Type & Profession (shared)
   registrationType: string;
   profession: string;
-  
+
   // Step 2: Personal Details
   firstName: string;
   middleName: string;
@@ -93,26 +89,28 @@ export interface Form2BData {
   stateOfResidence: string;
   stateFromAadhaar: string;
   differentStateProof: File | null;
-  
+
   // Step 3: Practice State
   practiceInOtherState: boolean;
   practiceStates: Form2BPracticeState[];
-  
+
   // Step 4: Academic Qualification
   academicQualifications: Form2BAcademicQualification[];
-  
+
   // Step 5: Internship/Clinical Training
   internships: Form2BInternship[];
-  
+
   // Step 6: Professional Experience (optional)
   experiences: Form2BExperience[];
-  
+
   // Step 7: Documents
   documents: Form2BDocuments;
-  
+
   // Step 8: Declaration & Review
   declaration: Form2BDeclaration;
   declarationAccepted: boolean;
+  isDifferentlyAbled: boolean;
+  differentlyAbledProof: File | null;
 }
 
 export const initialForm2BData: Form2BData = {
@@ -169,13 +167,9 @@ export const initialForm2BData: Form2BData = {
   internships: [],
   experiences: [],
   documents: {
-    transcripts: null,
-    undergradSyllabus: null,
-    postgradSyllabus: null,
-    professionalRegistration: null,
-    proofOfAddress: null,
-    equivalenceCertificate: null,
-    medicalFitness: null
+    validIdProof: null,
+    medicalFitness: null,
+    endorsementLetter: null
   },
   declaration: {
     permitCancellation: false,
@@ -184,5 +178,7 @@ export const initialForm2BData: Form2BData = {
     legalDisputeDetails: '',
     previousPermissions: []
   },
-  declarationAccepted: false
+  declarationAccepted: false,
+  isDifferentlyAbled: false,
+  differentlyAbledProof: null
 };

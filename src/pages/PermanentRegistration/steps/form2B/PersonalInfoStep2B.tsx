@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Lock, Upload, AlertCircle } from "lucide-react";
+import { User, Lock, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -123,6 +123,54 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
         </div>
       </div>
 
+      {/* Differently Abled */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">Is differently abled? <span className="text-destructive">*</span></Label>
+        <RadioGroup
+          value={formData.isDifferentlyAbled ? "yes" : "no"}
+          onValueChange={(value) => updateFormData("isDifferentlyAbled", value === "yes")}
+          className="flex gap-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yes" id="diff-yes" />
+            <Label htmlFor="diff-yes">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="no" id="diff-no" />
+            <Label htmlFor="diff-no">No</Label>
+          </div>
+        </RadioGroup>
+
+        <AnimatePresence>
+          {formData.isDifferentlyAbled && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-2"
+            >
+              <Label>Upload Certificate <span className="text-destructive">*</span></Label>
+              <div className="flex items-center gap-4">
+                <Input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) updateFormData("differentlyAbledProof", file);
+                  }}
+                  className="h-11"
+                />
+                {formData.differentlyAbledProof && (
+                  <span className="text-sm text-green-600 flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4" /> Uploaded
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Citizenship */}
       <div className="space-y-4">
         <Label className="text-base font-semibold">Are you a Citizen of India? <span className="text-destructive">*</span></Label>
@@ -198,7 +246,7 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
           <p className="text-sm text-amber-800"><strong>Note:</strong> Your application will be submitted to the respective State Council of the state selected above.</p>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

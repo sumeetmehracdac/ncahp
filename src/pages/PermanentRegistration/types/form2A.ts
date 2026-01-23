@@ -16,6 +16,14 @@ export interface Form2AEmergencyContact {
   address: string;
 }
 
+export interface Form2AContactPersonIndia {
+  name: string;
+  relationship: string;
+  contactNumber: string;
+  email: string;
+  address: string;
+}
+
 export interface Form2APassportDetails {
   passportNumber: string;
   expiryDate: string;
@@ -95,7 +103,7 @@ export interface Form2AData {
   // Step 1: Registration Type & Profession (shared)
   registrationType: string;
   profession: string;
-  
+
   // Step 2: Personal Details
   firstName: string;
   middleName: string;
@@ -114,27 +122,28 @@ export interface Form2AData {
   durationOfPracticeIndia: string;
   expectedStartDate: string;
   expectedEndDate: string;
-  
+
   // Step 3: Practice State
   practiceStates: Form2APracticeState[];
-  
+
   // Step 4: Passport & Visa + Emergency Contact
   passportDetails: Form2APassportDetails;
   visaDetails: Form2AVisaDetails;
   emergencyContact: Form2AEmergencyContact;
-  
+  contactPersonIndia: Form2AContactPersonIndia;
+
   // Step 5: Academic Qualification
   academicQualifications: Form2AAcademicQualification[];
-  
+
   // Step 6: Internship/Clinical Training
   internships: Form2AInternship[];
-  
+
   // Step 7: Professional Experience (optional)
   experiences: Form2AExperience[];
-  
+
   // Step 8: Documents
   documents: Form2ADocuments;
-  
+
   // Step 9: Declaration
   declaration: Form2ADeclaration;
   declarationAccepted: boolean;
@@ -184,6 +193,13 @@ export const initialForm2AData: Form2AData = {
     expiryDate: ''
   },
   emergencyContact: {
+    name: '',
+    relationship: '',
+    contactNumber: '',
+    email: '',
+    address: ''
+  },
+  contactPersonIndia: {
     name: '',
     relationship: '',
     contactNumber: '',

@@ -113,11 +113,10 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
                   <Label
                     key={type.value}
                     htmlFor={`visa-${type.value}`}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${
-                      formData.visaDetails.visaType === type.value
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${formData.visaDetails.visaType === type.value
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
-                    }`}
+                      }`}
                   >
                     <RadioGroupItem value={type.value} id={`visa-${type.value}`} />
                     <span className="text-sm">{type.label}</span>
@@ -216,6 +215,91 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
               onChange={(e) => updateEmergencyContact("address", e.target.value)}
               className="h-11"
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Person in India */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <Users className="w-5 h-5 text-primary" />
+          <Label className="text-base font-semibold text-foreground">Do you have any Contact Person in India? (Optional)</Label>
+        </div>
+        <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
+          <RadioGroup
+            className="flex gap-4 mb-4"
+            defaultValue="no"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="yes" id="contact-yes" onClick={() => {
+                const el = document.getElementById('contact-india-fields');
+                if (el) el.style.display = 'block';
+              }} />
+              <Label htmlFor="contact-yes">Yes</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="no" id="contact-no" onClick={() => {
+                const el = document.getElementById('contact-india-fields');
+                if (el) el.style.display = 'none';
+              }} />
+              <Label htmlFor="contact-no">No</Label>
+            </div>
+          </RadioGroup>
+
+          <div id="contact-india-fields" style={{ display: 'none' }} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="contactIndiaName">Name of Contact Person (India)</Label>
+                <Input
+                  id="contactIndiaName"
+                  placeholder="Full name"
+                  value={formData.contactPersonIndia.name}
+                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, name: e.target.value })}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contactIndiaRel">Relationship to Applicant</Label>
+                <Input
+                  id="contactIndiaRel"
+                  placeholder="Relationship"
+                  value={formData.contactPersonIndia.relationship}
+                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, relationship: e.target.value })}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contactIndiaNumber">Contact Number (India)</Label>
+                <Input
+                  id="contactIndiaNumber"
+                  placeholder="Phone number"
+                  value={formData.contactPersonIndia.contactNumber}
+                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, contactNumber: e.target.value })}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contactIndiaEmail">Email Address (if available)</Label>
+                <Input
+                  id="contactIndiaEmail"
+                  type="email"
+                  placeholder="email@example.com"
+                  value={formData.contactPersonIndia.email}
+                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, email: e.target.value })}
+                  className="h-11"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contactIndiaAddress">Address in India</Label>
+              <Input
+                id="contactIndiaAddress"
+                placeholder="Full address"
+                value={formData.contactPersonIndia.address}
+                onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, address: e.target.value })}
+                className="h-11"
+              />
+            </div>
           </div>
         </div>
       </div>
