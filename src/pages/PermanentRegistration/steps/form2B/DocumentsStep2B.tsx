@@ -8,6 +8,11 @@ interface Props {
 }
 
 const documentsList: { key: keyof Form2BDocuments; label: string; required: boolean }[] = [
+  { key: 'transcripts', label: 'Transcripts', required: true },
+  { key: 'undergradSyllabus', label: 'Attested syllabus of Undergraduate program', required: true },
+  { key: 'postgradSyllabus', label: 'Attested syllabus of Postgraduate program (if applicable)', required: false },
+  { key: 'professionalRegistration', label: 'Professional Registration number (from home country)', required: true },
+  { key: 'equivalenceCertificate', label: 'Equivalence Certificate (if applicable)', required: false },
   { key: 'validIdProof', label: 'Valid ID proof (Aadhar/Passport/Voter ID)', required: true },
   { key: 'medicalFitness', label: 'Medical Fitness Certificate endorsed by competent authority', required: true },
   { key: 'endorsementLetter', label: 'Endorsement letter (Letter from regulatory body)', required: true },
@@ -38,20 +43,27 @@ const DocumentsStep2B = ({ formData, updateFormData }: Props) => {
           const file = formData.documents[doc.key];
           const isUploaded = file !== null;
           return (
-            <div key={doc.key} className={`relative p-4 rounded-xl border-2 transition-all ${isUploaded ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+            <div key={doc.key} className={`relative p-4 rounded-xl border-2 transition-all ${isUploaded ? "border-primary bg-primary/5" : doc.required ? "border-border hover:border-primary/50" : "border-dashed border-border hover:border-primary/50"}`}>
               <div className="flex items-start gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${isUploaded ? "bg-primary/20" : "bg-muted"}`}>
                   {isUploaded ? <CheckCircle2 className="w-5 h-5 text-primary" /> : <Upload className="w-5 h-5 text-muted-foreground" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <Label className="text-sm font-medium">{doc.label}{doc.required && <span className="text-destructive ml-1">*</span>}</Label>
-                  <p className="text-xs text-muted-foreground mt-1 truncate">{isUploaded ? file.name : "Click to upload"}</p>
+                  <p className="text-xs text-muted-foreground mt-1 truncate">{isUploaded ? file.name : "Click to upload (PDF, JPG, PNG)"}</p>
                 </div>
               </div>
               <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(doc.key, e)} className="absolute inset-0 opacity-0 cursor-pointer" />
             </div>
           );
         })}
+      </div>
+
+      {/* Info Note */}
+      <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+        <p className="text-sm text-amber-800">
+          <strong>Note:</strong> All documents must be self-attested on every page. Documents should be clear and legible. Maximum file size per document is 5MB.
+        </p>
       </div>
     </div>
   );

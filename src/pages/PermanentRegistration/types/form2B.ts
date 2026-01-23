@@ -18,6 +18,9 @@ export interface Form2BAcademicQualification {
   durationMonths: string;
   admissionDate: string;
   passingDate: string;
+  modeOfLearning: 'regular' | 'distance' | 'online' | '';
+  mediumOfInstruction: string;
+  regulatoryAuthority: string;
   certificate: File | null;
 }
 
@@ -28,6 +31,7 @@ export interface Form2BInternship {
   country: string;
   startDate: string;
   completionDate: string;
+  totalHours: string;
   coreDuties: string;
   certificate: File | null;
 }
@@ -40,6 +44,7 @@ export interface Form2BExperience {
   startDate: string;
   completionDate: string;
   coreDuties: string;
+  licenseNumber: string;
   certificate: File | null;
 }
 
@@ -47,6 +52,7 @@ export interface Form2BPracticeState {
   institutionName: string;
   address: string;
   state: string;
+  district: string;
   proofDocument: File | null;
 }
 
@@ -59,9 +65,15 @@ export interface Form2BDeclaration {
 }
 
 export interface Form2BDocuments {
+  transcripts: File | null;
+  undergradSyllabus: File | null;
+  postgradSyllabus: File | null;
+  professionalRegistration: File | null;
+  equivalenceCertificate: File | null;
   validIdProof: File | null;
   medicalFitness: File | null;
   endorsementLetter: File | null;
+  differentlyAbledProof: File | null;
 }
 
 export interface Form2BData {
@@ -83,6 +95,7 @@ export interface Form2BData {
   motherName: string;
   citizenshipType: 'birth' | 'domicile' | '';
   domicileDate: string;
+  isDifferentlyAbled: boolean;
   permanentAddress: Form2BAddressFields;
   correspondenceAddressDifferent: boolean;
   correspondenceAddress: Form2BAddressFields;
@@ -109,8 +122,6 @@ export interface Form2BData {
   // Step 8: Declaration & Review
   declaration: Form2BDeclaration;
   declarationAccepted: boolean;
-  isDifferentlyAbled: boolean;
-  differentlyAbledProof: File | null;
 }
 
 export const initialForm2BData: Form2BData = {
@@ -129,6 +140,7 @@ export const initialForm2BData: Form2BData = {
   motherName: '',
   citizenshipType: '',
   domicileDate: '',
+  isDifferentlyAbled: false,
   permanentAddress: {
     addressLine1: '',
     addressLine2: '',
@@ -161,15 +173,24 @@ export const initialForm2BData: Form2BData = {
       durationMonths: '',
       admissionDate: '',
       passingDate: '',
+      modeOfLearning: '',
+      mediumOfInstruction: '',
+      regulatoryAuthority: '',
       certificate: null
     }
   ],
   internships: [],
   experiences: [],
   documents: {
+    transcripts: null,
+    undergradSyllabus: null,
+    postgradSyllabus: null,
+    professionalRegistration: null,
+    equivalenceCertificate: null,
     validIdProof: null,
     medicalFitness: null,
-    endorsementLetter: null
+    endorsementLetter: null,
+    differentlyAbledProof: null
   },
   declaration: {
     permitCancellation: false,
@@ -178,7 +199,5 @@ export const initialForm2BData: Form2BData = {
     legalDisputeDetails: '',
     previousPermissions: []
   },
-  declarationAccepted: false,
-  isDifferentlyAbled: false,
-  differentlyAbledProof: null
+  declarationAccepted: false
 };

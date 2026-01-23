@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Lock, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
+import { User, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -35,7 +35,12 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
     updateFormData("correspondenceAddress", { ...formData.correspondenceAddress, [field]: value });
   };
 
-  const isDifferentState = formData.stateOfResidence !== formData.stateFromAadhaar && formData.stateOfResidence !== "";
+  const handleDifferentlyAbledProofChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateFormData("documents", { ...formData.documents, differentlyAbledProof: file });
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -154,13 +159,10 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
                 <Input
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) updateFormData("differentlyAbledProof", file);
-                  }}
+                  onChange={handleDifferentlyAbledProofChange}
                   className="h-11"
                 />
-                {formData.differentlyAbledProof && (
+                {formData.documents.differentlyAbledProof && (
                   <span className="text-sm text-green-600 flex items-center gap-1">
                     <CheckCircle2 className="w-4 h-4" /> Uploaded
                   </span>

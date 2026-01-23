@@ -17,6 +17,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
       institutionName: '',
       address: '',
       state: '',
+      district: '',
       proofDocument: null
     };
     updateFormData("practiceStates", [...formData.practiceStates, newState]);
@@ -118,7 +119,18 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="md:col-span-2 space-y-2">
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  District <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  placeholder="District name"
+                  value={ps.district}
+                  onChange={(e) => updatePracticeState(index, 'district', e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
                   Address <span className="text-destructive">*</span>
                 </Label>

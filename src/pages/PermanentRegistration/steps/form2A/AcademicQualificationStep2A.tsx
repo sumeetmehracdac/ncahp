@@ -2,6 +2,7 @@ import { GraduationCap, Plus, Trash2, Upload } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form2AData, Form2AAcademicQualification } from "../../types/form2A";
 
 interface Props {
@@ -20,6 +21,9 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
       durationMonths: '',
       admissionDate: '',
       passingDate: '',
+      modeOfLearning: '',
+      mediumOfInstruction: '',
+      regulatoryAuthority: '',
       certificate: null
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
@@ -142,6 +146,46 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
+                  Mode of Learning <span className="text-destructive">*</span>
+                </Label>
+                <Select
+                  value={qual.modeOfLearning}
+                  onValueChange={(value) => updateQualification(index, 'modeOfLearning', value)}
+                >
+                  <SelectTrigger className="h-11">
+                    <SelectValue placeholder="Select mode" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="regular">Regular</SelectItem>
+                    <SelectItem value="distance">Distance</SelectItem>
+                    <SelectItem value="online">Online</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  Medium of Instruction <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  placeholder="e.g., English"
+                  value={qual.mediumOfInstruction}
+                  onChange={(e) => updateQualification(index, 'mediumOfInstruction', e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  Regulatory Authority <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  placeholder="Name of regulatory body"
+                  value={qual.regulatoryAuthority}
+                  onChange={(e) => updateQualification(index, 'regulatoryAuthority', e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
                   Date of Admission <span className="text-destructive">*</span>
                 </Label>
                 <Input
@@ -162,7 +206,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   className="h-11"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="md:col-span-2 space-y-2">
                 <Label className="text-sm text-muted-foreground">
                   Attach Certificate <span className="text-destructive">*</span>
                 </Label>

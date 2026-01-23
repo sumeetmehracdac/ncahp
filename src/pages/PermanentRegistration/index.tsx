@@ -606,7 +606,7 @@ const PermanentRegistration = () => {
       case 6:
         return true; // Optional
       case 7:
-        return form2BData.documents.transcripts !== null;
+        return form2BData.documents.validIdProof !== null;
       case 8:
         return form2BData.declarationAccepted;
       default:

@@ -2,6 +2,7 @@ import { GraduationCap, Plus, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form2BData, Form2BAcademicQualification } from "../../types/form2B";
 
 interface Props {
@@ -20,6 +21,9 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
       durationMonths: '',
       admissionDate: '',
       passingDate: '',
+      modeOfLearning: '',
+      mediumOfInstruction: '',
+      regulatoryAuthority: '',
       certificate: null
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
@@ -80,6 +84,27 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
                 <Input type="number" value={qual.durationMonths} onChange={(e) => updateQualification(qual.id, 'durationMonths', e.target.value)} placeholder="e.g., 48" />
               </div>
               <div className="space-y-2">
+                <Label>Mode of Learning <span className="text-destructive">*</span></Label>
+                <Select value={qual.modeOfLearning} onValueChange={(value) => updateQualification(qual.id, 'modeOfLearning', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select mode" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="regular">Regular</SelectItem>
+                    <SelectItem value="distance">Distance</SelectItem>
+                    <SelectItem value="online">Online</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Medium of Instruction <span className="text-destructive">*</span></Label>
+                <Input value={qual.mediumOfInstruction} onChange={(e) => updateQualification(qual.id, 'mediumOfInstruction', e.target.value)} placeholder="e.g., English" />
+              </div>
+              <div className="space-y-2">
+                <Label>Regulatory Authority <span className="text-destructive">*</span></Label>
+                <Input value={qual.regulatoryAuthority} onChange={(e) => updateQualification(qual.id, 'regulatoryAuthority', e.target.value)} placeholder="Name of regulatory body" />
+              </div>
+              <div className="space-y-2">
                 <Label>Admission Date</Label>
                 <Input type="date" value={qual.admissionDate} onChange={(e) => updateQualification(qual.id, 'admissionDate', e.target.value)} />
               </div>
@@ -87,7 +112,7 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
                 <Label>Passing Date <span className="text-destructive">*</span></Label>
                 <Input type="date" value={qual.passingDate} onChange={(e) => updateQualification(qual.id, 'passingDate', e.target.value)} />
               </div>
-              <div className="space-y-2">
+              <div className="md:col-span-2 space-y-2">
                 <Label>Certificate</Label>
                 <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateQualification(qual.id, 'certificate', e.target.files?.[0] || null)} />
               </div>
