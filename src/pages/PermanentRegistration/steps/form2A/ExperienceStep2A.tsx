@@ -21,6 +21,7 @@ const ExperienceStep2A = ({ formData, updateFormData }: Props) => {
       completionDate: '',
       coreDuties: '',
       licenseNumber: '',
+      issuingAuthority: '',
       certificate: null
     };
     updateFormData("experiences", [...formData.experiences, newExp]);
@@ -138,15 +139,6 @@ const ExperienceStep2A = ({ formData, updateFormData }: Props) => {
                       className="h-11"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">License/Registration Number</Label>
-                    <Input
-                      placeholder="Professional license number"
-                      value={exp.licenseNumber}
-                      onChange={(e) => updateExperience(index, 'licenseNumber', e.target.value)}
-                      className="h-11"
-                    />
-                  </div>
                   <div className="md:col-span-2 space-y-2">
                     <Label className="text-sm text-muted-foreground">Core Duties</Label>
                     <Textarea
@@ -156,8 +148,26 @@ const ExperienceStep2A = ({ formData, updateFormData }: Props) => {
                       rows={3}
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-muted-foreground">License/Professional Registration Number (if any)</Label>
+                    <Input
+                      placeholder="Professional license number"
+                      value={exp.licenseNumber}
+                      onChange={(e) => updateExperience(index, 'licenseNumber', e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-muted-foreground">Issuing Authority</Label>
+                    <Input
+                      placeholder="Name of issuing authority"
+                      value={exp.issuingAuthority}
+                      onChange={(e) => updateExperience(index, 'issuingAuthority', e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
                   <div className="md:col-span-2 space-y-2">
-                    <Label className="text-sm text-muted-foreground">Attach Certificate</Label>
+                    <Label className="text-sm text-muted-foreground">Certificate Attached</Label>
                     <div className="relative">
                       <div
                         className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${

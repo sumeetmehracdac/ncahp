@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Upload, Globe } from "lucide-react";
+import { User, Upload, Globe, FileCheck } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -22,6 +22,13 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
       const reader = new FileReader();
       reader.onloadend = () => setPhotoPreview(reader.result as string);
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDifferentlyAbledCertificateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateFormData("differentlyAbledCertificate", file);
     }
   };
 
@@ -101,7 +108,7 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
             onValueChange={(value) => updateFormData("gender", value)}
             className="flex gap-4"
           >
-            {["Male", "Female", "Other"].map((g) => (
+            {["Male", "Female", "Others"].map((g) => (
               <Label
                 key={g}
                 htmlFor={`gender-${g.toLowerCase()}`}
@@ -148,7 +155,7 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="phoneNumber">
-            Phone Number (with country code) <span className="text-destructive">*</span>
+            Mobile No. (with country code) <span className="text-destructive">*</span>
           </Label>
           <Input
             id="phoneNumber"
@@ -157,6 +164,90 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
             onChange={(e) => updateFormData("phoneNumber", e.target.value)}
             className="h-11"
           />
+        </div>
+      </div>
+
+      {/* Is Differently Abled */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold text-foreground">
+          Is Differently Abled? <span className="text-destructive">*</span>
+        </Label>
+        <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
+          <RadioGroup
+            value={formData.isDifferentlyAbled ? "yes" : "no"}
+            onValueChange={(value) => {
+              updateFormData("isDifferentlyAbled", value === "yes");
+              if (value === "no") {
+                updateFormData("differentlyAbledCertificate", null);
+              }
+            }}
+            className="flex gap-4"
+          >
+            <Label
+              htmlFor="differently-abled-yes"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                formData.isDifferentlyAbled
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-primary/50"
+              }`}
+            >
+              <RadioGroupItem value="yes" id="differently-abled-yes" />
+              <span className="text-sm font-medium">Yes</span>
+            </Label>
+            <Label
+              htmlFor="differently-abled-no"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                !formData.isDifferentlyAbled
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-primary/50"
+              }`}
+            >
+              <RadioGroupItem value="no" id="differently-abled-no" />
+              <span className="text-sm font-medium">No</span>
+            </Label>
+          </RadioGroup>
+
+          {/* Conditional Certificate Upload */}
+          <AnimatePresence>
+            {formData.isDifferentlyAbled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-2"
+              >
+                <Label className="text-sm text-muted-foreground">
+                  Upload Disability Certificate <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      formData.differentlyAbledCertificate
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    {formData.differentlyAbledCertificate ? (
+                      <FileCheck className="w-5 h-5 text-primary" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-muted-foreground" />
+                    )}
+                    <span className="text-sm text-muted-foreground truncate">
+                      {formData.differentlyAbledCertificate
+                        ? formData.differentlyAbledCertificate.name
+                        : "Upload certificate (PDF, JPG, PNG)"}
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleDifferentlyAbledCertificateChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -307,7 +398,7 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
           onCheckedChange={(checked) => updateFormData("correspondenceAddressDifferent", checked as boolean)}
         />
         <Label htmlFor="correspondenceAddressDifferent" className="cursor-pointer text-sm font-medium text-foreground">
-          Current correspondence address different from permanent address?
+          Correspondence Address (if different from Permanent Address)
         </Label>
       </div>
 
@@ -378,46 +469,6 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Practice Duration in India */}
-      <div className="space-y-4">
-        <Label className="text-base font-semibold text-foreground">
-          Duration of Practice in India <span className="text-destructive">*</span>
-        </Label>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="durationOfPracticeIndia" className="text-sm text-muted-foreground">Duration (in months)</Label>
-            <Input
-              id="durationOfPracticeIndia"
-              type="number"
-              placeholder="e.g., 12"
-              value={formData.durationOfPracticeIndia}
-              onChange={(e) => updateFormData("durationOfPracticeIndia", e.target.value)}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="expectedStartDate" className="text-sm text-muted-foreground">Expected Start Date</Label>
-            <Input
-              id="expectedStartDate"
-              type="date"
-              value={formData.expectedStartDate}
-              onChange={(e) => updateFormData("expectedStartDate", e.target.value)}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="expectedEndDate" className="text-sm text-muted-foreground">Expected End Date</Label>
-            <Input
-              id="expectedEndDate"
-              type="date"
-              value={formData.expectedEndDate}
-              onChange={(e) => updateFormData("expectedEndDate", e.target.value)}
-              className="h-11"
-            />
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

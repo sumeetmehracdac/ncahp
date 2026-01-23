@@ -17,6 +17,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
       qualificationName: '',
       institutionName: '',
       university: '',
+      courseName: '',
       country: '',
       durationMonths: '',
       admissionDate: '',
@@ -24,7 +25,8 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
       modeOfLearning: '',
       mediumOfInstruction: '',
       regulatoryAuthority: '',
-      certificate: null
+      certificate: null,
+      transcript: null
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
   };
@@ -42,10 +44,17 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
     }
   };
 
-  const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCertificateChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       updateQualification(index, 'certificate', file);
+    }
+  };
+
+  const handleTranscriptChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateQualification(index, 'transcript', file);
     }
   };
 
@@ -112,12 +121,23 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  University <span className="text-destructive">*</span>
+                  University/Regulatory Authority <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  placeholder="University name"
+                  placeholder="University or regulatory authority name"
                   value={qual.university}
                   onChange={(e) => updateQualification(index, 'university', e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  Name of Course <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  placeholder="Course name"
+                  value={qual.courseName}
+                  onChange={(e) => updateQualification(index, 'courseName', e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -146,7 +166,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Mode of Learning <span className="text-destructive">*</span>
+                  Mode of Learning - Regular (Yes/No) <span className="text-destructive">*</span>
                 </Label>
                 <Select
                   value={qual.modeOfLearning}
@@ -156,15 +176,15 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                     <SelectValue placeholder="Select mode" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="regular">Regular</SelectItem>
-                    <SelectItem value="distance">Distance</SelectItem>
-                    <SelectItem value="online">Online</SelectItem>
+                    <SelectItem value="regular">Yes (Regular)</SelectItem>
+                    <SelectItem value="distance">No (Distance)</SelectItem>
+                    <SelectItem value="online">No (Online)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Medium of Instruction <span className="text-destructive">*</span>
+                  Medium of Instruction (specify language) <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   placeholder="e.g., English"
@@ -175,18 +195,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Regulatory Authority <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  placeholder="Name of regulatory body"
-                  value={qual.regulatoryAuthority}
-                  onChange={(e) => updateQualification(index, 'regulatoryAuthority', e.target.value)}
-                  className="h-11"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-sm text-muted-foreground">
-                  Date of Admission <span className="text-destructive">*</span>
+                  Year of Admission <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   type="date"
@@ -197,7 +206,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Date of Passing <span className="text-destructive">*</span>
+                  Year of Passing <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   type="date"
@@ -206,10 +215,15 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   className="h-11"
                 />
               </div>
-              <div className="md:col-span-2 space-y-2">
+
+              {/* Certificate Upload */}
+              <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Attach Certificate <span className="text-destructive">*</span>
+                  Upload Certificate (Core Competency Mapping) <span className="text-destructive">*</span>
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  To be endorsed by the respected University/Institute
+                </p>
                 <div className="relative">
                   <div
                     className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
@@ -224,7 +238,35 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange(index, e)}
+                    onChange={(e) => handleCertificateChange(index, e)}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Transcript Upload */}
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">
+                  Upload Transcript/Syllabus <span className="text-destructive">*</span>
+                </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  To be endorsed by the respected University/Institute
+                </p>
+                <div className="relative">
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      qual.transcript ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <Upload className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground truncate">
+                      {qual.transcript ? qual.transcript.name : "Upload transcript/syllabus"}
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => handleTranscriptChange(index, e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>

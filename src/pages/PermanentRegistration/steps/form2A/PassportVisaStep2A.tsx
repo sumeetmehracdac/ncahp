@@ -1,13 +1,30 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { CreditCard, Plane, AlertCircle, Users } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Form2AData, Form2APassportDetails, Form2AVisaDetails, Form2AEmergencyContact } from "../../types/form2A";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form2AData, Form2APassportDetails, Form2AVisaDetails, Form2AEmergencyContact, Form2AContactPersonIndia } from "../../types/form2A";
 
 interface Props {
   formData: Form2AData;
   updateFormData: <K extends keyof Form2AData>(field: K, value: Form2AData[K]) => void;
 }
+
+// Common visa types for India
+const visaTypes = [
+  'Tourist Visa',
+  'Business Visa',
+  'Medical Visa',
+  'Student Visa',
+  'Research Visa',
+  'Employment Visa',
+  'Conference Visa',
+  'Entry Visa',
+  'e-Visa',
+  'Other'
+];
 
 const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
   const updatePassportDetails = (field: keyof Form2APassportDetails, value: string) => {
@@ -27,6 +44,13 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
   const updateEmergencyContact = (field: keyof Form2AEmergencyContact, value: string) => {
     updateFormData("emergencyContact", {
       ...formData.emergencyContact,
+      [field]: value
+    });
+  };
+
+  const updateContactPersonIndia = (field: keyof Form2AContactPersonIndia, value: string) => {
+    updateFormData("contactPersonIndia", {
+      ...formData.contactPersonIndia,
       [field]: value
     });
   };
@@ -52,30 +76,56 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
           <CreditCard className="w-5 h-5 text-primary" />
           <Label className="text-base font-semibold text-foreground">Passport Details</Label>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 rounded-xl p-6 border border-border">
-          <div className="space-y-2">
-            <Label htmlFor="passportNumber">
-              Passport Number <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="passportNumber"
-              placeholder="e.g., AB1234567"
-              value={formData.passportDetails.passportNumber}
-              onChange={(e) => updatePassportDetails("passportNumber", e.target.value)}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="passportExpiry">
-              Expiry Date <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="passportExpiry"
-              type="date"
-              value={formData.passportDetails.expiryDate}
-              onChange={(e) => updatePassportDetails("expiryDate", e.target.value)}
-              className="h-11"
-            />
+        <div className="bg-slate-50 rounded-xl p-6 border border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="passportNumber">
+                Passport Number <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="passportNumber"
+                placeholder="e.g., AB1234567"
+                value={formData.passportDetails.passportNumber}
+                onChange={(e) => updatePassportDetails("passportNumber", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="issuingCountry">
+                Issuing Country <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="issuingCountry"
+                placeholder="e.g., United States"
+                value={formData.passportDetails.issuingCountry}
+                onChange={(e) => updatePassportDetails("issuingCountry", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="passportIssueDate">
+                Date of Issue <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="passportIssueDate"
+                type="date"
+                value={formData.passportDetails.issueDate}
+                onChange={(e) => updatePassportDetails("issueDate", e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="passportExpiry">
+                Expiry Date <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="passportExpiry"
+                type="date"
+                value={formData.passportDetails.expiryDate}
+                onChange={(e) => updatePassportDetails("expiryDate", e.target.value)}
+                className="h-11"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -98,34 +148,24 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
                 className="h-11"
               />
             </div>
-            <div className="space-y-4">
-              <Label className="text-sm text-muted-foreground">Visa Type</Label>
-              <RadioGroup
+            <div className="space-y-2">
+              <Label htmlFor="visaType">Visa Type</Label>
+              <Select
                 value={formData.visaDetails.visaType}
                 onValueChange={(value) => updateVisaDetails("visaType", value)}
-                className="flex gap-4"
               >
-                {[
-                  { value: "student", label: "Student" },
-                  { value: "research", label: "Research" },
-                  { value: "other", label: "Other" }
-                ].map((type) => (
-                  <Label
-                    key={type.value}
-                    htmlFor={`visa-${type.value}`}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${formData.visaDetails.visaType === type.value
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                      }`}
-                  >
-                    <RadioGroupItem value={type.value} id={`visa-${type.value}`} />
-                    <span className="text-sm">{type.label}</span>
-                  </Label>
-                ))}
-              </RadioGroup>
+                <SelectTrigger className="h-11">
+                  <SelectValue placeholder="Select visa type" />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  {visaTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="visaIssueDate">Visa Issue Date</Label>
               <Input
@@ -160,7 +200,7 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="emergencyName">
-                Name of Emergency Contact <span className="text-destructive">*</span>
+                Name of Emergency Contact Person <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="emergencyName"
@@ -223,84 +263,102 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
       <div className="space-y-4">
         <div className="flex items-center gap-2 mb-2">
           <Users className="w-5 h-5 text-primary" />
-          <Label className="text-base font-semibold text-foreground">Do you have any Contact Person in India? (Optional)</Label>
+          <Label className="text-base font-semibold text-foreground">Do you have any Contact Person in India?</Label>
         </div>
         <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
           <RadioGroup
+            value={formData.hasContactPersonIndia ? "yes" : "no"}
+            onValueChange={(value) => updateFormData("hasContactPersonIndia", value === "yes")}
             className="flex gap-4 mb-4"
-            defaultValue="no"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="yes" id="contact-yes" onClick={() => {
-                const el = document.getElementById('contact-india-fields');
-                if (el) el.style.display = 'block';
-              }} />
-              <Label htmlFor="contact-yes">Yes</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="no" id="contact-no" onClick={() => {
-                const el = document.getElementById('contact-india-fields');
-                if (el) el.style.display = 'none';
-              }} />
-              <Label htmlFor="contact-no">No</Label>
-            </div>
+            <Label
+              htmlFor="contact-india-yes"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                formData.hasContactPersonIndia
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-primary/50"
+              }`}
+            >
+              <RadioGroupItem value="yes" id="contact-india-yes" />
+              <span className="text-sm font-medium">Yes</span>
+            </Label>
+            <Label
+              htmlFor="contact-india-no"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                !formData.hasContactPersonIndia
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:border-primary/50"
+              }`}
+            >
+              <RadioGroupItem value="no" id="contact-india-no" />
+              <span className="text-sm font-medium">No</span>
+            </Label>
           </RadioGroup>
 
-          <div id="contact-india-fields" style={{ display: 'none' }} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="contactIndiaName">Name of Contact Person (India)</Label>
-                <Input
-                  id="contactIndiaName"
-                  placeholder="Full name"
-                  value={formData.contactPersonIndia.name}
-                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, name: e.target.value })}
-                  className="h-11"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contactIndiaRel">Relationship to Applicant</Label>
-                <Input
-                  id="contactIndiaRel"
-                  placeholder="Relationship"
-                  value={formData.contactPersonIndia.relationship}
-                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, relationship: e.target.value })}
-                  className="h-11"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contactIndiaNumber">Contact Number (India)</Label>
-                <Input
-                  id="contactIndiaNumber"
-                  placeholder="Phone number"
-                  value={formData.contactPersonIndia.contactNumber}
-                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, contactNumber: e.target.value })}
-                  className="h-11"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="contactIndiaEmail">Email Address (if available)</Label>
-                <Input
-                  id="contactIndiaEmail"
-                  type="email"
-                  placeholder="email@example.com"
-                  value={formData.contactPersonIndia.email}
-                  onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, email: e.target.value })}
-                  className="h-11"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contactIndiaAddress">Address in India</Label>
-              <Input
-                id="contactIndiaAddress"
-                placeholder="Full address"
-                value={formData.contactPersonIndia.address}
-                onChange={(e) => updateFormData("contactPersonIndia", { ...formData.contactPersonIndia, address: e.target.value })}
-                className="h-11"
-              />
-            </div>
-          </div>
+          <AnimatePresence>
+            {formData.hasContactPersonIndia && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-4"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="contactIndiaName">Name of Contact Person (India)</Label>
+                    <Input
+                      id="contactIndiaName"
+                      placeholder="Full name"
+                      value={formData.contactPersonIndia.name}
+                      onChange={(e) => updateContactPersonIndia("name", e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contactIndiaRel">Relationship to Applicant</Label>
+                    <Input
+                      id="contactIndiaRel"
+                      placeholder="Relationship"
+                      value={formData.contactPersonIndia.relationship}
+                      onChange={(e) => updateContactPersonIndia("relationship", e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contactIndiaNumber">Contact Number (India)</Label>
+                    <Input
+                      id="contactIndiaNumber"
+                      placeholder="Phone number"
+                      value={formData.contactPersonIndia.contactNumber}
+                      onChange={(e) => updateContactPersonIndia("contactNumber", e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contactIndiaEmail">Email Address (if available)</Label>
+                    <Input
+                      id="contactIndiaEmail"
+                      type="email"
+                      placeholder="email@example.com"
+                      value={formData.contactPersonIndia.email}
+                      onChange={(e) => updateContactPersonIndia("email", e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactIndiaAddress">Address in India</Label>
+                  <Input
+                    id="contactIndiaAddress"
+                    placeholder="Full address"
+                    value={formData.contactPersonIndia.address}
+                    onChange={(e) => updateContactPersonIndia("address", e.target.value)}
+                    className="h-11"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
