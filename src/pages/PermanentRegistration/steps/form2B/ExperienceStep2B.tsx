@@ -20,6 +20,7 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
       startDate: '',
       completionDate: '',
       coreDuties: '',
+      licenseNumber: '',
       certificate: null
     };
     updateFormData("experiences", [...formData.experiences, newExp]);
@@ -86,6 +87,10 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
                   <div className="space-y-2">
                     <Label>End Date</Label>
                     <Input type="date" value={exp.completionDate} onChange={(e) => updateExperience(exp.id, 'completionDate', e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>License/Registration Number</Label>
+                    <Input value={exp.licenseNumber} onChange={(e) => updateExperience(exp.id, 'licenseNumber', e.target.value)} placeholder="Professional license number" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <Label>Core Duties</Label>

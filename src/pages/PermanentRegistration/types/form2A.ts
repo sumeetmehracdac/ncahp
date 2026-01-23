@@ -26,6 +26,7 @@ export interface Form2AContactPersonIndia {
 
 export interface Form2APassportDetails {
   passportNumber: string;
+  issuingCountry: string;
   expiryDate: string;
 }
 
@@ -45,6 +46,9 @@ export interface Form2AAcademicQualification {
   durationMonths: string;
   admissionDate: string;
   passingDate: string;
+  modeOfLearning: 'regular' | 'distance' | 'online' | '';
+  mediumOfInstruction: string;
+  regulatoryAuthority: string;
   certificate: File | null;
 }
 
@@ -55,6 +59,7 @@ export interface Form2AInternship {
   country: string;
   startDate: string;
   completionDate: string;
+  totalHours: string;
   coreDuties: string;
   certificate: File | null;
 }
@@ -67,6 +72,7 @@ export interface Form2AExperience {
   startDate: string;
   completionDate: string;
   coreDuties: string;
+  licenseNumber: string;
   certificate: File | null;
 }
 
@@ -74,6 +80,7 @@ export interface Form2APracticeState {
   institutionName: string;
   address: string;
   state: string;
+  district: string;
   proofDocument: File | null;
 }
 
@@ -97,6 +104,7 @@ export interface Form2ADocuments {
   equivalenceCertificate: File | null;
   medicalFitness: File | null;
   sponsorshipProof: File | null;
+  differentlyAbledProof: File | null;
 }
 
 export interface Form2AData {
@@ -116,9 +124,14 @@ export interface Form2AData {
   fatherName: string;
   motherName: string;
   nationality: string;
+  isDifferentlyAbled: boolean;
   permanentAddress: Form2AAddressFields;
   correspondenceAddressDifferent: boolean;
   correspondenceAddress: Form2AAddressFields;
+  
+  // Purpose of Registration
+  purposeOfRegistration: 'practice' | 'teaching' | 'research' | 'other' | '';
+  purposeOfRegistrationOther: string;
   durationOfPracticeIndia: string;
   expectedStartDate: string;
   expectedEndDate: string;
@@ -163,6 +176,7 @@ export const initialForm2AData: Form2AData = {
   fatherName: '',
   motherName: '',
   nationality: '',
+  isDifferentlyAbled: false,
   permanentAddress: {
     addressLine1: '',
     addressLine2: '',
@@ -178,12 +192,15 @@ export const initialForm2AData: Form2AData = {
     pincode: '',
     country: ''
   },
+  purposeOfRegistration: '',
+  purposeOfRegistrationOther: '',
   durationOfPracticeIndia: '',
   expectedStartDate: '',
   expectedEndDate: '',
   practiceStates: [],
   passportDetails: {
     passportNumber: '',
+    issuingCountry: '',
     expiryDate: ''
   },
   visaDetails: {
@@ -216,6 +233,9 @@ export const initialForm2AData: Form2AData = {
       durationMonths: '',
       admissionDate: '',
       passingDate: '',
+      modeOfLearning: '',
+      mediumOfInstruction: '',
+      regulatoryAuthority: '',
       certificate: null
     }
   ],
@@ -232,7 +252,8 @@ export const initialForm2AData: Form2AData = {
     englishProficiency: null,
     equivalenceCertificate: null,
     medicalFitness: null,
-    sponsorshipProof: null
+    sponsorshipProof: null,
+    differentlyAbledProof: null
   },
   declaration: {
     permitCancellation: false,

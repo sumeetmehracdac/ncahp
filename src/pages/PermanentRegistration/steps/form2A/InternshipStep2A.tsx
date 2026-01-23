@@ -19,6 +19,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
       country: '',
       startDate: '',
       completionDate: '',
+      totalHours: '',
       coreDuties: '',
       certificate: null
     };
@@ -143,6 +144,18 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                       type="date"
                       value={internship.completionDate}
                       onChange={(e) => updateInternship(index, 'completionDate', e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-muted-foreground">
+                      Total Hours <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      type="number"
+                      placeholder="e.g., 1000"
+                      value={internship.totalHours}
+                      onChange={(e) => updateInternship(index, 'totalHours', e.target.value)}
                       className="h-11"
                     />
                   </div>
