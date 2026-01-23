@@ -56,25 +56,25 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label>First Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateFormData("firstName", e.target.value)} className="h-11" />
+          <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateFormData("firstName", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Middle Name</Label>
-          <Input placeholder="Middle Name" value={formData.middleName} onChange={(e) => updateFormData("middleName", e.target.value)} className="h-11" />
+          <Input placeholder="Middle Name" value={formData.middleName} onChange={(e) => updateFormData("middleName", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Last Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="Last Name" value={formData.lastName} onChange={(e) => updateFormData("lastName", e.target.value)} className="h-11" />
+          <Input placeholder="Last Name" value={formData.lastName} onChange={(e) => updateFormData("lastName", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
       </div>
 
-      {/* Gender & DOB */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Gender, Age & DOB */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-4">
           <Label className="text-base font-semibold">Gender <span className="text-destructive">*</span></Label>
-          <RadioGroup value={formData.gender} onValueChange={(value) => updateFormData("gender", value)} className="flex gap-4">
+          <RadioGroup value={formData.gender} onValueChange={(value) => updateFormData("gender", value)} className="flex gap-4" disabled>
             {["Male", "Female", "Other"].map((g) => (
-              <Label key={g} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${formData.gender === g ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+              <Label key={g} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-not-allowed transition-all ${formData.gender === g ? "border-primary bg-primary/5" : "border-border bg-muted opacity-50"}`}>
                 <RadioGroupItem value={g} />
                 <span className="text-sm font-medium">{g}</span>
               </Label>
@@ -82,8 +82,12 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
           </RadioGroup>
         </div>
         <div className="space-y-2">
+          <Label>Age <span className="text-destructive">*</span></Label>
+          <Input type="number" value={formData.age} onChange={(e) => updateFormData("age", e.target.value)} className="h-11 bg-muted" disabled />
+        </div>
+        <div className="space-y-2">
           <Label>Date of Birth <span className="text-destructive">*</span></Label>
-          <Input type="date" value={formData.dateOfBirth} onChange={(e) => updateFormData("dateOfBirth", e.target.value)} className="h-11" />
+          <Input type="date" value={formData.dateOfBirth} onChange={(e) => updateFormData("dateOfBirth", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
       </div>
 
@@ -91,11 +95,11 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Email <span className="text-destructive">*</span></Label>
-          <Input type="email" placeholder="email@example.com" value={formData.email} onChange={(e) => updateFormData("email", e.target.value)} className="h-11" />
+          <Input type="email" placeholder="email@example.com" value={formData.email} onChange={(e) => updateFormData("email", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Phone Number <span className="text-destructive">*</span></Label>
-          <Input placeholder="+91 98765 43210" value={formData.phoneNumber} onChange={(e) => updateFormData("phoneNumber", e.target.value)} className="h-11" />
+          <Input placeholder="+91 98765 43210" value={formData.phoneNumber} onChange={(e) => updateFormData("phoneNumber", e.target.value)} className="h-11 bg-muted" disabled />
         </div>
       </div>
 

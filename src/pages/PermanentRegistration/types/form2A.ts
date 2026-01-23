@@ -46,13 +46,14 @@ export interface Form2AAcademicQualification {
   courseName: string;
   country: string;
   durationMonths: string;
-  admissionDate: string;
-  passingDate: string;
-  modeOfLearning: 'regular' | 'distance' | 'online' | '';
+  admissionYear: string;
+  passingYear: string;
+  modeOfLearning: string; // "Yes" (Regular) or "No"
   mediumOfInstruction: string;
   regulatoryAuthority: string;
   certificate: File | null;
   transcript: File | null;
+  attestedSyllabus: File | null;
 }
 
 export interface Form2AInternship {
@@ -121,6 +122,7 @@ export interface Form2AData {
   middleName: string;
   lastName: string;
   gender: string;
+  age: string;
   dateOfBirth: string;
   email: string;
   phoneNumber: string;
@@ -185,6 +187,7 @@ export const initialForm2AData: Form2AData = {
   middleName: '',
   lastName: '',
   gender: '',
+  age: '',
   dateOfBirth: '',
   email: '',
   phoneNumber: '',
@@ -259,13 +262,15 @@ export const initialForm2AData: Form2AData = {
       courseName: '',
       country: '',
       durationMonths: '',
-      admissionDate: '',
-      passingDate: '',
+      durationMonths: '',
+      admissionYear: '',
+      passingYear: '',
       modeOfLearning: '',
       mediumOfInstruction: '',
       regulatoryAuthority: '',
       certificate: null,
-      transcript: null
+      transcript: null,
+      attestedSyllabus: null
     }
   ],
   internships: [],

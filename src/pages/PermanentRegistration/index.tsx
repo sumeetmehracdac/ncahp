@@ -485,12 +485,39 @@ const PermanentRegistration = () => {
 
     // Detect form type change
     if (field === 'registrationType') {
+      const nameParts = formData.name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+      const middleName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
+
       if (value === '2A') {
         setActiveFormType('2A');
-        setForm2AData(prev => ({ ...prev, profession: formData.profession }));
+        setForm2AData(prev => ({
+          ...prev,
+          profession: formData.profession,
+          firstName,
+          middleName,
+          lastName,
+          gender: formData.gender,
+          age: formData.age,
+          dateOfBirth: formData.dateOfBirth,
+          email: formData.email,
+          phoneNumber: formData.mobile
+        }));
       } else if (value === '2B') {
         setActiveFormType('2B');
-        setForm2BData(prev => ({ ...prev, profession: formData.profession }));
+        setForm2BData(prev => ({
+          ...prev,
+          profession: formData.profession,
+          firstName,
+          middleName,
+          lastName,
+          gender: formData.gender,
+          age: formData.age,
+          dateOfBirth: formData.dateOfBirth,
+          email: formData.email,
+          phoneNumber: formData.mobile
+        }));
       } else {
         setActiveFormType('main');
       }
@@ -573,7 +600,10 @@ const PermanentRegistration = () => {
         return form2AData.practiceStates.length > 0;
       case 4:
         return form2AData.passportDetails.passportNumber !== '' &&
-          form2AData.visaDetails.visaNumber !== '';
+          form2AData.passportDetails.issuingCountry !== '' &&
+          form2AData.passportDetails.expiryDate !== '' &&
+          form2AData.emergencyContact.name !== '' &&
+          form2AData.emergencyContact.contactNumber !== '';
       case 5:
         return form2AData.academicQualifications.some(q => q.qualificationName !== '');
       case 6:
@@ -581,7 +611,7 @@ const PermanentRegistration = () => {
       case 7:
         return true; // Optional
       case 8:
-        return form2AData.documents.transcripts !== null;
+        return form2AData.documents.passportCopy !== null;
       case 9:
         return form2AData.declarationAccepted;
       default:

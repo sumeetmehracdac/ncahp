@@ -86,6 +86,7 @@ export interface Form2BData {
   middleName: string;
   lastName: string;
   gender: string;
+  age: string;
   dateOfBirth: string;
   email: string;
   phoneNumber: string;
@@ -131,6 +132,7 @@ export const initialForm2BData: Form2BData = {
   middleName: '',
   lastName: '',
   gender: '',
+  age: '',
   dateOfBirth: '',
   email: '',
   phoneNumber: '',

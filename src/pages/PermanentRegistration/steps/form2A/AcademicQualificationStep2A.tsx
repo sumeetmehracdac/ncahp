@@ -1,4 +1,4 @@
-import { GraduationCap, Plus, Trash2, Upload } from "lucide-react";
+import { GraduationCap, Plus, Trash2, Upload, BookOpen } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,16 +17,17 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
       qualificationName: '',
       institutionName: '',
       university: '',
-      courseName: '',
+      courseName: '', // Kept for interface compatibility, but might be redundant if separate from Qual Name
       country: '',
       durationMonths: '',
-      admissionDate: '',
-      passingDate: '',
+      admissionYear: '',
+      passingYear: '',
       modeOfLearning: '',
       mediumOfInstruction: '',
       regulatoryAuthority: '',
       certificate: null,
-      transcript: null
+      transcript: null,
+      attestedSyllabus: null
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
   };
@@ -44,17 +45,10 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
     }
   };
 
-  const handleCertificateChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (index: number, field: 'certificate' | 'transcript' | 'attestedSyllabus', e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updateQualification(index, 'certificate', file);
-    }
-  };
-
-  const handleTranscriptChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      updateQualification(index, 'transcript', file);
+      updateQualification(index, field, file);
     }
   };
 
@@ -66,7 +60,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
           <GraduationCap className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Academic Qualification
+          Screen-5: Academic Qualification
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Provide details of your academic qualifications related to allied and healthcare professions.
@@ -81,7 +75,10 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
             className="bg-slate-50 rounded-xl p-6 border border-border space-y-4"
           >
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Qualification {index + 1}</h3>
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Qualification {index + 1}</h3>
+              </div>
               {index > 0 && (
                 <Button
                   type="button"
@@ -102,7 +99,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   Name of Qualification <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  placeholder="e.g., Bachelor of Medical Laboratory Technology"
+                  placeholder="e.g., Bachelor of Medical Lab Technology"
                   value={qual.qualificationName}
                   onChange={(e) => updateQualification(index, 'qualificationName', e.target.value)}
                   className="h-11"
@@ -121,10 +118,10 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  University/Regulatory Authority <span className="text-destructive">*</span>
+                  University <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  placeholder="University or regulatory authority name"
+                  placeholder="University name"
                   value={qual.university}
                   onChange={(e) => updateQualification(index, 'university', e.target.value)}
                   className="h-11"
@@ -132,12 +129,12 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Name of Course <span className="text-destructive">*</span>
+                  Name of regulatory authority recognising the university and the program <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  placeholder="Course name"
-                  value={qual.courseName}
-                  onChange={(e) => updateQualification(index, 'courseName', e.target.value)}
+                  placeholder="Regulatory Authority"
+                  value={qual.regulatoryAuthority}
+                  onChange={(e) => updateQualification(index, 'regulatoryAuthority', e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -173,12 +170,11 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   onValueChange={(value) => updateQualification(index, 'modeOfLearning', value)}
                 >
                   <SelectTrigger className="h-11">
-                    <SelectValue placeholder="Select mode" />
+                    <SelectValue placeholder="Select (Yes/No)" />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="regular">Yes (Regular)</SelectItem>
-                    <SelectItem value="distance">No (Distance)</SelectItem>
-                    <SelectItem value="online">No (Online)</SelectItem>
+                    <SelectItem value="Yes">Yes (Regular)</SelectItem>
+                    <SelectItem value="No">No</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -195,78 +191,102 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Year of Admission <span className="text-destructive">*</span>
+                  Year of admission <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  type="date"
-                  value={qual.admissionDate}
-                  onChange={(e) => updateQualification(index, 'admissionDate', e.target.value)}
+                  type="number"
+                  placeholder="YYYY"
+                  value={qual.admissionYear}
+                  onChange={(e) => updateQualification(index, 'admissionYear', e.target.value)}
                   className="h-11"
                 />
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Year of Passing <span className="text-destructive">*</span>
+                  Year of passing <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  type="date"
-                  value={qual.passingDate}
-                  onChange={(e) => updateQualification(index, 'passingDate', e.target.value)}
+                  type="number"
+                  placeholder="YYYY"
+                  value={qual.passingYear}
+                  onChange={(e) => updateQualification(index, 'passingYear', e.target.value)}
                   className="h-11"
                 />
               </div>
 
-              {/* Certificate Upload */}
+              {/* Upload 1: Certificate */}
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Upload Certificate (Core Competency Mapping) <span className="text-destructive">*</span>
+                  Upload Certificate <span className="text-destructive">*</span>
                 </Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  To be endorsed by the respected University/Institute
-                </p>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
-                      qual.certificate ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                    }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.certificate ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                      }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground truncate">
-                      {qual.certificate ? qual.certificate.name : "Upload certificate"}
+                    <span className="text-sm text-foreground font-medium truncate">
+                      {qual.certificate ? qual.certificate.name : "Upload Certificate"}
                     </span>
                   </div>
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleCertificateChange(index, e)}
+                    onChange={(e) => handleFileChange(index, 'certificate', e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>
               </div>
 
-              {/* Transcript Upload */}
+              {/* Upload 2: Transcript */}
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Upload Transcript/Syllabus <span className="text-destructive">*</span>
+                  Upload Transcript (Core Competency Mapping) <span className="text-destructive">*</span>
                 </Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  To be endorsed by the respected University/Institute
+                <p className="text-xs text-muted-foreground mb-1">
+                  (to be endorsed by the respected University/Institute)
                 </p>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
-                      qual.transcript ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                    }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.transcript ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                      }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground truncate">
-                      {qual.transcript ? qual.transcript.name : "Upload transcript/syllabus"}
+                    <span className="text-sm text-foreground font-medium truncate">
+                      {qual.transcript ? qual.transcript.name : "Upload Transcript"}
                     </span>
                   </div>
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleTranscriptChange(index, e)}
+                    onChange={(e) => handleFileChange(index, 'transcript', e)}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Upload 3: Attested Syllabus */}
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-sm text-muted-foreground">
+                  Upload attested syllabus <span className="text-destructive">*</span>
+                </Label>
+                <p className="text-xs text-muted-foreground mb-1">
+                  (to be endorsed by the respected University/Institute)
+                </p>
+                <div className="relative">
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.attestedSyllabus ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                      }`}
+                  >
+                    <Upload className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-sm text-foreground font-medium truncate">
+                      {qual.attestedSyllabus ? qual.attestedSyllabus.name : "Upload Attested Syllabus"}
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => handleFileChange(index, 'attestedSyllabus', e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>

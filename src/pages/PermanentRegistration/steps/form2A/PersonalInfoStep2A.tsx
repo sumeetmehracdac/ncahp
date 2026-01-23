@@ -97,8 +97,8 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
         </div>
       </div>
 
-      {/* Gender & DOB */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Gender, Age & DOB */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-4">
           <Label className="text-base font-semibold text-foreground">
             Gender <span className="text-destructive">*</span>
@@ -112,17 +112,29 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
               <Label
                 key={g}
                 htmlFor={`gender-${g.toLowerCase()}`}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
-                  formData.gender === g
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${formData.gender === g
                     ? "border-primary bg-primary/5"
                     : "border-border hover:border-primary/50"
-                }`}
+                  }`}
               >
                 <RadioGroupItem value={g} id={`gender-${g.toLowerCase()}`} />
                 <span className="text-sm font-medium">{g}</span>
               </Label>
             ))}
           </RadioGroup>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="age">
+            Age <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="age"
+            type="number"
+            placeholder="Age"
+            value={formData.age}
+            onChange={(e) => updateFormData("age", e.target.value)}
+            className="h-11"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="dateOfBirth">
@@ -185,22 +197,20 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
           >
             <Label
               htmlFor="differently-abled-yes"
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
-                formData.isDifferentlyAbled
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${formData.isDifferentlyAbled
                   ? "border-primary bg-primary/5"
                   : "border-border hover:border-primary/50"
-              }`}
+                }`}
             >
               <RadioGroupItem value="yes" id="differently-abled-yes" />
               <span className="text-sm font-medium">Yes</span>
             </Label>
             <Label
               htmlFor="differently-abled-no"
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${
-                !formData.isDifferentlyAbled
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${!formData.isDifferentlyAbled
                   ? "border-primary bg-primary/5"
                   : "border-border hover:border-primary/50"
-              }`}
+                }`}
             >
               <RadioGroupItem value="no" id="differently-abled-no" />
               <span className="text-sm font-medium">No</span>
@@ -221,11 +231,10 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
                 </Label>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
-                      formData.differentlyAbledCertificate
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${formData.differentlyAbledCertificate
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
-                    }`}
+                      }`}
                   >
                     {formData.differentlyAbledCertificate ? (
                       <FileCheck className="w-5 h-5 text-primary" />
@@ -259,9 +268,8 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
         <div className="flex items-start gap-6">
           <div className="relative group">
             <div
-              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${
-                photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
-              }`}
+              className={`w-32 h-40 rounded-xl border-2 border-dashed flex items-center justify-center overflow-hidden transition-all ${photoPreview ? "border-primary bg-primary/5" : "border-border bg-muted hover:border-primary/50"
+                }`}
             >
               {photoPreview ? (
                 <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />

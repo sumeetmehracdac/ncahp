@@ -52,10 +52,10 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
           <Briefcase className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Internship / Clinical Training
+          Screen-6: Details of Internship / Clinical Training
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Details of Internship/Clinical Training (Supervised clinical Practice)/Field Work etc. (if any)
+          (Supervised clinical Practice)/ Field Work etc. (if any)
         </p>
       </div>
 
@@ -64,7 +64,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
         {formData.internships.length === 0 ? (
           <div className="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-border">
             <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground mb-4">No internships added yet</p>
+            <p className="text-muted-foreground mb-4">No internship details added.</p>
             <Button type="button" variant="outline" onClick={addInternship}>
               <Plus className="w-4 h-4 mr-2" />
               Add Internship
@@ -93,20 +93,25 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Program Name <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Program name</Label>
                     <Input
-                      placeholder="e.g., Clinical Internship, Field Work"
+                      placeholder="Program Name"
                       value={internship.programName}
                       onChange={(e) => updateInternship(index, 'programName', e.target.value)}
                       className="h-11"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Country <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Name & Address of Organisation</Label>
+                    <Input
+                      placeholder="Name & Address"
+                      value={internship.organizationNameAddress}
+                      onChange={(e) => updateInternship(index, 'organizationNameAddress', e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Country</Label>
                     <Input
                       placeholder="Country"
                       value={internship.country}
@@ -114,21 +119,8 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                       className="h-11"
                     />
                   </div>
-                  <div className="md:col-span-2 space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Name & Address of Organisation <span className="text-destructive">*</span>
-                    </Label>
-                    <Input
-                      placeholder="Organisation name and full address"
-                      value={internship.organizationNameAddress}
-                      onChange={(e) => updateInternship(index, 'organizationNameAddress', e.target.value)}
-                      className="h-11"
-                    />
-                  </div>
                   <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Date of Start <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Date of start</Label>
                     <Input
                       type="date"
                       value={internship.startDate}
@@ -137,9 +129,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Date of Completion <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Date of completion</Label>
                     <Input
                       type="date"
                       value={internship.completionDate}
@@ -148,50 +138,23 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Total Hours <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Total hours</Label>
                     <Input
                       type="number"
-                      placeholder="e.g., 1000"
+                      placeholder="Total Hours"
                       value={internship.totalHours}
                       onChange={(e) => updateInternship(index, 'totalHours', e.target.value)}
                       className="h-11"
                     />
                   </div>
                   <div className="md:col-span-2 space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Core Duties <span className="text-destructive">*</span>
-                    </Label>
+                    <Label>Core Duties</Label>
                     <Textarea
-                      placeholder="Describe your core duties and responsibilities"
+                      placeholder="Core Duties"
                       value={internship.coreDuties}
                       onChange={(e) => updateInternship(index, 'coreDuties', e.target.value)}
                       rows={3}
                     />
-                  </div>
-                  <div className="md:col-span-2 space-y-2">
-                    <Label className="text-sm text-muted-foreground">
-                      Attach Certificate
-                    </Label>
-                    <div className="relative">
-                      <div
-                        className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
-                          internship.certificate ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                        }`}
-                      >
-                        <Upload className="w-5 h-5 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground truncate">
-                          {internship.certificate ? internship.certificate.name : "Upload certificate"}
-                        </span>
-                      </div>
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileChange(index, e)}
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
