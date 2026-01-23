@@ -8,17 +8,11 @@ interface Props {
 }
 
 const documentsList: { key: keyof Form2ADocuments; label: string; required: boolean }[] = [
-  { key: 'transcripts', label: 'Transcripts', required: true },
-  { key: 'undergradSyllabus', label: 'Attested syllabus of Undergraduate program', required: true },
-  { key: 'postgradSyllabus', label: 'Attested syllabus of Postgraduate program (if applicable)', required: false },
-  { key: 'professionalRegistration', label: 'Professional Registration number (from home country)', required: true },
   { key: 'passportCopy', label: 'Copy of Passport', required: true },
   { key: 'visaCopy', label: 'Copy of Visa', required: true },
-  { key: 'proofOfAddress', label: 'Proof of Address', required: true },
   { key: 'englishProficiency', label: 'English Language Proficiency Certificate (if applicable)', required: false },
-  { key: 'equivalenceCertificate', label: 'Equivalence Certificate (if applicable)', required: false },
-  { key: 'medicalFitness', label: 'Medical/Fitness Certificate including vaccination details', required: true },
-  { key: 'sponsorshipProof', label: 'Proof of Sponsorship or Financial Support', required: true },
+  { key: 'endorsementLetter', label: 'Endorsement Letter (Letter from regulatory body of respective allied and healthcare profession about validity of degree to practice from the country of healthcare qualification obtained)', required: true },
+  { key: 'sponsorshipProof', label: 'Proof of Sponsorship or Financial Support (if any)', required: false },
 ];
 
 const DocumentsStep2A = ({ formData, updateFormData }: Props) => {
@@ -44,7 +38,7 @@ const DocumentsStep2A = ({ formData, updateFormData }: Props) => {
           <FileText className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Document Checklist
+          Document Uploads
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Upload all required documents for your temporary registration application.
@@ -52,7 +46,7 @@ const DocumentsStep2A = ({ formData, updateFormData }: Props) => {
       </div>
 
       {/* Documents Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {documentsList.map((doc) => {
           const file = formData.documents[doc.key];
           const isUploaded = file !== null;

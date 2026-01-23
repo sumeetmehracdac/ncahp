@@ -14,7 +14,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
   const addInternship = () => {
     const newInternship: Form2AInternship = {
       id: Date.now().toString(),
-      designation: '',
+      programName: '',
       organizationNameAddress: '',
       country: '',
       startDate: '',
@@ -55,7 +55,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
           Internship / Clinical Training
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Provide details of your internship or clinical training experience.
+          Details of Internship/Clinical Training (Supervised clinical Practice)/Field Work etc. (if any)
         </p>
       </div>
 
@@ -94,12 +94,12 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-sm text-muted-foreground">
-                      Designation <span className="text-destructive">*</span>
+                      Program Name <span className="text-destructive">*</span>
                     </Label>
                     <Input
-                      placeholder="e.g., Intern, Trainee"
-                      value={internship.designation}
-                      onChange={(e) => updateInternship(index, 'designation', e.target.value)}
+                      placeholder="e.g., Clinical Internship, Field Work"
+                      value={internship.programName}
+                      onChange={(e) => updateInternship(index, 'programName', e.target.value)}
                       className="h-11"
                     />
                   </div>
@@ -172,7 +172,7 @@ const InternshipStep2A = ({ formData, updateFormData }: Props) => {
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <Label className="text-sm text-muted-foreground">
-                      Attach Certificate <span className="text-destructive">*</span>
+                      Attach Certificate
                     </Label>
                     <div className="relative">
                       <div

@@ -27,12 +27,13 @@ export interface Form2AContactPersonIndia {
 export interface Form2APassportDetails {
   passportNumber: string;
   issuingCountry: string;
+  issueDate: string;
   expiryDate: string;
 }
 
 export interface Form2AVisaDetails {
   visaNumber: string;
-  visaType: 'student' | 'research' | 'other' | '';
+  visaType: string;
   issueDate: string;
   expiryDate: string;
 }
@@ -42,6 +43,7 @@ export interface Form2AAcademicQualification {
   qualificationName: string;
   institutionName: string;
   university: string;
+  courseName: string;
   country: string;
   durationMonths: string;
   admissionDate: string;
@@ -50,11 +52,12 @@ export interface Form2AAcademicQualification {
   mediumOfInstruction: string;
   regulatoryAuthority: string;
   certificate: File | null;
+  transcript: File | null;
 }
 
 export interface Form2AInternship {
   id: string;
-  designation: string;
+  programName: string;
   organizationNameAddress: string;
   country: string;
   startDate: string;
@@ -73,15 +76,24 @@ export interface Form2AExperience {
   completionDate: string;
   coreDuties: string;
   licenseNumber: string;
+  issuingAuthority: string;
   certificate: File | null;
 }
 
 export interface Form2APracticeState {
-  institutionName: string;
-  address: string;
   state: string;
   district: string;
+  institutionName: string;
+  address: string;
   proofDocument: File | null;
+}
+
+export interface Form2APreviousPermission {
+  id: string;
+  countryName: string;
+  regulatoryBody: string;
+  licenseNumber: string;
+  certificate: File | null;
 }
 
 export interface Form2ADeclaration {
@@ -89,22 +101,14 @@ export interface Form2ADeclaration {
   permitCancellationDetails: string;
   legalDispute: boolean;
   legalDisputeDetails: string;
-  previousPermissions: string[];
 }
 
 export interface Form2ADocuments {
-  transcripts: File | null;
-  undergradSyllabus: File | null;
-  postgradSyllabus: File | null;
-  professionalRegistration: File | null;
   passportCopy: File | null;
   visaCopy: File | null;
-  proofOfAddress: File | null;
   englishProficiency: File | null;
-  equivalenceCertificate: File | null;
-  medicalFitness: File | null;
+  endorsementLetter: File | null;
   sponsorshipProof: File | null;
-  differentlyAbledProof: File | null;
 }
 
 export interface Form2AData {
@@ -121,28 +125,28 @@ export interface Form2AData {
   email: string;
   phoneNumber: string;
   photo: File | null;
+  isDifferentlyAbled: boolean;
+  differentlyAbledCertificate: File | null;
   fatherName: string;
   motherName: string;
   nationality: string;
-  isDifferentlyAbled: boolean;
   permanentAddress: Form2AAddressFields;
   correspondenceAddressDifferent: boolean;
   correspondenceAddress: Form2AAddressFields;
-  
-  // Purpose of Registration
-  purposeOfRegistration: 'practice' | 'teaching' | 'research' | 'other' | '';
-  purposeOfRegistrationOther: string;
-  durationOfPracticeIndia: string;
+
+  // Step 3: Purpose of Registration & Practice Location (Combined as per PDF Screen-3)
+  purposeOfRegistration: string[];
+  durationOfStayIndia: string;
   expectedStartDate: string;
   expectedEndDate: string;
-
-  // Step 3: Practice State
   practiceStates: Form2APracticeState[];
+  previousPermissions: Form2APreviousPermission[];
 
   // Step 4: Passport & Visa + Emergency Contact
   passportDetails: Form2APassportDetails;
   visaDetails: Form2AVisaDetails;
   emergencyContact: Form2AEmergencyContact;
+  hasContactPersonIndia: boolean;
   contactPersonIndia: Form2AContactPersonIndia;
 
   // Step 5: Academic Qualification
@@ -154,13 +158,25 @@ export interface Form2AData {
   // Step 7: Professional Experience (optional)
   experiences: Form2AExperience[];
 
-  // Step 8: Documents
+  // Step 8: State of Practice in India (separate from Screen-3)
+  additionalPracticeStates: Form2APracticeState[];
+
+  // Step 9: Documents
   documents: Form2ADocuments;
 
-  // Step 9: Declaration
+  // Step 10: Declaration
   declaration: Form2ADeclaration;
   declarationAccepted: boolean;
 }
+
+export const purposeOfRegistrationOptions = [
+  { value: 'higher_studies', label: 'Higher Studies / Academic Bridging (e.g., PG (degree/diploma), Fellowship, Research Work)' },
+  { value: 'workshop', label: 'Workshop/Training' },
+  { value: 'teaching', label: 'Teaching' },
+  { value: 'observership', label: 'Observership' },
+  { value: 'clinical_work', label: 'Clinical Work' },
+  { value: 'community_healthcare', label: 'Community Healthcare work' }
+];
 
 export const initialForm2AData: Form2AData = {
   registrationType: '2A',
@@ -173,10 +189,11 @@ export const initialForm2AData: Form2AData = {
   email: '',
   phoneNumber: '',
   photo: null,
+  isDifferentlyAbled: false,
+  differentlyAbledCertificate: null,
   fatherName: '',
   motherName: '',
   nationality: '',
-  isDifferentlyAbled: false,
   permanentAddress: {
     addressLine1: '',
     addressLine2: '',
@@ -192,15 +209,24 @@ export const initialForm2AData: Form2AData = {
     pincode: '',
     country: ''
   },
-  purposeOfRegistration: '',
-  purposeOfRegistrationOther: '',
-  durationOfPracticeIndia: '',
+  purposeOfRegistration: [],
+  durationOfStayIndia: '',
   expectedStartDate: '',
   expectedEndDate: '',
-  practiceStates: [],
+  practiceStates: [
+    {
+      state: '',
+      district: '',
+      institutionName: '',
+      address: '',
+      proofDocument: null
+    }
+  ],
+  previousPermissions: [],
   passportDetails: {
     passportNumber: '',
     issuingCountry: '',
+    issueDate: '',
     expiryDate: ''
   },
   visaDetails: {
@@ -216,6 +242,7 @@ export const initialForm2AData: Form2AData = {
     email: '',
     address: ''
   },
+  hasContactPersonIndia: false,
   contactPersonIndia: {
     name: '',
     relationship: '',
@@ -229,6 +256,7 @@ export const initialForm2AData: Form2AData = {
       qualificationName: '',
       institutionName: '',
       university: '',
+      courseName: '',
       country: '',
       durationMonths: '',
       admissionDate: '',
@@ -236,31 +264,25 @@ export const initialForm2AData: Form2AData = {
       modeOfLearning: '',
       mediumOfInstruction: '',
       regulatoryAuthority: '',
-      certificate: null
+      certificate: null,
+      transcript: null
     }
   ],
   internships: [],
   experiences: [],
+  additionalPracticeStates: [],
   documents: {
-    transcripts: null,
-    undergradSyllabus: null,
-    postgradSyllabus: null,
-    professionalRegistration: null,
     passportCopy: null,
     visaCopy: null,
-    proofOfAddress: null,
     englishProficiency: null,
-    equivalenceCertificate: null,
-    medicalFitness: null,
-    sponsorshipProof: null,
-    differentlyAbledProof: null
+    endorsementLetter: null,
+    sponsorshipProof: null
   },
   declaration: {
     permitCancellation: false,
     permitCancellationDetails: '',
     legalDispute: false,
-    legalDisputeDetails: '',
-    previousPermissions: []
+    legalDisputeDetails: ''
   },
   declarationAccepted: false
 };
