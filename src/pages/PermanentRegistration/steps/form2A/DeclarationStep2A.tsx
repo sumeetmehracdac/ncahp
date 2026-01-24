@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, AlertTriangle, Plus, Trash2, CheckCircle2 } from "lucide-react";
+import { FileText, AlertTriangle } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
 import { Form2AData, Form2ADeclaration } from "../../types/form2A";
 
 interface Props {
@@ -23,21 +21,6 @@ const DeclarationStep2A = ({ formData, updateFormData, onSubmit }: Props) => {
     });
   };
 
-  const addPreviousPermission = () => {
-    const updated = [...formData.declaration.previousPermissions, ''];
-    updateDeclaration("previousPermissions", updated);
-  };
-
-  const updatePreviousPermission = (index: number, value: string) => {
-    const updated = [...formData.declaration.previousPermissions];
-    updated[index] = value;
-    updateDeclaration("previousPermissions", updated);
-  };
-
-  const removePreviousPermission = (index: number) => {
-    const updated = formData.declaration.previousPermissions.filter((_, i) => i !== index);
-    updateDeclaration("previousPermissions", updated);
-  };
 
   return (
     <div className="space-y-8">
@@ -144,44 +127,6 @@ const DeclarationStep2A = ({ formData, updateFormData, onSubmit }: Props) => {
           </AnimatePresence>
         </div>
 
-        {/* Question 3 - Previous Permissions */}
-        <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
-          <Label className="text-sm font-semibold text-foreground">
-            3. Please list the Countries in which you have already received similar Permission/License:
-          </Label>
-          <div className="space-y-3">
-            {formData.declaration.previousPermissions.map((country, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground w-6">{String.fromCharCode(97 + index)})</span>
-                <Input
-                  placeholder="Country name"
-                  value={country}
-                  onChange={(e) => updatePreviousPermission(index, e.target.value)}
-                  className="h-10"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removePreviousPermission(index)}
-                  className="text-destructive hover:text-destructive h-10 w-10"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={addPreviousPermission}
-              className="mt-2"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Add Country
-            </Button>
-          </div>
-        </div>
       </div>
 
       {/* Declaration Statement */}

@@ -581,7 +581,7 @@ const PermanentRegistration = () => {
       case 7:
         return true; // Optional
       case 8:
-        return form2AData.documents.transcripts !== null;
+        return form2AData.documents.passportCopy !== null;
       case 9:
         return form2AData.declarationAccepted;
       default:
