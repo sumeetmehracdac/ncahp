@@ -300,9 +300,12 @@ export const mockCurrentUserContext: CurrentUserContext = {
 };
 
 // State Council Admin context - can only assign to SC + External (NOT HO)
+// This admin belongs to Haryana State Council
 export const mockStateUserContext: CurrentUserContext = {
   user: mockUsers[2],
-  stakeholder: mockStakeholders[1], // State Council type
+  stakeholder: {
+    ...mockStakeholders[1],
+    state: mockStates[0] // Haryana State - this determines which committees they see
+  },
   canAssignToAllStates: false
 };
-

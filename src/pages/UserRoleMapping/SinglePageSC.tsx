@@ -146,7 +146,7 @@ export default function SinglePageSC() {
                                     Single-Page Flow
                                 </Badge>
                                 <Link
-                                    to="/user-role-mapping/single-page/ho"
+                                    to="/user-role-mapping/ho"
                                     className="flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors"
                                 >
                                     <Shield className="w-3.5 h-3.5" />
