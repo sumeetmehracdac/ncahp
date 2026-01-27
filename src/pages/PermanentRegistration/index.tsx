@@ -231,9 +231,8 @@ const form2BSteps = [
   { id: 4, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
-  { id: 7, title: 'State of Practice', icon: MapPin, description: 'Additional practice states' },
-  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const indianStates = [
@@ -631,7 +630,7 @@ const PermanentRegistration = () => {
           form2BData.permanentAddress.addressLine1 !== '';
       case 3:
         // Purpose of Registration - at least one purpose selected and required fields filled
-        return (form2BData.purposeOfRegistration.higherStudies || 
+        return (form2BData.purposeOfRegistration.higherStudies ||
           form2BData.purposeOfRegistration.workshopTraining ||
           form2BData.purposeOfRegistration.teaching ||
           form2BData.purposeOfRegistration.observership ||
@@ -646,10 +645,8 @@ const PermanentRegistration = () => {
       case 6:
         return true; // Optional - Experience
       case 7:
-        return !form2BData.practiceInOtherState || form2BData.practiceStates.length > 0;
-      case 8:
         return form2BData.documents.validIdProof !== null;
-      case 9:
+      case 8:
         return form2BData.declarationAccepted;
       default:
         return false;
@@ -754,10 +751,8 @@ const PermanentRegistration = () => {
         case 6:
           return <ExperienceStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 7:
-          return <PracticeStateStep2B formData={form2BData} updateFormData={updateForm2BData} />;
-        case 8:
           return <DocumentsStep2B formData={form2BData} updateFormData={updateForm2BData} />;
-        case 9:
+        case 8:
           return <DeclarationStep2B formData={form2BData} updateFormData={updateForm2BData} onSubmit={handleSubmit} />;
         default:
           return null;

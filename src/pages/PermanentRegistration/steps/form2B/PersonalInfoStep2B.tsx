@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,21 @@ interface Props {
 
 const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [isDifferentState, setIsDifferentState] = useState(false);
+
+  // Sample Aadhaar State (simulated from signup)
+  const aadhaarState = formData.stateFromAadhaar || "Maharashtra";
+
+  useEffect(() => {
+    // Set default state of residence from Aadhaar if not already set
+    if (!formData.stateOfResidence && aadhaarState) {
+      updateFormData("stateOfResidence", aadhaarState);
+    }
+    // Initialize stateFromAadhaar if empty
+    if (!formData.stateFromAadhaar) {
+      updateFormData("stateFromAadhaar", "Maharashtra");
+    }
+  }, []);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,6 +57,22 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
     }
   };
 
+  const handleDifferentStateProofChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateFormData("differentStateProof", file);
+    }
+  };
+
+  const handleDifferentStateToggle = () => {
+    if (isDifferentState) {
+      // Resetting to Aadhaar state
+      updateFormData("stateOfResidence", aadhaarState);
+      updateFormData("differentStateProof", null);
+    }
+    setIsDifferentState(!isDifferentState);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center pb-6 border-b border-border">
@@ -52,27 +83,27 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
         <p className="text-muted-foreground max-w-xl mx-auto">Indian national with foreign qualification registration.</p>
       </div>
 
-      {/* Name Fields */}
+      {/* Name Fields (Read-only) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label>First Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="First Name" value={formData.firstName} onChange={(e) => updateFormData("firstName", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input placeholder="First Name" value={formData.firstName} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Middle Name</Label>
-          <Input placeholder="Middle Name" value={formData.middleName} onChange={(e) => updateFormData("middleName", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input placeholder="Middle Name" value={formData.middleName} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Last Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="Last Name" value={formData.lastName} onChange={(e) => updateFormData("lastName", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input placeholder="Last Name" value={formData.lastName} className="h-11 bg-muted" disabled />
         </div>
       </div>
 
-      {/* Gender, Age & DOB */}
+      {/* Gender, Age & DOB (Read-only) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-4">
           <Label className="text-base font-semibold">Gender <span className="text-destructive">*</span></Label>
-          <RadioGroup value={formData.gender} onValueChange={(value) => updateFormData("gender", value)} className="flex gap-4" disabled>
+          <RadioGroup value={formData.gender} className="flex gap-4" disabled>
             {["Male", "Female", "Other"].map((g) => (
               <Label key={g} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-not-allowed transition-all ${formData.gender === g ? "border-primary bg-primary/5" : "border-border bg-muted opacity-50"}`}>
                 <RadioGroupItem value={g} />
@@ -83,23 +114,23 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
         </div>
         <div className="space-y-2">
           <Label>Age <span className="text-destructive">*</span></Label>
-          <Input type="number" value={formData.age} onChange={(e) => updateFormData("age", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input type="number" value={formData.age} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
           <Label>Date of Birth <span className="text-destructive">*</span></Label>
-          <Input type="date" value={formData.dateOfBirth} onChange={(e) => updateFormData("dateOfBirth", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input type="date" value={formData.dateOfBirth} className="h-11 bg-muted" disabled />
         </div>
       </div>
 
-      {/* Contact & Photo */}
+      {/* Contact (Read-only) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Email <span className="text-destructive">*</span></Label>
-          <Input type="email" placeholder="email@example.com" value={formData.email} onChange={(e) => updateFormData("email", e.target.value)} className="h-11 bg-muted" disabled />
+          <Input type="email" placeholder="email@example.com" value={formData.email} className="h-11 bg-muted" disabled />
         </div>
         <div className="space-y-2">
-          <Label>Phone Number <span className="text-destructive">*</span></Label>
-          <Input placeholder="+91 98765 43210" value={formData.phoneNumber} onChange={(e) => updateFormData("phoneNumber", e.target.value)} className="h-11 bg-muted" disabled />
+          <Label>Mobile No. <span className="text-destructive">*</span></Label>
+          <Input placeholder="+91 98765 43210" value={formData.phoneNumber} className="h-11 bg-muted" disabled />
         </div>
       </div>
 
@@ -240,19 +271,70 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
         <Label htmlFor="corrDiff" className="cursor-pointer text-sm font-medium">Correspondence address different from permanent address?</Label>
       </div>
 
-      {/* State of Residence */}
+      {/* State of Residence with Aadhaar Logic */}
       <div className="space-y-4">
         <Label className="text-base font-semibold">State of Residence <span className="text-destructive">*</span></Label>
-        <Select value={formData.stateOfResidence} onValueChange={(value) => updateFormData("stateOfResidence", value)}>
-          <SelectTrigger className="h-11"><SelectValue placeholder="Select state" /></SelectTrigger>
-          <SelectContent className="max-h-60 bg-white">{indianStates.map((state) => <SelectItem key={state} value={state}>{state}</SelectItem>)}</SelectContent>
-        </Select>
+
+        {!isDifferentState ? (
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-lg border">
+              <Input value={aadhaarState} className="h-11 bg-muted flex-1" disabled />
+              <span className="text-sm text-muted-foreground">(Default from Aadhaar)</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleDifferentStateToggle}
+              className="text-sm text-primary underline hover:text-primary/80 cursor-pointer"
+            >
+              Click here, if it is different from Aadhaar?
+            </button>
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="space-y-4 p-4 bg-slate-50 rounded-lg border"
+          >
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">Select Different State</Label>
+              <button
+                type="button"
+                onClick={handleDifferentStateToggle}
+                className="text-sm text-muted-foreground underline hover:text-foreground"
+              >
+                Reset to Aadhaar State
+              </button>
+            </div>
+            <Select value={formData.stateOfResidence} onValueChange={(value) => updateFormData("stateOfResidence", value)}>
+              <SelectTrigger className="h-11"><SelectValue placeholder="Select state" /></SelectTrigger>
+              <SelectContent className="max-h-60 bg-white">{indianStates.map((state) => <SelectItem key={state} value={state}>{state}</SelectItem>)}</SelectContent>
+            </Select>
+            <div className="space-y-2">
+              <Label className="text-sm">Upload Supporting Document <span className="text-destructive">*</span></Label>
+              <div className="flex items-center gap-4">
+                <Input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={handleDifferentStateProofChange}
+                  className="h-11"
+                />
+                {formData.differentStateProof && (
+                  <span className="text-sm text-green-600 flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4" /> Uploaded
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">Proof of residence in the selected state</p>
+            </div>
+          </motion.div>
+        )}
+
         <div className="flex items-start gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
           <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-amber-800"><strong>Note:</strong> Your application will be submitted to the respective State Council of the state selected above.</p>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
