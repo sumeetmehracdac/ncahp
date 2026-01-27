@@ -15,10 +15,10 @@ interface Props {
 const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
   const addPracticeState = () => {
     const newState: Form2BPracticeState = {
-      institutionName: "",
-      address: "",
       state: "",
       district: "",
+      institutionName: "",
+      address: "",
       proofDocument: null,
     };
     updateFormData("practiceStates", [...formData.practiceStates, newState]);
@@ -40,17 +40,16 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <MapPin className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Practice Location</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Specify where you intend to practice in India.</p>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">State of Practice</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto">Specify if you want to practice in a state other than your state of residence.</p>
       </div>
 
       <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl">
         <div>
           <Label className="text-base font-medium">
-            Are you desirous of practicing the recognized allied and healthcare profession in a state other than state of residence ( state of
-            registration)?
+            Are you desirous of practicing the recognized profession in a state other than state of residence (state of registration)?
           </Label>
-          <p className="text-sm text-muted-foreground">Add the states where you plan to practice</p>
+          <p className="text-sm text-muted-foreground mt-1">Add the states where you plan to practice</p>
         </div>
         <Switch
           checked={formData.practiceInOtherState}
@@ -60,6 +59,8 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
 
       {formData.practiceInOtherState && (
         <div className="space-y-4">
+          <p className="text-sm text-muted-foreground font-medium">In case of Yes:</p>
+          
           {formData.practiceStates.map((state, index) => (
             <div key={index} className="p-4 border border-border rounded-xl space-y-4">
               <div className="flex items-center justify-between">
@@ -77,13 +78,13 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>
-                    State <span className="text-destructive">*</span>
+                    1. State <span className="text-destructive">*</span>
                   </Label>
                   <Select value={state.state} onValueChange={(value) => updatePracticeState(index, "state", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select state" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       {indianStates.map((s) => (
                         <SelectItem key={s} value={s}>
                           {s}
@@ -94,7 +95,7 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
                 </div>
                 <div className="space-y-2">
                   <Label>
-                    District <span className="text-destructive">*</span>
+                    2. District <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     value={state.district}
@@ -104,17 +105,17 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
                 </div>
                 <div className="space-y-2">
                   <Label>
-                    Institution Name <span className="text-destructive">*</span>
+                    3. Name of Institution/Hospital/Clinic/Laboratory etc <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     value={state.institutionName}
                     onChange={(e) => updatePracticeState(index, "institutionName", e.target.value)}
-                    placeholder="Clinic/Lab/Hospital name"
+                    placeholder="Institution name"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>
-                    Institution Address <span className="text-destructive">*</span>
+                    4. Address <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     value={state.address}
@@ -123,7 +124,7 @@ const PracticeStateStep2B = ({ formData, updateFormData }: Props) => {
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Proof of Practice (if any)</Label>
+                  <Label>5. Supporting Document-1 (Upload)</Label>
                   <Input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"

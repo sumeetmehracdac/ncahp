@@ -56,10 +56,11 @@ import {
 // Import Form 2B components
 import {
   PersonalInfoStep2B,
-  PracticeStateStep2B,
+  PurposeRegistrationStep2B,
   AcademicQualificationStep2B,
   InternshipStep2B,
   ExperienceStep2B,
+  PracticeStateStep2B,
   DocumentsStep2B,
   DeclarationStep2B
 } from './steps/form2B';
@@ -226,12 +227,13 @@ const form2ASteps = [
 const form2BSteps = [
   { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
-  { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
-  { id: 4, title: 'Academic Qualification', icon: Globe, description: 'Foreign qualifications' },
+  { id: 3, title: 'Purpose of Registration', icon: Globe, description: 'Purpose & duration' },
+  { id: 4, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
-  { id: 6, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
-  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 7, title: 'State of Practice', icon: MapPin, description: 'Additional practice states' },
+  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const indianStates = [
@@ -598,16 +600,26 @@ const PermanentRegistration = () => {
           form2BData.lastName !== '' &&
           form2BData.permanentAddress.addressLine1 !== '';
       case 3:
-        return !form2BData.practiceInOtherState || form2BData.practiceStates.length > 0;
+        // Purpose of Registration - at least one purpose selected and required fields filled
+        return (form2BData.purposeOfRegistration.higherStudies || 
+          form2BData.purposeOfRegistration.workshopTraining ||
+          form2BData.purposeOfRegistration.teaching ||
+          form2BData.purposeOfRegistration.observership ||
+          form2BData.purposeOfRegistration.clinicalWork ||
+          form2BData.purposeOfRegistration.communityHealthcare) &&
+          form2BData.purposeOfRegistration.durationOfStay !== '' &&
+          form2BData.purposeOfRegistration.practiceState !== '';
       case 4:
         return form2BData.academicQualifications.some(q => q.qualificationName !== '');
       case 5:
-        return true; // Optional
+        return true; // Optional - Internship
       case 6:
-        return true; // Optional
+        return true; // Optional - Experience
       case 7:
-        return form2BData.documents.validIdProof !== null;
+        return !form2BData.practiceInOtherState || form2BData.practiceStates.length > 0;
       case 8:
+        return form2BData.documents.validIdProof !== null;
+      case 9:
         return form2BData.declarationAccepted;
       default:
         return false;
@@ -704,7 +716,7 @@ const PermanentRegistration = () => {
         case 2:
           return <PersonalInfoStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 3:
-          return <PracticeStateStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+          return <PurposeRegistrationStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 4:
           return <AcademicQualificationStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 5:
@@ -712,8 +724,10 @@ const PermanentRegistration = () => {
         case 6:
           return <ExperienceStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 7:
-          return <DocumentsStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+          return <PracticeStateStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 8:
+          return <DocumentsStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 9:
           return <DeclarationStep2B formData={form2BData} updateFormData={updateForm2BData} onSubmit={handleSubmit} />;
         default:
           return null;

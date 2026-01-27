@@ -1,4 +1,4 @@
-// Form 2B Types - Indian Nationals with Foreign Qualification
+// Form 2B Types - Temporary Registration for Foreign Qualified Indian Nationals
 
 export interface Form2BAddressFields {
   addressLine1: string;
@@ -14,19 +14,21 @@ export interface Form2BAcademicQualification {
   qualificationName: string;
   institutionName: string;
   university: string;
+  courseName: string;
   country: string;
   durationMonths: string;
-  admissionDate: string;
-  passingDate: string;
-  modeOfLearning: 'regular' | 'distance' | 'online' | '';
+  admissionYear: string;
+  passingYear: string;
+  modeOfLearning: 'regular' | 'distance' | '';
   mediumOfInstruction: string;
-  regulatoryAuthority: string;
   certificate: File | null;
+  transcript: File | null;
+  syllabus: File | null;
 }
 
 export interface Form2BInternship {
   id: string;
-  designation: string;
+  programName: string;
   organizationNameAddress: string;
   country: string;
   startDate: string;
@@ -45,15 +47,42 @@ export interface Form2BExperience {
   completionDate: string;
   coreDuties: string;
   licenseNumber: string;
+  issuingAuthority: string;
   certificate: File | null;
 }
 
 export interface Form2BPracticeState {
-  institutionName: string;
-  address: string;
   state: string;
   district: string;
+  institutionName: string;
+  address: string;
   proofDocument: File | null;
+}
+
+export interface Form2BPreviousPermission {
+  id: string;
+  country: string;
+  regulatoryBody: string;
+  licenseNumber: string;
+  certificate: File | null;
+}
+
+export interface Form2BPurposeOfRegistration {
+  higherStudies: boolean;
+  workshopTraining: boolean;
+  teaching: boolean;
+  observership: boolean;
+  clinicalWork: boolean;
+  communityHealthcare: boolean;
+  durationOfStay: string;
+  expectedStartDate: string;
+  expectedEndDate: string;
+  practiceState: string;
+  practiceDistrict: string;
+  institutionName: string;
+  institutionAddress: string;
+  supportingDocument: File | null;
+  previousPermissions: Form2BPreviousPermission[];
 }
 
 export interface Form2BDeclaration {
@@ -61,15 +90,9 @@ export interface Form2BDeclaration {
   permitCancellationDetails: string;
   legalDispute: boolean;
   legalDisputeDetails: string;
-  previousPermissions: string[];
 }
 
 export interface Form2BDocuments {
-  transcripts: File | null;
-  undergradSyllabus: File | null;
-  postgradSyllabus: File | null;
-  professionalRegistration: File | null;
-  equivalenceCertificate: File | null;
   validIdProof: File | null;
   medicalFitness: File | null;
   endorsementLetter: File | null;
@@ -93,9 +116,9 @@ export interface Form2BData {
   placeOfBirth: string;
   fatherName: string;
   motherName: string;
+  isDifferentlyAbled: boolean;
   citizenshipType: 'birth' | 'domicile' | '';
   domicileDate: string;
-  isDifferentlyAbled: boolean;
   permanentAddress: Form2BAddressFields;
   correspondenceAddressDifferent: boolean;
   correspondenceAddress: Form2BAddressFields;
@@ -103,9 +126,8 @@ export interface Form2BData {
   stateFromAadhaar: string;
   differentStateProof: File | null;
 
-  // Step 3: Practice State
-  practiceInOtherState: boolean;
-  practiceStates: Form2BPracticeState[];
+  // Step 3: Purpose of Registration
+  purposeOfRegistration: Form2BPurposeOfRegistration;
 
   // Step 4: Academic Qualification
   academicQualifications: Form2BAcademicQualification[];
@@ -116,10 +138,14 @@ export interface Form2BData {
   // Step 6: Professional Experience (optional)
   experiences: Form2BExperience[];
 
-  // Step 7: Documents
+  // Step 7: Practice State
+  practiceInOtherState: boolean;
+  practiceStates: Form2BPracticeState[];
+
+  // Step 8: Documents
   documents: Form2BDocuments;
 
-  // Step 8: Declaration & Review
+  // Step 9: Declaration & Review
   declaration: Form2BDeclaration;
   declarationAccepted: boolean;
 }
@@ -138,9 +164,9 @@ export const initialForm2BData: Form2BData = {
   placeOfBirth: '',
   fatherName: '',
   motherName: '',
+  isDifferentlyAbled: false,
   citizenshipType: '',
   domicileDate: '',
-  isDifferentlyAbled: false,
   permanentAddress: {
     addressLine1: '',
     addressLine2: '',
@@ -161,32 +187,46 @@ export const initialForm2BData: Form2BData = {
   stateOfResidence: '',
   stateFromAadhaar: '',
   differentStateProof: null,
-  practiceInOtherState: false,
-  practiceStates: [],
+  purposeOfRegistration: {
+    higherStudies: false,
+    workshopTraining: false,
+    teaching: false,
+    observership: false,
+    clinicalWork: false,
+    communityHealthcare: false,
+    durationOfStay: '',
+    expectedStartDate: '',
+    expectedEndDate: '',
+    practiceState: '',
+    practiceDistrict: '',
+    institutionName: '',
+    institutionAddress: '',
+    supportingDocument: null,
+    previousPermissions: []
+  },
   academicQualifications: [
     {
       id: '1',
       qualificationName: '',
       institutionName: '',
       university: '',
+      courseName: '',
       country: '',
       durationMonths: '',
-      admissionDate: '',
-      passingDate: '',
+      admissionYear: '',
+      passingYear: '',
       modeOfLearning: '',
       mediumOfInstruction: '',
-      regulatoryAuthority: '',
-      certificate: null
+      certificate: null,
+      transcript: null,
+      syllabus: null
     }
   ],
   internships: [],
   experiences: [],
+  practiceInOtherState: false,
+  practiceStates: [],
   documents: {
-    transcripts: null,
-    undergradSyllabus: null,
-    postgradSyllabus: null,
-    professionalRegistration: null,
-    equivalenceCertificate: null,
     validIdProof: null,
     medicalFitness: null,
     endorsementLetter: null,
@@ -196,8 +236,7 @@ export const initialForm2BData: Form2BData = {
     permitCancellation: false,
     permitCancellationDetails: '',
     legalDispute: false,
-    legalDisputeDetails: '',
-    previousPermissions: []
+    legalDisputeDetails: ''
   },
   declarationAccepted: false
 };
