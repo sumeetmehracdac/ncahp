@@ -21,6 +21,7 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
       completionDate: '',
       coreDuties: '',
       licenseNumber: '',
+      issuingAuthority: '',
       certificate: null
     };
     updateFormData("experiences", [...formData.experiences, newExp]);
@@ -44,8 +45,8 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <Briefcase className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Allied and Healthcare Professional Experience</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Add your allied and healthcare professional work experience (optional).</p>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Professional Experience (if any)</h2>
+        <p className="text-muted-foreground max-w-xl mx-auto">Add your professional work experience (optional).</p>
       </div>
 
       <div className="space-y-6">
@@ -77,27 +78,31 @@ const ExperienceStep2B = ({ formData, updateFormData }: Props) => {
                     <Input value={exp.country} onChange={(e) => updateExperience(exp.id, 'country', e.target.value)} placeholder="Country of work" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
-                    <Label>Organization Name & Address</Label>
+                    <Label>Name & Address of Organization</Label>
                     <Input value={exp.organizationNameAddress} onChange={(e) => updateExperience(exp.id, 'organizationNameAddress', e.target.value)} placeholder="Organization name and address" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Start Date</Label>
+                    <Label>Date of start</Label>
                     <Input type="date" value={exp.startDate} onChange={(e) => updateExperience(exp.id, 'startDate', e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>End Date</Label>
+                    <Label>Date of completion</Label>
                     <Input type="date" value={exp.completionDate} onChange={(e) => updateExperience(exp.id, 'completionDate', e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>License/Registration Number</Label>
+                    <Label>License / Professional Registration Number (if any)</Label>
                     <Input value={exp.licenseNumber} onChange={(e) => updateExperience(exp.id, 'licenseNumber', e.target.value)} placeholder="Professional license number" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Issuing Authority</Label>
+                    <Input value={exp.issuingAuthority} onChange={(e) => updateExperience(exp.id, 'issuingAuthority', e.target.value)} placeholder="Authority that issued the license" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <Label>Core Duties</Label>
                     <Textarea value={exp.coreDuties} onChange={(e) => updateExperience(exp.id, 'coreDuties', e.target.value)} placeholder="Describe your responsibilities" rows={3} />
                   </div>
                   <div className="md:col-span-2 space-y-2">
-                    <Label>Certificate/Experience Letter</Label>
+                    <Label>Certificate Attached</Label>
                     <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateExperience(exp.id, 'certificate', e.target.files?.[0] || null)} />
                   </div>
                 </div>

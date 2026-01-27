@@ -8,14 +8,9 @@ interface Props {
 }
 
 const documentsList: { key: keyof Form2BDocuments; label: string; required: boolean }[] = [
-  { key: 'transcripts', label: 'Transcripts', required: true },
-  { key: 'undergradSyllabus', label: 'Attested syllabus of Undergraduate program', required: true },
-  { key: 'postgradSyllabus', label: 'Attested syllabus of Postgraduate program (if applicable)', required: false },
-  { key: 'professionalRegistration', label: 'Professional Registration number (from home country)', required: true },
-  { key: 'equivalenceCertificate', label: 'Equivalence Certificate (if applicable)', required: false },
   { key: 'validIdProof', label: 'Valid ID proof (Aadhar/Passport/Voter ID)', required: true },
   { key: 'medicalFitness', label: 'Medical Fitness Certificate endorsed by competent authority', required: true },
-  { key: 'endorsementLetter', label: 'Endorsement letter (Letter from regulatory body)', required: true },
+  { key: 'endorsementLetter', label: 'Endorsement letter (Letter from regulatory body of respective allied and healthcare profession about validity of degree to practice from the country of healthcare qualification obtained)', required: true },
 ];
 
 const DocumentsStep2B = ({ formData, updateFormData }: Props) => {
@@ -34,17 +29,20 @@ const DocumentsStep2B = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <FileText className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Document Checklist</h2>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Uploads</h2>
         <p className="text-muted-foreground max-w-xl mx-auto">Upload required documents for your registration.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {documentsList.map((doc) => {
+      <div className="grid grid-cols-1 gap-4">
+        {documentsList.map((doc, index) => {
           const file = formData.documents[doc.key];
           const isUploaded = file !== null;
           return (
             <div key={doc.key} className={`relative p-4 rounded-xl border-2 transition-all ${isUploaded ? "border-primary bg-primary/5" : doc.required ? "border-border hover:border-primary/50" : "border-dashed border-border hover:border-primary/50"}`}>
               <div className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-muted text-muted-foreground font-semibold text-sm flex-shrink-0">
+                  {index + 1}
+                </div>
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${isUploaded ? "bg-primary/20" : "bg-muted"}`}>
                   {isUploaded ? <CheckCircle2 className="w-5 h-5 text-primary" /> : <Upload className="w-5 h-5 text-muted-foreground" />}
                 </div>

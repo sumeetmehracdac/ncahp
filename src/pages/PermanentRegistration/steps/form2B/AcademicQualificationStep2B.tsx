@@ -17,14 +17,16 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
       qualificationName: '',
       institutionName: '',
       university: '',
+      courseName: '',
       country: '',
       durationMonths: '',
-      admissionDate: '',
-      passingDate: '',
+      admissionYear: '',
+      passingYear: '',
       modeOfLearning: '',
       mediumOfInstruction: '',
-      regulatoryAuthority: '',
-      certificate: null
+      certificate: null,
+      transcript: null,
+      syllabus: null
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
   };
@@ -48,7 +50,7 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
           <GraduationCap className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Academic Qualification</h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Enter your foreign academic qualifications in allied and healthcare professions.</p>
+        <p className="text-muted-foreground max-w-xl mx-auto">Enter your academic qualifications in allied and healthcare professions.</p>
       </div>
 
       <div className="space-y-6">
@@ -64,27 +66,31 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Qualification Name <span className="text-destructive">*</span></Label>
+                <Label>Name of Qualification <span className="text-destructive">*</span></Label>
                 <Input value={qual.qualificationName} onChange={(e) => updateQualification(qual.id, 'qualificationName', e.target.value)} placeholder="e.g., Bachelor of Physiotherapy" />
               </div>
               <div className="space-y-2">
-                <Label>Institution Name <span className="text-destructive">*</span></Label>
-                <Input value={qual.institutionName} onChange={(e) => updateQualification(qual.id, 'institutionName', e.target.value)} placeholder="College/University name" />
+                <Label>Name of Institution <span className="text-destructive">*</span></Label>
+                <Input value={qual.institutionName} onChange={(e) => updateQualification(qual.id, 'institutionName', e.target.value)} placeholder="College/Institute name" />
               </div>
               <div className="space-y-2">
-                <Label>University <span className="text-destructive">*</span></Label>
-                <Input value={qual.university} onChange={(e) => updateQualification(qual.id, 'university', e.target.value)} placeholder="Awarding university" />
+                <Label>University/Regulatory Authority <span className="text-destructive">*</span></Label>
+                <Input value={qual.university} onChange={(e) => updateQualification(qual.id, 'university', e.target.value)} placeholder="University or regulatory body name" />
+              </div>
+              <div className="space-y-2">
+                <Label>Name of Course <span className="text-destructive">*</span></Label>
+                <Input value={qual.courseName} onChange={(e) => updateQualification(qual.id, 'courseName', e.target.value)} placeholder="Course name" />
               </div>
               <div className="space-y-2">
                 <Label>Country <span className="text-destructive">*</span></Label>
                 <Input value={qual.country} onChange={(e) => updateQualification(qual.id, 'country', e.target.value)} placeholder="Country of study" />
               </div>
               <div className="space-y-2">
-                <Label>Duration (months)</Label>
+                <Label>Duration of Learning (in months)</Label>
                 <Input type="number" value={qual.durationMonths} onChange={(e) => updateQualification(qual.id, 'durationMonths', e.target.value)} placeholder="e.g., 48" />
               </div>
               <div className="space-y-2">
-                <Label>Mode of Learning <span className="text-destructive">*</span></Label>
+                <Label>Mode of Instruction <span className="text-destructive">*</span></Label>
                 <Select value={qual.modeOfLearning} onValueChange={(value) => updateQualification(qual.id, 'modeOfLearning', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select mode" />
@@ -92,29 +98,35 @@ const AcademicQualificationStep2B = ({ formData, updateFormData }: Props) => {
                   <SelectContent className="bg-white">
                     <SelectItem value="regular">Regular</SelectItem>
                     <SelectItem value="distance">Distance</SelectItem>
-                    <SelectItem value="online">Online</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Medium of Instruction <span className="text-destructive">*</span></Label>
+                <Label>Medium of Instruction (specify language) <span className="text-destructive">*</span></Label>
                 <Input value={qual.mediumOfInstruction} onChange={(e) => updateQualification(qual.id, 'mediumOfInstruction', e.target.value)} placeholder="e.g., English" />
               </div>
               <div className="space-y-2">
-                <Label>Regulatory Authority <span className="text-destructive">*</span></Label>
-                <Input value={qual.regulatoryAuthority} onChange={(e) => updateQualification(qual.id, 'regulatoryAuthority', e.target.value)} placeholder="Name of regulatory body" />
+                <Label>Year of admission</Label>
+                <Input type="number" value={qual.admissionYear} onChange={(e) => updateQualification(qual.id, 'admissionYear', e.target.value)} placeholder="e.g., 2018" min="1950" max="2030" />
               </div>
               <div className="space-y-2">
-                <Label>Admission Date</Label>
-                <Input type="date" value={qual.admissionDate} onChange={(e) => updateQualification(qual.id, 'admissionDate', e.target.value)} />
+                <Label>Year of passing <span className="text-destructive">*</span></Label>
+                <Input type="number" value={qual.passingYear} onChange={(e) => updateQualification(qual.id, 'passingYear', e.target.value)} placeholder="e.g., 2022" min="1950" max="2030" />
               </div>
               <div className="space-y-2">
-                <Label>Passing Date <span className="text-destructive">*</span></Label>
-                <Input type="date" value={qual.passingDate} onChange={(e) => updateQualification(qual.id, 'passingDate', e.target.value)} />
+                <Label>Upload Certificate (Core Competency Mapping)</Label>
+                <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateQualification(qual.id, 'certificate', e.target.files?.[0] || null)} />
+                <p className="text-xs text-muted-foreground">Certificate with core competency mapping</p>
+              </div>
+              <div className="space-y-2">
+                <Label>Upload Transcript</Label>
+                <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateQualification(qual.id, 'transcript', e.target.files?.[0] || null)} />
+                <p className="text-xs text-muted-foreground">To be endorsed by the respective University/Institute</p>
               </div>
               <div className="md:col-span-2 space-y-2">
-                <Label>Certificate</Label>
-                <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateQualification(qual.id, 'certificate', e.target.files?.[0] || null)} />
+                <Label>Upload Attested Syllabus</Label>
+                <Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => updateQualification(qual.id, 'syllabus', e.target.files?.[0] || null)} />
+                <p className="text-xs text-muted-foreground">To be endorsed by the respective University/Institute</p>
               </div>
             </div>
           </div>

@@ -14,7 +14,7 @@ const InternshipStep2B = ({ formData, updateFormData }: Props) => {
   const addInternship = () => {
     const newInternship: Form2BInternship = {
       id: Date.now().toString(),
-      designation: '',
+      programName: '',
       organizationNameAddress: '',
       country: '',
       startDate: '',
@@ -44,7 +44,7 @@ const InternshipStep2B = ({ formData, updateFormData }: Props) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
           <Briefcase className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Internship / Clinical Training</h2>
+        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">Details of Internship/Clinical Training (Supervised Clinical Practice)/Field Work etc.</h2>
         <p className="text-muted-foreground max-w-xl mx-auto">Add details of your internship or clinical training (if any).</p>
       </div>
 
@@ -69,27 +69,27 @@ const InternshipStep2B = ({ formData, updateFormData }: Props) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Designation</Label>
-                    <Input value={intern.designation} onChange={(e) => updateInternship(intern.id, 'designation', e.target.value)} placeholder="e.g., Intern" />
+                    <Label>Program name</Label>
+                    <Input value={intern.programName} onChange={(e) => updateInternship(intern.id, 'programName', e.target.value)} placeholder="e.g., Clinical Internship" />
                   </div>
                   <div className="space-y-2">
                     <Label>Country</Label>
                     <Input value={intern.country} onChange={(e) => updateInternship(intern.id, 'country', e.target.value)} placeholder="Country of internship" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
-                    <Label>Organization Name & Address</Label>
+                    <Label>Name & Address of Organisation</Label>
                     <Input value={intern.organizationNameAddress} onChange={(e) => updateInternship(intern.id, 'organizationNameAddress', e.target.value)} placeholder="Hospital/Clinic name and address" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Start Date</Label>
+                    <Label>Date of start</Label>
                     <Input type="date" value={intern.startDate} onChange={(e) => updateInternship(intern.id, 'startDate', e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Completion Date</Label>
+                    <Label>Date of completion</Label>
                     <Input type="date" value={intern.completionDate} onChange={(e) => updateInternship(intern.id, 'completionDate', e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Total Hours</Label>
+                    <Label>Total hours</Label>
                     <Input type="number" value={intern.totalHours} onChange={(e) => updateInternship(intern.id, 'totalHours', e.target.value)} placeholder="e.g., 1000" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
