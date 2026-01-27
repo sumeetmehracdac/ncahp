@@ -55,6 +55,7 @@ export interface Committee {
 export interface Role {
   roleId: string;
   roleName: string;
+  stakeholderType?: StakeholderType; // Map roles to stakeholder types for RBAC filtering
   committeeType?: CommitteeType; // NULL if unmapped (wildcard role)
   description?: string;
   isActive: boolean;
@@ -80,7 +81,7 @@ export interface UserRoleMappingFormData {
   stakeholderId: string;
   committeeTypeId: string;
   committeeId: string;
-  roleId: string;
+  roleIds: string[]; // Support multi-role selection
   validFrom: string;
   validUntil: string;
 }

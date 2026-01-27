@@ -19,6 +19,8 @@ import AdditionalRegistration from "./pages/AdditionalRegistration";
 import ProposalSubmission from "./pages/ProposalSubmission";
 import UserRoleMapping from "./pages/UserRoleMapping";
 import UserRoleMappingSinglePage from "./pages/UserRoleMapping/SinglePage";
+import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
+import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
@@ -45,6 +47,8 @@ const App = () => (
           <Route path="/proposal-submission" element={<ProposalSubmission />} />
           <Route path="/user-role-mapping" element={<UserRoleMapping />} />
           <Route path="/user-role-mapping/single" element={<UserRoleMappingSinglePage />} />
+          <Route path="/user-role-mapping/single-page/ho" element={<SinglePageHO />} />
+          <Route path="/user-role-mapping/single-page/sc" element={<SinglePageSC />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
