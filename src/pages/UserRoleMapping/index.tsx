@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -8,7 +9,8 @@ import {
   Shield,
   Building2,
   BarChart3,
-  Clock
+  Clock,
+  LayoutGrid
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -120,8 +122,15 @@ export default function UserRoleMapping() {
                 <Link2 className="h-6 w-6" />
               </div>
               <Badge variant="secondary" className="bg-white/20 text-white border-0">
-                Role Assignment
+                Multi-Step Wizard
               </Badge>
+              <Link 
+                to="/user-role-mapping/single" 
+                className="flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                Switch to Single Page
+              </Link>
             </div>
             
             <h1 className="text-2xl md:text-3xl font-serif font-bold mb-2">
