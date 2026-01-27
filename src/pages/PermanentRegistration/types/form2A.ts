@@ -262,7 +262,6 @@ export const initialForm2AData: Form2AData = {
       courseName: '',
       country: '',
       durationMonths: '',
-      durationMonths: '',
       admissionYear: '',
       passingYear: '',
       modeOfLearning: '',
