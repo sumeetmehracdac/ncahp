@@ -14,8 +14,6 @@ import {
     Eye,
     Calendar,
     ArrowRight,
-    Info,
-    ListOrdered,
     Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -23,12 +21,11 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { FlowSelector } from './components/FlowSelector';
-import { ProgressRing } from './components/ProgressRing';
 import { FlowSummary } from './components/FlowSummary';
+import { FloatingProgressBar, createStepsConfig } from './components/FloatingProgressBar';
 import { useSinglePageForm } from './hooks/useSinglePageForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -37,13 +34,14 @@ function LoadingSkeleton() {
     return (
         <div className="min-h-screen bg-background">
             <Header />
-            <div className="container mx-auto px-4 py-8">
-                <Skeleton className="h-32 w-full rounded-2xl mb-8" />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <Skeleton className="h-48 rounded-xl" />
-                    <Skeleton className="h-48 rounded-xl" />
-                    <Skeleton className="h-48 rounded-xl" />
-                    <Skeleton className="h-48 rounded-xl" />
+            <div className="container mx-auto px-4 py-6">
+                <Skeleton className="h-24 w-full rounded-2xl mb-6" />
+                <Skeleton className="h-16 w-full max-w-4xl mx-auto rounded-2xl mb-6" />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    <Skeleton className="h-40 rounded-xl" />
+                    <Skeleton className="h-40 rounded-xl" />
+                    <Skeleton className="h-40 rounded-xl" />
+                    <Skeleton className="h-40 rounded-xl" />
                 </div>
             </div>
             <Footer />
@@ -54,13 +52,10 @@ function LoadingSkeleton() {
 export default function SinglePageHO() {
     const [isLoading, setIsLoading] = useState(true);
 
-    // Use HO admin context
     const {
         formData,
         isSubmitting,
         submitSuccess,
-        currentUserContext,
-        adminType,
         progress,
         isFormComplete,
         availableUsers,
@@ -79,7 +74,7 @@ export default function SinglePageHO() {
     } = useSinglePageForm('HO');
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 600);
+        const timer = setTimeout(() => setIsLoading(false), 500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -114,6 +109,8 @@ export default function SinglePageHO() {
         color: 'bg-amber-500 text-white'
     }));
 
+    const stepsConfig = createStepsConfig(formData);
+
     if (isLoading) {
         return <LoadingSkeleton />;
     }
@@ -126,23 +123,20 @@ export default function SinglePageHO() {
             <section className="relative bg-gradient-to-r from-primary via-primary to-primary/95 text-primary-foreground overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
-                <div className="container mx-auto px-6 py-10 relative z-10">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div className="container mx-auto px-6 py-8 relative z-10">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="flex-1"
                         >
-                            <div className="flex items-center gap-3 mb-3">
+                            <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-white/10 backdrop-blur-sm rounded-lg">
                                     <Link2 className="h-5 w-5" />
                                 </div>
                                 <Badge variant="secondary" className="bg-indigo-600 text-white border-0 text-xs gap-1">
                                     <Shield className="w-3 h-3" />
                                     Head Office Admin
-                                </Badge>
-                                <Badge variant="secondary" className="bg-white/20 text-white border-0 text-xs">
-                                    Single-Page Flow
                                 </Badge>
                                 <Link
                                     to="/user-role-mapping/sc"
@@ -153,22 +147,22 @@ export default function SinglePageHO() {
                                 </Link>
                             </div>
 
-                            <h1 className="text-2xl md:text-3xl font-serif font-bold mb-3 text-white">
+                            <h1 className="text-2xl md:text-3xl font-serif font-bold mb-2 text-white">
                                 User-Role-Committee Mapping
                             </h1>
-                            <p className="text-sm text-white/95 max-w-lg leading-relaxed">
-                                As HO Admin, you can assign users to roles in <strong>all stakeholder types</strong>: NCAHP HO, State Councils, and External.
+                            <p className="text-sm text-white/90 max-w-lg leading-relaxed">
+                                Assign users to roles across all stakeholder types: NCAHP HO, State Councils, and External.
                             </p>
                         </motion.div>
 
-                        {/* Stats & Progress */}
+                        {/* Stats */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="flex items-center gap-6"
+                            className="flex items-center gap-4"
                         >
-                            <div className="hidden md:flex items-center gap-4 text-sm">
+                            <div className="hidden md:flex items-center gap-3 text-sm">
                                 <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg">
                                     <Users className="h-4 w-4" />
                                     <span>{availableUsers.length} Users</span>
@@ -176,14 +170,6 @@ export default function SinglePageHO() {
                                 <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg">
                                     <Building className="h-4 w-4" />
                                     <span>{availableCommittees.length}+ Committees</span>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3 px-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl">
-                                <ProgressRing progress={progress.percentage} size={48} strokeWidth={4} />
-                                <div className="text-sm">
-                                    <p className="font-semibold">{progress.completed}/5 Complete</p>
-                                    <p className="text-white/70 text-xs">Steps completed</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -194,7 +180,7 @@ export default function SinglePageHO() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="mt-8 pt-6 border-t border-white/20"
+                        className="mt-6 pt-5 border-t border-white/20"
                     >
                         <FlowSummary
                             user={selectedUser}
@@ -209,7 +195,14 @@ export default function SinglePageHO() {
             </section>
 
             {/* Main Content */}
-            <section className="container mx-auto px-6 py-10">
+            <section className="container mx-auto px-6 py-6">
+                {/* Floating Progress Bar */}
+                <FloatingProgressBar 
+                    steps={stepsConfig} 
+                    progress={progress}
+                    className="mb-6"
+                />
+
                 <AnimatePresence mode="wait">
                     {submitSuccess ? (
                         /* Success State */
@@ -218,42 +211,42 @@ export default function SinglePageHO() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="max-w-2xl mx-auto text-center py-16"
+                            className="max-w-2xl mx-auto text-center py-12"
                         >
                             <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                                className="relative inline-block mb-6"
+                                className="relative inline-block mb-5"
                             >
-                                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center shadow-xl shadow-emerald-500/30">
-                                    <CheckCircle2 className="w-12 h-12 text-white" />
+                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center shadow-xl shadow-emerald-500/30">
+                                    <CheckCircle2 className="w-10 h-10 text-white" />
                                 </div>
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: 0.3 }}
-                                    className="absolute -top-2 -right-2"
+                                    className="absolute -top-1 -right-1"
                                 >
-                                    <PartyPopper className="w-8 h-8 text-amber-500" />
+                                    <PartyPopper className="w-7 h-7 text-amber-500" />
                                 </motion.div>
                             </motion.div>
 
-                            <h2 className="text-3xl font-serif font-bold text-foreground mb-3">
+                            <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
                                 Assignment Created!
                             </h2>
-                            <p className="text-muted-foreground mb-8">
+                            <p className="text-muted-foreground mb-6 text-sm">
                                 <strong className="text-foreground">{selectedUser?.fullName}</strong> has been assigned as{' '}
                                 <strong className="text-foreground">{selectedRoles.map(r => r.roleName).join(', ')}</strong> to{' '}
                                 <strong className="text-foreground">{selectedCommittee?.committeeName}</strong>.
                             </p>
 
-                            <div className="flex items-center justify-center gap-4">
-                                <Button variant="outline" size="lg" className="gap-2">
+                            <div className="flex items-center justify-center gap-3">
+                                <Button variant="outline" size="default" className="gap-2">
                                     <Eye className="w-4 h-4" />
-                                    View All Mappings
+                                    View Mappings
                                 </Button>
-                                <Button size="lg" onClick={resetForm} className="gap-2">
+                                <Button size="default" onClick={resetForm} className="gap-2">
                                     <Plus className="w-4 h-4" />
                                     Create Another
                                 </Button>
@@ -268,19 +261,19 @@ export default function SinglePageHO() {
                             exit={{ opacity: 0 }}
                         >
                             {/* Selection Grid */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
                                 {/* User Selection */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.1 }}
-                                    className="bg-card rounded-2xl border shadow-sm p-6"
+                                    className="bg-card rounded-xl border shadow-sm p-5"
                                 >
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white">
-                                            <Users className="w-4 h-4" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center text-white">
+                                            <Users className="w-3.5 h-3.5" />
                                         </div>
-                                        <span className="font-semibold text-foreground">Step 1</span>
+                                        <span className="font-medium text-sm text-foreground">Step 1</span>
                                         {selectedUser && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-auto" />}
                                     </div>
 
@@ -300,17 +293,17 @@ export default function SinglePageHO() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.15 }}
                                     className={cn(
-                                        "bg-card rounded-2xl border shadow-sm p-6 transition-opacity",
-                                        !formData.userId && "opacity-60"
+                                        "bg-card rounded-xl border shadow-sm p-5 transition-opacity",
+                                        !formData.userId && "opacity-50"
                                     )}
                                 >
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white">
-                                            <Building2 className="w-4 h-4" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center text-white">
+                                            <Building2 className="w-3.5 h-3.5" />
                                         </div>
-                                        <span className="font-semibold text-foreground">Step 2</span>
-                                        <Badge variant="outline" className="ml-2 text-xs bg-indigo-50 text-indigo-700 border-indigo-200">
-                                            HO + SC + EXT
+                                        <span className="font-medium text-sm text-foreground">Step 2</span>
+                                        <Badge variant="outline" className="ml-1 text-[10px] bg-indigo-50 text-indigo-700 border-indigo-200 px-1.5 py-0">
+                                            All Types
                                         </Badge>
                                         {selectedStakeholder && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-auto" />}
                                     </div>
@@ -333,15 +326,15 @@ export default function SinglePageHO() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 }}
                                     className={cn(
-                                        "bg-card rounded-2xl border shadow-sm p-6 transition-opacity",
-                                        !formData.stakeholderId && "opacity-60"
+                                        "bg-card rounded-xl border shadow-sm p-5 transition-opacity",
+                                        !formData.stakeholderId && "opacity-50"
                                     )}
                                 >
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-8 h-8 rounded-lg bg-violet-500 flex items-center justify-center text-white">
-                                            <Layers className="w-4 h-4" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="w-7 h-7 rounded-lg bg-violet-500 flex items-center justify-center text-white">
+                                            <Layers className="w-3.5 h-3.5" />
                                         </div>
-                                        <span className="font-semibold text-foreground">Step 3</span>
+                                        <span className="font-medium text-sm text-foreground">Step 3</span>
                                         {selectedCommitteeType && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-auto" />}
                                     </div>
 
@@ -353,7 +346,7 @@ export default function SinglePageHO() {
                                         onChange={(v) => updateFormData('committeeTypeId', v)}
                                         disabled={!formData.stakeholderId}
                                         icon={<Layers className="w-5 h-5" />}
-                                        emptyMessage="No committee types for selected stakeholder"
+                                        emptyMessage="No committee types available"
                                     />
                                 </motion.div>
 
@@ -363,15 +356,15 @@ export default function SinglePageHO() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.25 }}
                                     className={cn(
-                                        "bg-card rounded-2xl border shadow-sm p-6 transition-opacity",
-                                        !formData.committeeTypeId && "opacity-60"
+                                        "bg-card rounded-xl border shadow-sm p-5 transition-opacity",
+                                        !formData.committeeTypeId && "opacity-50"
                                     )}
                                 >
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-white">
-                                            <Building className="w-4 h-4" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-white">
+                                            <Building className="w-3.5 h-3.5" />
                                         </div>
-                                        <span className="font-semibold text-foreground">Step 4</span>
+                                        <span className="font-medium text-sm text-foreground">Step 4</span>
                                         {selectedCommittee && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-auto" />}
                                     </div>
 
@@ -388,31 +381,30 @@ export default function SinglePageHO() {
                                 </motion.div>
                             </div>
 
-                            {/* Role Selection - Full Width, Multi-Select */}
+                            {/* Role Selection - Full Width */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
                                 className={cn(
-                                    "bg-card rounded-2xl border shadow-sm p-6 mb-10 transition-opacity",
-                                    !formData.committeeId && "opacity-60"
+                                    "bg-card rounded-xl border shadow-sm p-5 mb-6 transition-opacity",
+                                    !formData.committeeId && "opacity-50"
                                 )}
                             >
-                                <div className="flex items-center gap-2 mb-4">
-                                    <div className="w-8 h-8 rounded-lg bg-rose-500 flex items-center justify-center text-white">
-                                        <UserCheck className="w-4 h-4" />
+                                <div className="flex items-center gap-2 mb-3">
+                                    <div className="w-7 h-7 rounded-lg bg-rose-500 flex items-center justify-center text-white">
+                                        <UserCheck className="w-3.5 h-3.5" />
                                     </div>
-                                    <span className="font-semibold text-foreground">Step 5 - Select Role(s)</span>
-                                    <Badge variant="outline" className="ml-2 text-xs">Multi-Select</Badge>
+                                    <span className="font-medium text-sm text-foreground">Step 5 - Select Role(s)</span>
+                                    <Badge variant="outline" className="ml-1 text-[10px] px-1.5 py-0">Multi-Select</Badge>
                                     {formData.roleIds.length > 0 && (
-                                        <Badge className="ml-auto bg-emerald-100 text-emerald-700 border-emerald-200">
+                                        <Badge className="ml-auto bg-emerald-100 text-emerald-700 border-emerald-200 text-xs">
                                             {formData.roleIds.length} selected
                                         </Badge>
                                     )}
                                 </div>
 
-                                {/* Role Grid - Multi-Select */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
                                     {availableRoles.map((role, index) => {
                                         const isSelected = formData.roleIds.includes(role.roleId);
 
@@ -424,32 +416,32 @@ export default function SinglePageHO() {
                                                 disabled={!formData.committeeId}
                                                 initial={{ opacity: 0, scale: 0.9 }}
                                                 animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: 0.3 + index * 0.03 }}
+                                                transition={{ delay: 0.3 + index * 0.02 }}
                                                 className={cn(
-                                                    "relative p-4 rounded-xl text-left transition-all duration-200",
-                                                    "border-2 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed",
+                                                    "relative p-3 rounded-lg text-left transition-all duration-200",
+                                                    "border hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
                                                     isSelected
-                                                        ? "border-primary bg-primary/5 shadow-md"
-                                                        : "border-border hover:border-primary/50 bg-background"
+                                                        ? "border-primary bg-primary/5 shadow-sm"
+                                                        : "border-border hover:border-primary/40 bg-background"
                                                 )}
                                             >
                                                 {isSelected && (
                                                     <motion.div
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
-                                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center"
+                                                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center"
                                                     >
-                                                        <CheckCircle2 className="w-3 h-3 text-primary-foreground" />
+                                                        <CheckCircle2 className="w-2.5 h-2.5 text-primary-foreground" />
                                                     </motion.div>
                                                 )}
 
                                                 <p className={cn(
-                                                    "font-medium text-sm mb-1",
+                                                    "font-medium text-xs mb-0.5",
                                                     isSelected ? "text-primary" : "text-foreground"
                                                 )}>
                                                     {role.roleName}
                                                 </p>
-                                                <p className="text-xs text-muted-foreground line-clamp-2">
+                                                <p className="text-[10px] text-muted-foreground line-clamp-1">
                                                     {role.description}
                                                 </p>
                                             </motion.button>
@@ -458,7 +450,7 @@ export default function SinglePageHO() {
                                 </div>
 
                                 {!formData.committeeId && (
-                                    <p className="text-sm text-muted-foreground text-center mt-4">
+                                    <p className="text-xs text-muted-foreground text-center mt-3">
                                         Select a committee to choose roles
                                     </p>
                                 )}
@@ -471,14 +463,13 @@ export default function SinglePageHO() {
                                         initial={{ opacity: 0, y: 20, height: 0 }}
                                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                                         exit={{ opacity: 0, y: 20, height: 0 }}
-                                        className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl border-2 border-primary/20 p-6"
+                                        className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-5"
                                     >
-                                        <div className="flex flex-col lg:flex-row lg:items-end gap-6">
-                                            {/* Validity Inputs */}
+                                        <div className="flex flex-col lg:flex-row lg:items-end gap-5">
                                             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="validFrom" className="flex items-center gap-2 text-sm">
-                                                        <Calendar className="w-4 h-4 text-primary" />
+                                                <div className="space-y-1.5">
+                                                    <Label htmlFor="validFrom" className="flex items-center gap-2 text-xs">
+                                                        <Calendar className="w-3.5 h-3.5 text-primary" />
                                                         Valid From
                                                     </Label>
                                                     <Input
@@ -486,13 +477,13 @@ export default function SinglePageHO() {
                                                         type="date"
                                                         value={formData.validFrom}
                                                         onChange={(e) => updateFormData('validFrom', e.target.value)}
-                                                        className="bg-background"
+                                                        className="bg-background h-9 text-sm"
                                                     />
                                                 </div>
 
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="validUntil" className="flex items-center gap-2 text-sm">
-                                                        <Calendar className="w-4 h-4 text-muted-foreground" />
+                                                <div className="space-y-1.5">
+                                                    <Label htmlFor="validUntil" className="flex items-center gap-2 text-xs">
+                                                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                                                         Valid Until (Optional)
                                                     </Label>
                                                     <Input
@@ -501,23 +492,21 @@ export default function SinglePageHO() {
                                                         value={formData.validUntil}
                                                         onChange={(e) => updateFormData('validUntil', e.target.value)}
                                                         min={formData.validFrom}
-                                                        className="bg-background"
-                                                        placeholder="Indefinite"
+                                                        className="bg-background h-9 text-sm"
                                                     />
                                                 </div>
                                             </div>
 
-                                            {/* Submit Button */}
                                             <Button
                                                 size="lg"
                                                 onClick={submitForm}
                                                 disabled={isSubmitting}
-                                                className="gap-2 h-12 px-8 text-base font-semibold rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all whitespace-nowrap"
+                                                className="gap-2 h-10 px-6 text-sm font-semibold rounded-lg shadow-lg shadow-primary/25 hover:shadow-xl transition-all whitespace-nowrap"
                                             >
                                                 {isSubmitting ? (
                                                     <>
                                                         <motion.div
-                                                            className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
+                                                            className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
                                                             animate={{ rotate: 360 }}
                                                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                                                         />
@@ -525,16 +514,15 @@ export default function SinglePageHO() {
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <CheckCircle2 className="w-5 h-5" />
+                                                        <CheckCircle2 className="w-4 h-4" />
                                                         Create Assignment
                                                     </>
                                                 )}
                                             </Button>
                                         </div>
 
-                                        {/* Summary Preview */}
                                         <Separator className="my-4" />
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+                                        <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
                                             <span>Assignment:</span>
                                             <span className="font-medium text-foreground">{selectedUser?.fullName}</span>
                                             <ArrowRight className="w-3 h-3" />
