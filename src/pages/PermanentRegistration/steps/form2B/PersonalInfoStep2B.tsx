@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
+import { User, Upload, AlertCircle, CheckCircle2, FileCheck, Lock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -83,54 +83,36 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
         <p className="text-muted-foreground max-w-xl mx-auto">Indian national with foreign qualification registration.</p>
       </div>
 
-      {/* Name Fields (Read-only) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label>First Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="First Name" value={formData.firstName} className="h-11 bg-muted" disabled />
+      {/* Pre-filled Fields (Read-only) */}
+      <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+        <div className="flex items-center gap-2 mb-4">
+          <Lock className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm font-medium text-muted-foreground">Pre-filled from your account registration</span>
         </div>
-        <div className="space-y-2">
-          <Label>Middle Name</Label>
-          <Input placeholder="Middle Name" value={formData.middleName} className="h-11 bg-muted" disabled />
-        </div>
-        <div className="space-y-2">
-          <Label>Last Name <span className="text-destructive">*</span></Label>
-          <Input placeholder="Last Name" value={formData.lastName} className="h-11 bg-muted" disabled />
-        </div>
-      </div>
-
-      {/* Gender, Age & DOB (Read-only) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-4">
-          <Label className="text-base font-semibold">Gender <span className="text-destructive">*</span></Label>
-          <RadioGroup value={formData.gender} className="flex gap-4" disabled>
-            {["Male", "Female", "Other"].map((g) => (
-              <Label key={g} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-not-allowed transition-all ${formData.gender === g ? "border-primary bg-primary/5" : "border-border bg-muted opacity-50"}`}>
-                <RadioGroupItem value={g} />
-                <span className="text-sm font-medium">{g}</span>
-              </Label>
-            ))}
-          </RadioGroup>
-        </div>
-        <div className="space-y-2">
-          <Label>Age <span className="text-destructive">*</span></Label>
-          <Input type="number" value={formData.age} className="h-11 bg-muted" disabled />
-        </div>
-        <div className="space-y-2">
-          <Label>Date of Birth <span className="text-destructive">*</span></Label>
-          <Input type="date" value={formData.dateOfBirth} className="h-11 bg-muted" disabled />
-        </div>
-      </div>
-
-      {/* Contact (Read-only) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>Email <span className="text-destructive">*</span></Label>
-          <Input type="email" placeholder="email@example.com" value={formData.email} className="h-11 bg-muted" disabled />
-        </div>
-        <div className="space-y-2">
-          <Label>Mobile No. <span className="text-destructive">*</span></Label>
-          <Input placeholder="+91 98765 43210" value={formData.phoneNumber} className="h-11 bg-muted" disabled />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              label: "Full Name",
+              value: [formData.firstName, formData.middleName, formData.lastName].filter(Boolean).join(" ")
+            },
+            { label: "Gender", value: formData.gender },
+            { label: "Age", value: `${formData.age} years` },
+            {
+              label: "Date of Birth",
+              value: formData.dateOfBirth ? new Date(formData.dateOfBirth).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }) : ""
+            },
+            { label: "Email", value: formData.email },
+            { label: "Mobile", value: formData.phoneNumber },
+          ].map((field) => (
+            <div key={field.label} className="bg-white rounded-lg p-3 border border-border">
+              <p className="text-xs font-medium text-muted-foreground mb-1">{field.label}</p>
+              <p className="font-medium text-foreground">{field.value}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -164,48 +146,85 @@ const PersonalInfoStep2B = ({ formData, updateFormData }: Props) => {
       </div>
 
       {/* Differently Abled */}
+      {/* Is Differently Abled */}
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Is differently abled? <span className="text-destructive">*</span></Label>
-        <RadioGroup
-          value={formData.isDifferentlyAbled ? "yes" : "no"}
-          onValueChange={(value) => updateFormData("isDifferentlyAbled", value === "yes")}
-          className="flex gap-4"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="diff-yes" />
-            <Label htmlFor="diff-yes">Yes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="diff-no" />
-            <Label htmlFor="diff-no">No</Label>
-          </div>
-        </RadioGroup>
-
-        <AnimatePresence>
-          {formData.isDifferentlyAbled && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="space-y-2"
+        <Label className="text-base font-semibold text-foreground">
+          Is Differently Abled? <span className="text-destructive">*</span>
+        </Label>
+        <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
+          <RadioGroup
+            value={formData.isDifferentlyAbled ? "yes" : "no"}
+            onValueChange={(value) => {
+              updateFormData("isDifferentlyAbled", value === "yes");
+              if (value === "no") {
+                updateFormData("documents", { ...formData.documents, differentlyAbledProof: null });
+              }
+            }}
+            className="flex gap-4"
+          >
+            <Label
+              htmlFor="differently-abled-yes"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${formData.isDifferentlyAbled
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
+                }`}
             >
-              <Label>Upload Certificate <span className="text-destructive">*</span></Label>
-              <div className="flex items-center gap-4">
-                <Input
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={handleDifferentlyAbledProofChange}
-                  className="h-11"
-                />
-                {formData.documents.differentlyAbledProof && (
-                  <span className="text-sm text-green-600 flex items-center gap-1">
-                    <CheckCircle2 className="w-4 h-4" /> Uploaded
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <RadioGroupItem value="yes" id="differently-abled-yes" />
+              <span className="text-sm font-medium">Yes</span>
+            </Label>
+            <Label
+              htmlFor="differently-abled-no"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${!formData.isDifferentlyAbled
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
+                }`}
+            >
+              <RadioGroupItem value="no" id="differently-abled-no" />
+              <span className="text-sm font-medium">No</span>
+            </Label>
+          </RadioGroup>
+
+          {/* Conditional Certificate Upload */}
+          <AnimatePresence>
+            {formData.isDifferentlyAbled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-2"
+              >
+                <Label className="text-sm text-muted-foreground">
+                  Upload Disability Certificate <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${formData.documents.differentlyAbledProof
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                      }`}
+                  >
+                    {formData.documents.differentlyAbledProof ? (
+                      <FileCheck className="w-5 h-5 text-primary" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-muted-foreground" />
+                    )}
+                    <span className="text-sm text-muted-foreground truncate">
+                      {formData.documents.differentlyAbledProof
+                        ? formData.documents.differentlyAbledProof.name
+                        : "Upload certificate (PDF, JPG, PNG)"}
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleDifferentlyAbledProofChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Citizenship */}

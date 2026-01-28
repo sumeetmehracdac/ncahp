@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Upload, Globe, FileCheck } from "lucide-react";
+import { User, Upload, Globe, FileCheck, Lock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -59,123 +59,36 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
         </p>
       </div>
 
-      {/* Name Fields */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">
-            First Name <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="firstName"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={(e) => updateFormData("firstName", e.target.value)}
-            className="h-11"
-          />
+      {/* Pre-filled Fields (Read-only) */}
+      <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+        <div className="flex items-center gap-2 mb-4">
+          <Lock className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm font-medium text-muted-foreground">Pre-filled from your account registration</span>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="middleName">Middle Name</Label>
-          <Input
-            id="middleName"
-            placeholder="Middle Name"
-            value={formData.middleName}
-            onChange={(e) => updateFormData("middleName", e.target.value)}
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="lastName">
-            Last Name <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="lastName"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={(e) => updateFormData("lastName", e.target.value)}
-            className="h-11"
-          />
-        </div>
-      </div>
-
-      {/* Gender, Age & DOB */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-4">
-          <Label className="text-base font-semibold text-foreground">
-            Gender <span className="text-destructive">*</span>
-          </Label>
-          <RadioGroup
-            value={formData.gender}
-            onValueChange={(value) => updateFormData("gender", value)}
-            className="flex gap-4"
-          >
-            {["Male", "Female", "Others"].map((g) => (
-              <Label
-                key={g}
-                htmlFor={`gender-${g.toLowerCase()}`}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${formData.gender === g
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
-                  }`}
-              >
-                <RadioGroupItem value={g} id={`gender-${g.toLowerCase()}`} />
-                <span className="text-sm font-medium">{g}</span>
-              </Label>
-            ))}
-          </RadioGroup>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="age">
-            Age <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="age"
-            type="number"
-            placeholder="Age"
-            value={formData.age}
-            onChange={(e) => updateFormData("age", e.target.value)}
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="dateOfBirth">
-            Date of Birth <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="dateOfBirth"
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={(e) => updateFormData("dateOfBirth", e.target.value)}
-            className="h-11"
-          />
-        </div>
-      </div>
-
-      {/* Contact Information */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">
-            Email ID <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="email@example.com"
-            value={formData.email}
-            onChange={(e) => updateFormData("email", e.target.value)}
-            className="h-11"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phoneNumber">
-            Mobile No. (with country code) <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="phoneNumber"
-            placeholder="+1 234 567 8900"
-            value={formData.phoneNumber}
-            onChange={(e) => updateFormData("phoneNumber", e.target.value)}
-            className="h-11"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              label: "Full Name",
+              value: [formData.firstName, formData.middleName, formData.lastName].filter(Boolean).join(" ")
+            },
+            { label: "Gender", value: formData.gender },
+            { label: "Age", value: `${formData.age} years` },
+            {
+              label: "Date of Birth",
+              value: formData.dateOfBirth ? new Date(formData.dateOfBirth).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }) : ""
+            },
+            { label: "Email", value: formData.email },
+            { label: "Mobile", value: formData.phoneNumber },
+          ].map((field) => (
+            <div key={field.label} className="bg-white rounded-lg p-3 border border-border">
+              <p className="text-xs font-medium text-muted-foreground mb-1">{field.label}</p>
+              <p className="font-medium text-foreground">{field.value}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -198,8 +111,8 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
             <Label
               htmlFor="differently-abled-yes"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${formData.isDifferentlyAbled
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary/50"
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
                 }`}
             >
               <RadioGroupItem value="yes" id="differently-abled-yes" />
@@ -208,8 +121,8 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
             <Label
               htmlFor="differently-abled-no"
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${!formData.isDifferentlyAbled
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-primary/50"
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
                 }`}
             >
               <RadioGroupItem value="no" id="differently-abled-no" />
@@ -232,8 +145,8 @@ const PersonalInfoStep2A = ({ formData, updateFormData }: Props) => {
                 <div className="relative">
                   <div
                     className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${formData.differentlyAbledCertificate
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
                       }`}
                   >
                     {formData.differentlyAbledCertificate ? (

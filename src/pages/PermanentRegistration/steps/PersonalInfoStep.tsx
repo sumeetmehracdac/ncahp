@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Lock, MapPin, AlertTriangle, Upload, Calendar, Info, CheckCircle2 } from "lucide-react";
+import { User, Lock, MapPin, AlertTriangle, Upload, Calendar, Info, CheckCircle2, FileCheck } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -46,6 +46,13 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
     const file = e.target.files?.[0];
     if (file) {
       updateFormData("differentStateProof", file);
+    }
+  };
+
+  const handleDifferentlyAbledCertificateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateFormData("differentlyAbledCertificate", file);
     }
   };
 
@@ -191,6 +198,87 @@ const PersonalInfoStep = ({ formData, updateFormData }: Props) => {
             onChange={(e) => updateFormData("presentOccupation", e.target.value)}
             className="h-11"
           />
+        </div>
+      </div>
+
+      {/* Is Differently Abled */}
+      <div className="space-y-4">
+        <Label className="text-base font-semibold text-foreground">
+          Is Differently Abled? <span className="text-destructive">*</span>
+        </Label>
+        <div className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
+          <RadioGroup
+            value={formData.isDifferentlyAbled ? "yes" : "no"}
+            onValueChange={(value) => {
+              updateFormData("isDifferentlyAbled", value === "yes");
+              if (value === "no") {
+                updateFormData("differentlyAbledCertificate", null);
+              }
+            }}
+            className="flex gap-4"
+          >
+            <Label
+              htmlFor="differently-abled-yes"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${formData.isDifferentlyAbled
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
+                }`}
+            >
+              <RadioGroupItem value="yes" id="differently-abled-yes" />
+              <span className="text-sm font-medium">Yes</span>
+            </Label>
+            <Label
+              htmlFor="differently-abled-no"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${!formData.isDifferentlyAbled
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-primary/50"
+                }`}
+            >
+              <RadioGroupItem value="no" id="differently-abled-no" />
+              <span className="text-sm font-medium">No</span>
+            </Label>
+          </RadioGroup>
+
+          {/* Conditional Certificate Upload */}
+          <AnimatePresence>
+            {formData.isDifferentlyAbled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-2"
+              >
+                <Label className="text-sm text-muted-foreground">
+                  Upload Disability Certificate <span className="text-destructive">*</span>
+                </Label>
+                <div className="relative">
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${formData.differentlyAbledCertificate
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                      }`}
+                  >
+                    {formData.differentlyAbledCertificate ? (
+                      <FileCheck className="w-5 h-5 text-primary" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-muted-foreground" />
+                    )}
+                    <span className="text-sm text-muted-foreground truncate">
+                      {formData.differentlyAbledCertificate
+                        ? formData.differentlyAbledCertificate.name
+                        : "Upload certificate (PDF, JPG, PNG)"}
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleDifferentlyAbledCertificateChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 

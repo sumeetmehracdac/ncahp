@@ -183,6 +183,8 @@ export interface FormData {
   // Screen 9 - Final
   aadhaarConsent: boolean;
   declarationAccepted: boolean;
+  isDifferentlyAbled: boolean;
+  differentlyAbledCertificate: File | null;
 }
 
 // Mock user data (simulating already registered user)
@@ -323,7 +325,9 @@ const PermanentRegistration = () => {
     experienceEvidence: null,
     validIdProof: null,
     aadhaarConsent: false,
-    declarationAccepted: false
+    declarationAccepted: false,
+    isDifferentlyAbled: false,
+    differentlyAbledCertificate: null
   });
 
   // Form 2A data
@@ -332,71 +336,73 @@ const PermanentRegistration = () => {
   // Form 2B data
   const [form2BData, setForm2BData] = useState<Form2BData>(initialForm2BData);
   // Auto-save effect - saves to localStorage every 30 seconds when there are changes
-  useEffect(() => {
-    const saveToLocalStorage = () => {
-      if (hasUnsavedChanges) {
-        setIsSaving(true);
-        // Serialize form data (excluding File objects)
-        const serializableData = {
-          formData: {
-            ...formData,
-            photo: formData.photo?.name || null,
-            differentStateProof: formData.differentStateProof?.name || null,
-            provisionalDegree: formData.provisionalDegree?.name || null,
-            finalDegree: formData.finalDegree?.name || null,
-            internshipCertificate: formData.internshipCertificate?.name || null,
-            transcripts: formData.transcripts?.name || null,
-            curriculumSoftCopy: formData.curriculumSoftCopy?.name || null,
-            experienceEvidence: formData.experienceEvidence?.name || null,
-            validIdProof: formData.validIdProof?.name || null,
-          },
-          currentStep,
-          activeFormType,
-          savedAt: new Date().toISOString(),
-        };
-        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(serializableData));
-        setLastSaved(new Date());
-        setHasUnsavedChanges(false);
-        setIsSaving(false);
-        toast({
-          title: 'Draft Saved',
-          description: 'Your progress has been auto-saved.',
-          duration: 2000,
-        });
-      }
-    };
+  // Auto-save effect - DISABLED per user request
+  // useEffect(() => {
+  //   const saveToLocalStorage = () => {
+  //     if (hasUnsavedChanges) {
+  //       setIsSaving(true);
+  //       // Serialize form data (excluding File objects)
+  //       const serializableData = {
+  //         formData: {
+  //           ...formData,
+  //           photo: formData.photo?.name || null,
+  //           differentStateProof: formData.differentStateProof?.name || null,
+  //           provisionalDegree: formData.provisionalDegree?.name || null,
+  //           finalDegree: formData.finalDegree?.name || null,
+  //           internshipCertificate: formData.internshipCertificate?.name || null,
+  //           transcripts: formData.transcripts?.name || null,
+  //           curriculumSoftCopy: formData.curriculumSoftCopy?.name || null,
+  //           experienceEvidence: formData.experienceEvidence?.name || null,
+  //           validIdProof: formData.validIdProof?.name || null,
+  //           differentlyAbledCertificate: formData.differentlyAbledCertificate?.name || null,
+  //         },
+  //         currentStep,
+  //         activeFormType,
+  //         savedAt: new Date().toISOString(),
+  //       };
+  //       localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(serializableData));
+  //       setLastSaved(new Date());
+  //       setHasUnsavedChanges(false);
+  //       setIsSaving(false);
+  //       toast({
+  //         title: 'Draft Saved',
+  //         description: 'Your progress has been auto-saved.',
+  //         duration: 2000,
+  //       });
+  //     }
+  //   };
+  //
+  //   const autoSaveInterval = setInterval(saveToLocalStorage, 30000); // 30 seconds
+  //   return () => clearInterval(autoSaveInterval);
+  // }, [hasUnsavedChanges, formData, currentStep, activeFormType, toast]);
 
-    const autoSaveInterval = setInterval(saveToLocalStorage, 30000); // 30 seconds
-    return () => clearInterval(autoSaveInterval);
-  }, [hasUnsavedChanges, formData, currentStep, activeFormType, toast]);
-
-  // Load saved draft on mount
-  useEffect(() => {
-    const savedDraft = localStorage.getItem(AUTOSAVE_KEY);
-    if (savedDraft) {
-      try {
-        const parsed = JSON.parse(savedDraft);
-        if (parsed.formData && parsed.savedAt) {
-          const savedDate = new Date(parsed.savedAt);
-          const timeDiff = Date.now() - savedDate.getTime();
-          // Only restore if saved within last 24 hours
-          if (timeDiff < 24 * 60 * 60 * 1000) {
-            toast({
-              title: 'Draft Restored',
-              description: `Your previous draft from ${savedDate.toLocaleString()} has been restored.`,
-              duration: 4000,
-            });
-            setFormData(prev => ({ ...prev, ...parsed.formData, photo: null }));
-            setCurrentStep(parsed.currentStep || 1);
-            setActiveFormType(parsed.activeFormType || 'main');
-            setLastSaved(savedDate);
-          }
-        }
-      } catch (e) {
-        console.error('Failed to parse saved draft:', e);
-      }
-    }
-  }, []);
+  // Load saved draft on mount - DISABLED per user request
+  // useEffect(() => {
+  //   const savedDraft = localStorage.getItem(AUTOSAVE_KEY);
+  //   if (savedDraft) {
+  //     try {
+  //       const parsed = JSON.parse(savedDraft);
+  //       if (parsed.formData && parsed.savedAt) {
+  //         const savedDate = new Date(parsed.savedAt);
+  //         const timeDiff = Date.now() - savedDate.getTime();
+  //         // Only restore if saved within last 24 hours
+  //         if (timeDiff < 24 * 60 * 60 * 1000) {
+  //           toast({
+  //             title: 'Draft Restored',
+  //             description: `Your previous draft from ${savedDate.toLocaleString()} has been restored.`,
+  //             duration: 4000,
+  //           });
+  //           setFormData(prev => ({ ...prev, ...parsed.formData, photo: null }));
+  //           setCurrentStep(parsed.currentStep || 1);
+  //           setActiveFormType(parsed.activeFormType || 'main');
+  //           setLastSaved(savedDate);
+  //         }
+  //       }
+  //     } catch (e) {
+  //       console.error('Failed to parse saved draft:', e);
+  //     }
+  //   }
+  // }, []);
 
   // Check if progress bar can scroll
   const checkProgressBarScroll = useCallback(() => {
@@ -456,6 +462,7 @@ const PermanentRegistration = () => {
         curriculumSoftCopy: formData.curriculumSoftCopy?.name || null,
         experienceEvidence: formData.experienceEvidence?.name || null,
         validIdProof: formData.validIdProof?.name || null,
+        differentlyAbledCertificate: formData.differentlyAbledCertificate?.name || null,
       },
       currentStep,
       activeFormType,
@@ -554,6 +561,8 @@ const PermanentRegistration = () => {
   };
 
   const canProceedMain = (): boolean => {
+    return true;
+    /* Temporary Validation Bypass
     switch (currentStep) {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
@@ -586,9 +595,12 @@ const PermanentRegistration = () => {
       default:
         return false;
     }
+    */
   };
 
   const canProceed2A = (): boolean => {
+    return true;
+    /* Temporary Validation Bypass
     switch (currentStep) {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
@@ -618,9 +630,12 @@ const PermanentRegistration = () => {
       default:
         return false;
     }
+    */
   };
 
   const canProceed2B = (): boolean => {
+    return true;
+    /* Temporary Validation Bypass
     switch (currentStep) {
       case 1:
         return formData.registrationType !== '' && formData.profession !== '';
@@ -651,6 +666,7 @@ const PermanentRegistration = () => {
       default:
         return false;
     }
+    */
   };
 
   const nextStep = () => {
@@ -903,8 +919,8 @@ const PermanentRegistration = () => {
                 {steps.map((step, index) => {
                   const isActive = step.id === currentStep;
                   const isCompleted = step.id < currentStep;
-                  const isVisited = step.id <= highestStepReached;
-                  const canNavigate = step.id <= highestStepReached && step.id !== currentStep;
+                  const isVisited = true; // step.id <= highestStepReached;
+                  const canNavigate = true; // step.id <= highestStepReached && step.id !== currentStep;
                   const StepIcon = step.icon;
 
                   return (
