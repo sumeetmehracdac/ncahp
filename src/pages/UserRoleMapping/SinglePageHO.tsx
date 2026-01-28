@@ -197,8 +197,8 @@ export default function SinglePageHO() {
             {/* Main Content */}
             <section className="container mx-auto px-6 py-6">
                 {/* Floating Progress Bar */}
-                <FloatingProgressBar 
-                    steps={stepsConfig} 
+                <FloatingProgressBar
+                    steps={stepsConfig}
                     progress={progress}
                     className="mb-6"
                 />
@@ -456,7 +456,7 @@ export default function SinglePageHO() {
                                 )}
                             </motion.div>
 
-                            {/* Validity & Submit */}
+                            {/* Submit */}
                             <AnimatePresence>
                                 {isFormComplete && (
                                     <motion.div
