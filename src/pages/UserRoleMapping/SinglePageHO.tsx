@@ -12,7 +12,7 @@ import {
     PartyPopper,
     Plus,
     Eye,
-    Calendar,
+
     ArrowRight,
     Shield
 } from 'lucide-react';
@@ -24,7 +24,6 @@ import { Separator } from '@/components/ui/separator';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { FlowSelector } from './components/FlowSelector';
-import { FlowSummary } from './components/FlowSummary';
 import { FloatingProgressBar, createStepsConfig } from './components/FloatingProgressBar';
 import { useSinglePageForm } from './hooks/useSinglePageForm';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -123,7 +122,7 @@ export default function SinglePageHO() {
             <section className="relative bg-gradient-to-r from-primary via-primary to-primary/95 text-primary-foreground overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
-                <div className="container mx-auto px-6 py-8 relative z-10">
+                <div className="container mx-auto px-6 py-4 relative z-10">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -176,21 +175,7 @@ export default function SinglePageHO() {
                     </div>
 
                     {/* Flow Summary */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-6 pt-5 border-t border-white/20"
-                    >
-                        <FlowSummary
-                            user={selectedUser}
-                            stakeholder={selectedStakeholder}
-                            committeeType={selectedCommitteeType}
-                            committee={selectedCommittee}
-                            roles={selectedRoles}
-                            isComplete={isFormComplete}
-                        />
-                    </motion.div>
+
                 </div>
             </section>
 
@@ -201,6 +186,7 @@ export default function SinglePageHO() {
                     steps={stepsConfig}
                     progress={progress}
                     className="mb-6"
+                    isSuccess={submitSuccess}
                 />
 
                 <AnimatePresence mode="wait">
@@ -465,37 +451,8 @@ export default function SinglePageHO() {
                                         exit={{ opacity: 0, y: 20, height: 0 }}
                                         className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-5"
                                     >
-                                        <div className="flex flex-col lg:flex-row lg:items-end gap-5">
-                                            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                <div className="space-y-1.5">
-                                                    <Label htmlFor="validFrom" className="flex items-center gap-2 text-xs">
-                                                        <Calendar className="w-3.5 h-3.5 text-primary" />
-                                                        Valid From
-                                                    </Label>
-                                                    <Input
-                                                        id="validFrom"
-                                                        type="date"
-                                                        value={formData.validFrom}
-                                                        onChange={(e) => updateFormData('validFrom', e.target.value)}
-                                                        className="bg-background h-9 text-sm"
-                                                    />
-                                                </div>
+                                        <div className="flex flex-col items-center gap-5">
 
-                                                <div className="space-y-1.5">
-                                                    <Label htmlFor="validUntil" className="flex items-center gap-2 text-xs">
-                                                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-                                                        Valid Until (Optional)
-                                                    </Label>
-                                                    <Input
-                                                        id="validUntil"
-                                                        type="date"
-                                                        value={formData.validUntil}
-                                                        onChange={(e) => updateFormData('validUntil', e.target.value)}
-                                                        min={formData.validFrom}
-                                                        className="bg-background h-9 text-sm"
-                                                    />
-                                                </div>
-                                            </div>
 
                                             <Button
                                                 size="lg"

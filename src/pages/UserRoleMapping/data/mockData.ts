@@ -274,8 +274,7 @@ export const mockExistingMappings: UserRoleMapping[] = [
     role: mockRoles[1], // President of CAB
     assignedBy: mockUsers[1],
     status: 'ACTIVE',
-    validFrom: '2024-01-01',
-    validUntil: '2026-12-31',
+
     createdAt: '2024-01-01T10:00:00Z'
   },
   {
@@ -286,7 +285,7 @@ export const mockExistingMappings: UserRoleMapping[] = [
     role: mockRoles[5], // President of Autonomous Board
     assignedBy: mockUsers[0],
     status: 'ACTIVE',
-    validFrom: '2024-02-15',
+
     createdAt: '2024-02-15T09:30:00Z'
   },
 ];

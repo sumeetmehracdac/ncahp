@@ -24,8 +24,7 @@ const initialFormData: UserRoleMappingFormData = {
   committeeTypeId: '',
   committeeId: '',
   roleIds: [], // Multi-role selection
-  validFrom: new Date().toISOString().split('T')[0],
-  validUntil: ''
+
 };
 
 export type AdminType = 'HO' | 'SC';

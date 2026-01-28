@@ -70,8 +70,7 @@ export interface UserRoleMapping {
   role: Role;
   assignedBy: User;
   status: AssignmentStatus;
-  validFrom: string;
-  validUntil?: string;
+
   createdAt: string;
 }
 
@@ -82,8 +81,7 @@ export interface UserRoleMappingFormData {
   committeeTypeId: string;
   committeeId: string;
   roleIds: string[]; // Support multi-role selection
-  validFrom: string;
-  validUntil: string;
+
 }
 
 // Filter options state
