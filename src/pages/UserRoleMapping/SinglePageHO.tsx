@@ -24,7 +24,7 @@ import { Separator } from '@/components/ui/separator';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { FlowSelector } from './components/FlowSelector';
-import { FloatingProgressBar, createStepsConfig } from './components/FloatingProgressBar';
+import { ProgressRing } from './components/ProgressRing';
 import { useSinglePageForm } from './hooks/useSinglePageForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -108,7 +108,7 @@ export default function SinglePageHO() {
         color: 'bg-amber-500 text-white'
     }));
 
-    const stepsConfig = createStepsConfig(formData);
+    
 
     if (isLoading) {
         return <LoadingSkeleton />;
@@ -154,7 +154,7 @@ export default function SinglePageHO() {
                             </p>
                         </motion.div>
 
-                        {/* Stats */}
+                        {/* Stats & Progress */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -171,23 +171,28 @@ export default function SinglePageHO() {
                                     <span>{availableCommittees.length}+ Committees</span>
                                 </div>
                             </div>
+                            
+                            {/* Embedded Progress Ring */}
+                            <div className="flex items-center gap-3 px-3 py-2 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                                <ProgressRing 
+                                    progress={progress.percentage} 
+                                    size={44} 
+                                    strokeWidth={4}
+                                    className="text-white"
+                                />
+                                <div className="text-xs">
+                                    <div className="font-medium text-white">{progress.completed}/{progress.total}</div>
+                                    <div className="text-white/70">Steps Done</div>
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
-
-                    {/* Flow Summary */}
 
                 </div>
             </section>
 
             {/* Main Content */}
             <section className="container mx-auto px-6 py-6">
-                {/* Floating Progress Bar */}
-                <FloatingProgressBar
-                    steps={stepsConfig}
-                    progress={progress}
-                    className="mb-6"
-                    isSuccess={submitSuccess}
-                />
 
                 <AnimatePresence mode="wait">
                     {submitSuccess ? (
