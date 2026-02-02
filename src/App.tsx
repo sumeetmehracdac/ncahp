@@ -20,6 +20,16 @@ import ProposalSubmission from "./pages/ProposalSubmission";
 import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
+
+// Relaxation & Fee Config Module
+import {
+  CriteriaManagementPage,
+  NationalFeeConfigPage,
+  StateFeeConfigPage,
+  RelaxationPoliciesPage,
+  CombinationRulesPage,
+} from "./pages/RelaxationFeeConfig";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,6 +55,14 @@ const App = () => (
           <Route path="/proposal-submission" element={<ProposalSubmission />} />
           <Route path="/user-role-mapping/ho" element={<SinglePageHO />} />
           <Route path="/user-role-mapping/sc" element={<SinglePageSC />} />
+          
+          {/* Relaxation & Fee Configuration Module */}
+          <Route path="/relaxation-fee-config/criteria" element={<CriteriaManagementPage />} />
+          <Route path="/relaxation-fee-config/national-fees" element={<NationalFeeConfigPage />} />
+          <Route path="/relaxation-fee-config/state-fees" element={<StateFeeConfigPage />} />
+          <Route path="/relaxation-fee-config/policies" element={<RelaxationPoliciesPage />} />
+          <Route path="/relaxation-fee-config/combinations" element={<CombinationRulesPage />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
