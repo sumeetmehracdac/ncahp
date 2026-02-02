@@ -299,10 +299,14 @@ export default function StateFeeConfigPage() {
                       </div>
                     </div>
 
-                    {/* Visual Slider */}
+                    {/* Visual Slider with Min/Max/Default toggle */}
                     <FeeRangeSlider
-                      value={values.defaultAmount}
-                      onChange={v => updateEditingValue(type.id, 'defaultAmount', v)}
+                      defaultValue={values.defaultAmount}
+                      minValue={values.minAmount}
+                      maxValue={values.maxAmount}
+                      onDefaultChange={v => updateEditingValue(type.id, 'defaultAmount', v)}
+                      onMinChange={v => updateEditingValue(type.id, 'minAmount', v)}
+                      onMaxChange={v => updateEditingValue(type.id, 'maxAmount', v)}
                       nationalMin={national.minAmount}
                       nationalMax={national.maxAmount}
                       nationalDefault={national.defaultAmount}
