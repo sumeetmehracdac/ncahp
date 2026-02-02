@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, AlertTriangle } from 'lucide-react';
-import * as SliderPrimitive from '@radix-ui/react-slider';
+import { Slider } from '@/components/ui/slider';
 
 type EditMode = 'default' | 'min' | 'max';
 
@@ -91,30 +91,19 @@ export function FeeRangeSlider({
           </div>
         </div>
 
-        {/* Radix Slider - single solid teal bar */}
-        <SliderPrimitive.Root
+        {/* Slider - single solid teal bar */}
+        <Slider
           value={[currentValue]}
           onValueChange={handleSliderChange}
           min={nationalMin}
           max={nationalMax}
           step={100}
           disabled={disabled}
-          className="relative flex w-full touch-none select-none items-center"
-        >
-          <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-            <SliderPrimitive.Range className="absolute h-full bg-primary" />
-          </SliderPrimitive.Track>
-          <SliderPrimitive.Thumb 
-            className={cn(
-              "block h-5 w-5 rounded-full border-2 border-primary bg-background shadow-md",
-              "ring-offset-background transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              "disabled:pointer-events-none disabled:opacity-50",
-              "cursor-grab active:cursor-grabbing",
-              !validation.valid && "border-destructive"
-            )}
-          />
-        </SliderPrimitive.Root>
+          className={cn(
+            "w-full",
+            !validation.valid && "[&_[data-slot=thumb]]:border-destructive"
+          )}
+        />
 
         {/* Clickable markers below slider */}
         <div className="absolute top-12 left-0 right-0">
