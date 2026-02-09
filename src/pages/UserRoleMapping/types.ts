@@ -81,7 +81,7 @@ export interface UserRoleMappingFormData {
   committeeTypeId: string;
   committeeId: string;
   roleIds: string[]; // Support multi-role selection
-
+  defaultRoleId: string; // Default role from the selected roles
 }
 
 // Filter options state

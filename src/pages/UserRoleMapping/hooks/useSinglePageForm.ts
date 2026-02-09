@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import type {
   UserRoleMappingFormData,
   CurrentUserContext,
@@ -6,7 +6,8 @@ import type {
   Stakeholder,
   CommitteeType,
   Committee,
-  Role
+  Role,
+  UserRoleMapping
 } from '../types';
 import {
   mockUsers,
@@ -14,6 +15,7 @@ import {
   mockCommitteeTypes,
   mockCommittees,
   mockRoles,
+  mockExistingMappings,
   mockCurrentUserContext,
   mockStateUserContext
 } from '../data/mockData';
@@ -23,8 +25,8 @@ const initialFormData: UserRoleMappingFormData = {
   stakeholderId: '',
   committeeTypeId: '',
   committeeId: '',
-  roleIds: [], // Multi-role selection
-
+  roleIds: [],
+  defaultRoleId: '',
 };
 
 export type AdminType = 'HO' | 'SC';
@@ -33,6 +35,7 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
   const [formData, setFormData] = useState<UserRoleMappingFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [editingMappingId, setEditingMappingId] = useState<string | null>(null);
 
   // Current user context based on admin type
   const currentUserContext: CurrentUserContext = useMemo(() => {
@@ -140,6 +143,28 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
     [formData.roleIds]
   );
 
+  const selectedDefaultRole = useMemo(() =>
+    mockRoles.find(r => r.roleId === formData.defaultRoleId),
+    [formData.defaultRoleId]
+  );
+
+  // Auto-set defaultRoleId when roles change
+  useEffect(() => {
+    if (formData.roleIds.length === 1) {
+      setFormData(prev => ({ ...prev, defaultRoleId: formData.roleIds[0] }));
+    } else if (formData.roleIds.length === 0) {
+      setFormData(prev => ({ ...prev, defaultRoleId: '' }));
+    } else if (formData.defaultRoleId && !formData.roleIds.includes(formData.defaultRoleId)) {
+      setFormData(prev => ({ ...prev, defaultRoleId: '' }));
+    }
+  }, [formData.roleIds, formData.defaultRoleId]);
+
+  // Existing mappings for selected user
+  const existingMappings: UserRoleMapping[] = useMemo(() => {
+    if (!formData.userId) return [];
+    return mockExistingMappings.filter(m => m.user.userId === formData.userId);
+  }, [formData.userId]);
+
   // Progress calculation
   const progress = useMemo(() => {
     let completed = 0;
@@ -147,8 +172,9 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
     if (formData.stakeholderId) completed++;
     if (formData.committeeTypeId) completed++;
     if (formData.committeeId) completed++;
-    if (formData.roleIds.length > 0) completed++; // Multi-role check
-    return { completed, total: 5, percentage: (completed / 5) * 100 };
+    if (formData.roleIds.length > 0) completed++;
+    if (formData.defaultRoleId) completed++;
+    return { completed, total: 6, percentage: (completed / 6) * 100 };
   }, [formData]);
 
   // Check if form is complete
@@ -158,7 +184,8 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
       formData.stakeholderId &&
       formData.committeeTypeId &&
       formData.committeeId &&
-      formData.roleIds.length > 0 // At least one role selected
+      formData.roleIds.length > 0 &&
+      formData.defaultRoleId
     );
   }, [formData]);
 
@@ -186,20 +213,43 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
           updated.committeeTypeId = '';
           updated.committeeId = '';
           updated.roleIds = [];
+          updated.defaultRoleId = '';
         } else if (field === 'stakeholderId') {
           updated.committeeTypeId = '';
           updated.committeeId = '';
           updated.roleIds = [];
+          updated.defaultRoleId = '';
         } else if (field === 'committeeTypeId') {
           updated.committeeId = '';
           updated.roleIds = [];
+          updated.defaultRoleId = '';
         } else if (field === 'committeeId') {
           updated.roleIds = [];
+          updated.defaultRoleId = '';
         }
       }
 
       return updated;
     });
+  }, []);
+
+  // Load an existing mapping into the form for editing
+  const editMapping = useCallback((mapping: UserRoleMapping) => {
+    setEditingMappingId(mapping.mappingId);
+    setFormData({
+      userId: mapping.user.userId,
+      stakeholderId: mapping.stakeholder.stakeholderId,
+      committeeTypeId: mapping.committee.committeeType.committeeTypeId,
+      committeeId: mapping.committee.committeeId,
+      roleIds: [mapping.role.roleId],
+      defaultRoleId: mapping.role.roleId,
+    });
+    setSubmitSuccess(false);
+  }, []);
+
+  // Cancel editing
+  const cancelEdit = useCallback(() => {
+    setEditingMappingId(null);
   }, []);
 
   // Submit form
@@ -209,15 +259,19 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
 
     console.log('Submitting mapping:', formData);
     console.log('Selected Roles:', selectedRoles.map(r => r.roleName));
+    console.log('Default Role:', selectedDefaultRole?.roleName);
+    console.log('Editing:', editingMappingId);
 
     setIsSubmitting(false);
     setSubmitSuccess(true);
-  }, [formData, selectedRoles]);
+    setEditingMappingId(null);
+  }, [formData, selectedRoles, selectedDefaultRole, editingMappingId]);
 
   // Reset form
   const resetForm = useCallback(() => {
     setFormData(initialFormData);
     setSubmitSuccess(false);
+    setEditingMappingId(null);
   }, []);
 
   return {
@@ -228,21 +282,26 @@ export function useSinglePageForm(adminType: AdminType = 'HO') {
     adminType,
     progress,
     isFormComplete,
+    editingMappingId,
 
     availableUsers,
     availableStakeholders,
     availableCommitteeTypes,
     availableCommittees,
     availableRoles,
+    existingMappings,
 
     selectedUser,
     selectedStakeholder,
     selectedCommitteeType,
     selectedCommittee,
-    selectedRoles, // Changed from selectedRole to selectedRoles
+    selectedRoles,
+    selectedDefaultRole,
 
     updateFormData,
     submitForm,
-    resetForm
+    resetForm,
+    editMapping,
+    cancelEdit
   };
 }
