@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Code, Search } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search } from 'lucide-react';
 
 export default function RelaxationMasterPage() {
   const [relaxations, setRelaxations] = useState<RelaxationMaster[]>(MOCK_RELAXATIONS);
@@ -22,7 +22,7 @@ export default function RelaxationMasterPage() {
 
   const [formName, setFormName] = useState('');
   const [formDesc, setFormDesc] = useState('');
-  const [formQuery, setFormQuery] = useState('');
+  
   const [formActive, setFormActive] = useState(true);
 
   const filtered = relaxations.filter(r =>
@@ -32,7 +32,7 @@ export default function RelaxationMasterPage() {
 
   const openCreate = () => {
     setEditing(null);
-    setFormName(''); setFormDesc(''); setFormQuery(''); setFormActive(true);
+    setFormName(''); setFormDesc(''); setFormActive(true);
     setDialogOpen(true);
   };
 
@@ -40,29 +40,17 @@ export default function RelaxationMasterPage() {
     setEditing(item);
     setFormName(item.relaxationName);
     setFormDesc(item.relaxationDescription ?? '');
-    setFormQuery(item.relaxationQuery ?? '');
     setFormActive(item.isActive);
     setDialogOpen(true);
   };
 
-  const validateQuery = (q: string): boolean => {
-    const dangerous = /\b(DROP|DELETE|UPDATE|INSERT|TRUNCATE|ALTER)\b/i;
-    if (dangerous.test(q)) {
-      toast.error('Query contains prohibited SQL keywords (DROP, DELETE, UPDATE, INSERT, TRUNCATE, ALTER)');
-      return false;
-    }
-    return true;
-  };
-
   const handleSave = () => {
     if (!formName.trim()) { toast.error('Name is required'); return; }
-    if (formQuery && !validateQuery(formQuery)) return;
 
     const entry: RelaxationMaster = {
       relaxationId: editing?.relaxationId ?? relaxations.length + 10,
       relaxationName: formName.trim(),
       relaxationDescription: formDesc.trim() || null,
-      relaxationQuery: formQuery.trim() || null,
       isActive: formActive,
       createdAt: editing?.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -87,7 +75,7 @@ export default function RelaxationMasterPage() {
     <ModuleLayout
       adminContext={NCAHP_ADMIN}
       title="Relaxation Master"
-      subtitle="Define relaxation criteria with SQL query conditions. Available to all state councils."
+      subtitle="Define relaxation criteria. Available to all state councils."
       actions={
         <Button onClick={openCreate} className="bg-teal-600 hover:bg-teal-700">
           <Plus className="h-4 w-4 mr-2" /> Add Relaxation
@@ -112,7 +100,6 @@ export default function RelaxationMasterPage() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Description</TableHead>
-                <TableHead>Query Condition</TableHead>
                 <TableHead className="text-center">Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -123,15 +110,6 @@ export default function RelaxationMasterPage() {
                   <TableCell className="font-medium">{item.relaxationName}</TableCell>
                   <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
                     {item.relaxationDescription ?? '—'}
-                  </TableCell>
-                  <TableCell>
-                    {item.relaxationQuery ? (
-                      <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
-                        {item.relaxationQuery}
-                      </code>
-                    ) : (
-                      <span className="text-xs text-muted-foreground italic">Manual only</span>
-                    )}
                   </TableCell>
                   <TableCell className="text-center">
                     {item.isActive ? (
@@ -154,7 +132,7 @@ export default function RelaxationMasterPage() {
               ))}
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                  <TableCell colSpan={4} className="text-center py-10 text-muted-foreground">
                     No relaxations found.
                   </TableCell>
                 </TableRow>
@@ -170,7 +148,7 @@ export default function RelaxationMasterPage() {
           <DialogHeader>
             <DialogTitle>{editing ? 'Edit' : 'Add'} Relaxation</DialogTitle>
             <DialogDescription>
-              Define a relaxation criterion with an optional SQL WHERE clause for auto-evaluation.
+              Define a relaxation criterion.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -181,21 +159,6 @@ export default function RelaxationMasterPage() {
             <div>
               <Label>Description</Label>
               <Textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} placeholder="Detailed description..." rows={3} />
-            </div>
-            <div>
-              <Label className="flex items-center gap-2">
-                <Code className="h-4 w-4" /> SQL Query Condition
-              </Label>
-              <Textarea
-                value={formQuery}
-                onChange={e => setFormQuery(e.target.value)}
-                placeholder="e.g. gender = 'Female' AND age >= 30"
-                rows={3}
-                className="font-mono text-sm"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Leave empty for manual-only relaxations. Destructive SQL is blocked.
-              </p>
             </div>
             <div className="flex items-center justify-between">
               <Label>Active</Label>
