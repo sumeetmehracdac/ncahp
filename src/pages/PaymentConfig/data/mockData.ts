@@ -111,31 +111,31 @@ export const MOCK_RELAXATIONS: RelaxationMaster[] = [
   {
     relaxationId: 1, relaxationName: 'Women Candidate Discount',
     relaxationDescription: '50% discount for all women candidates',
-    relaxationQuery: "gender = 'Female'",
+    
     isActive: true, createdAt: '2026-01-10T00:00:00Z', updatedAt: '2026-01-10T00:00:00Z',
   },
   {
     relaxationId: 2, relaxationName: 'SC/ST Category Discount',
     relaxationDescription: 'Discount for SC/ST category applicants',
-    relaxationQuery: "category IN ('SC', 'ST')",
+    
     isActive: true, createdAt: '2026-01-10T00:00:00Z', updatedAt: '2026-01-10T00:00:00Z',
   },
   {
     relaxationId: 3, relaxationName: 'PWD Applicant Discount',
     relaxationDescription: 'Discount for persons with disability',
-    relaxationQuery: "disability_status = 'PWD'",
+    
     isActive: true, createdAt: '2026-01-12T00:00:00Z', updatedAt: '2026-01-12T00:00:00Z',
   },
   {
     relaxationId: 4, relaxationName: 'Senior Citizen Discount',
     relaxationDescription: 'Discount for applicants aged 60 and above',
-    relaxationQuery: 'age >= 60',
+    
     isActive: true, createdAt: '2026-01-15T00:00:00Z', updatedAt: '2026-01-15T00:00:00Z',
   },
   {
     relaxationId: 5, relaxationName: 'Armed Forces Discount',
     relaxationDescription: 'Discount for armed forces personnel',
-    relaxationQuery: "occupation = 'Armed_Forces'",
+    
     isActive: false, createdAt: '2026-01-18T00:00:00Z', updatedAt: '2026-02-01T00:00:00Z',
   },
 ];

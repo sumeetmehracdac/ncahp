@@ -70,7 +70,7 @@ export interface RelaxationMaster {
   relaxationId: number;
   relaxationName: string;
   relaxationDescription: string | null;
-  relaxationQuery: string | null;
+  
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
