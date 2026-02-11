@@ -21,14 +21,14 @@ import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
 
-// Relaxation & Fee Config Module
+// Payment System Module
 import {
-  CriteriaManagementPage,
-  NationalFeeConfigPage,
-  StateFeeConfigPage,
-  RelaxationPoliciesPage,
-  CombinationRulesPage,
-} from "./pages/RelaxationFeeConfig";
+  DefaultAmountsPage,
+  StateAmountsPage,
+  RelaxationMasterPage,
+  StakeholderRelaxationsPage,
+  RelaxationApplicationsPage,
+} from "./pages/PaymentConfig";
 
 const queryClient = new QueryClient();
 
@@ -56,12 +56,12 @@ const App = () => (
           <Route path="/user-role-mapping/ho" element={<SinglePageHO />} />
           <Route path="/user-role-mapping/sc" element={<SinglePageSC />} />
           
-          {/* Relaxation & Fee Configuration Module */}
-          <Route path="/relaxation-fee-config/criteria" element={<CriteriaManagementPage />} />
-          <Route path="/relaxation-fee-config/national-fees" element={<NationalFeeConfigPage />} />
-          <Route path="/relaxation-fee-config/state-fees" element={<StateFeeConfigPage />} />
-          <Route path="/relaxation-fee-config/policies" element={<RelaxationPoliciesPage />} />
-          <Route path="/relaxation-fee-config/combinations" element={<CombinationRulesPage />} />
+          {/* Payment System Module */}
+          <Route path="/payment-config/default-amounts" element={<DefaultAmountsPage />} />
+          <Route path="/payment-config/state-amounts" element={<StateAmountsPage />} />
+          <Route path="/payment-config/relaxation-master" element={<RelaxationMasterPage />} />
+          <Route path="/payment-config/stakeholder-relaxations" element={<StakeholderRelaxationsPage />} />
+          <Route path="/payment-config/relaxation-applications" element={<RelaxationApplicationsPage />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
