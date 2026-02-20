@@ -20,14 +20,9 @@ function buildProcessList(mappings: ProcessMapping[]): (Process & { sequence: nu
     .map(m => ({ ...processById[m.processId], sequence: m.sequence, mappingId: m.mappingId }));
 }
 
-// ─── Type color map ──────────────────────────────────────────────────────────
-const typeColorMap: Record<string, { badge: string; card: string; dot: string }> = {
-  teal:   { badge: 'bg-teal-50 text-teal-700 border border-teal-200',   card: 'border-l-teal-500',   dot: 'bg-teal-500' },
-  blue:   { badge: 'bg-blue-50 text-blue-700 border border-blue-200',   card: 'border-l-blue-500',   dot: 'bg-blue-500' },
-  orange: { badge: 'bg-orange-50 text-orange-700 border border-orange-200', card: 'border-l-orange-500', dot: 'bg-orange-500' },
-  purple: { badge: 'bg-purple-50 text-purple-700 border border-purple-200', card: 'border-l-purple-500', dot: 'bg-purple-500' },
-  indigo: { badge: 'bg-indigo-50 text-indigo-700 border border-indigo-200', card: 'border-l-indigo-500', dot: 'bg-indigo-500' },
-};
+// Unified teal badge / dot for all types
+const typeBadge = 'bg-teal-50 text-teal-700 border border-teal-200';
+const typeDot   = 'bg-teal-500';
 
 // ─── Process Chip ────────────────────────────────────────────────────────────
 function ProcessChip({
@@ -172,7 +167,6 @@ export default function ApplicationProcessMappingPage() {
   const [savedTypeId, setSavedTypeId] = useState<number | null>(null);
 
   const selectedType = applicationTypes.find(t => t.id === selectedTypeId);
-  const colors = selectedType ? typeColorMap[selectedType.color] : null;
 
   const handleSelectType = (id: number) => {
     setSelectedTypeId(id);
@@ -271,7 +265,6 @@ export default function ApplicationProcessMappingPage() {
             Application Types
           </div>
           {applicationTypes.map(type => {
-            const c = typeColorMap[type.color];
             const isSelected = selectedTypeId === type.id;
             const mappingCount = (defaultMappings[type.id] ?? []).filter(m => m.isActive).length;
 
@@ -279,15 +272,15 @@ export default function ApplicationProcessMappingPage() {
               <button
                 key={type.id}
                 onClick={() => handleSelectType(type.id)}
-                className={`w-full text-left p-4 rounded-xl border-l-4 border transition-all
+                className={`w-full text-left p-4 rounded-xl border transition-all
                   ${isSelected
-                    ? 'bg-white shadow-md border-r border-t border-b border-gray-200'
-                    : 'bg-white hover:bg-gray-50 hover:shadow-sm border-r border-t border-b border-gray-100'
-                  } ${c.card}`}
+                    ? 'bg-white shadow-md border-teal-300'
+                    : 'bg-white hover:bg-gray-50 hover:shadow-sm border-gray-100'
+                  }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <div className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full mb-2 ${c.badge}`}>
+                    <div className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full mb-2 ${typeBadge}`}>
                       {type.formCode}
                     </div>
                     <div className="text-sm font-semibold text-gray-800 leading-snug">{type.name}</div>
@@ -327,11 +320,11 @@ export default function ApplicationProcessMappingPage() {
               <div className="bg-white rounded-xl border p-5 shadow-sm" style={{ borderColor: 'hsl(var(--border))' }}>
                 <div className="flex items-center justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-2.5 h-2.5 rounded-full ${colors?.dot}`} />
+                    <div className="w-2.5 h-2.5 rounded-full bg-teal-500" />
                     <div>
                       <div className="flex items-center gap-2">
                         <h2 className="text-lg font-bold text-gray-900">{selectedType.name}</h2>
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${colors?.badge}`}>
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${typeBadge}`}>
                           {selectedType.formCode}
                         </span>
                         <AnimatePresence>

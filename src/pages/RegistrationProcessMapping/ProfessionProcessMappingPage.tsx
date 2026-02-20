@@ -22,13 +22,8 @@ function buildProcessList(mappings: ProcessMapping[]): (Process & { sequence: nu
     .map(m => ({ ...processById[m.processId], sequence: m.sequence, mappingId: m.mappingId }));
 }
 
-const typeColorMap: Record<string, { badge: string; dot: string; cardLeft: string }> = {
-  teal:   { badge: 'bg-teal-50 text-teal-700 border border-teal-200',   dot: 'bg-teal-500',   cardLeft: 'border-l-teal-500' },
-  blue:   { badge: 'bg-blue-50 text-blue-700 border border-blue-200',   dot: 'bg-blue-500',   cardLeft: 'border-l-blue-500' },
-  orange: { badge: 'bg-orange-50 text-orange-700 border border-orange-200', dot: 'bg-orange-500', cardLeft: 'border-l-orange-500' },
-  purple: { badge: 'bg-purple-50 text-purple-700 border border-purple-200', dot: 'bg-purple-500', cardLeft: 'border-l-purple-500' },
-  indigo: { badge: 'bg-indigo-50 text-indigo-700 border border-indigo-200', dot: 'bg-indigo-500', cardLeft: 'border-l-indigo-500' },
-};
+// Unified teal badge for all types
+const typeBadge = 'bg-teal-50 text-teal-700 border border-teal-200';
 
 type DraftItem = Process & { sequence: number; mappingId: number };
 
@@ -197,7 +192,6 @@ export default function ProfessionProcessMappingPage() {
   const [professionSearch, setProfessionSearch] = useState('');
 
   const selectedType = applicationTypes.find(t => t.id === selectedTypeId);
-  const colors = selectedType ? typeColorMap[selectedType.color] : null;
   const professions = selectedTypeId ? (professionMappingStatuses[selectedTypeId] ?? []) : [];
 
   const filteredProfessions = professions.filter(p =>
@@ -343,18 +337,16 @@ export default function ProfessionProcessMappingPage() {
             Application Types
           </div>
           {applicationTypes.map(type => {
-            const c = typeColorMap[type.color];
             const isSelected = selectedTypeId === type.id;
             const profs = professionMappingStatuses[type.id] ?? [];
             const custom = profs.filter(p => p.hasCustomMapping).length;
             return (
               <button key={type.id} onClick={() => handleSelectType(type.id)}
-                className={`w-full text-left p-3.5 rounded-xl border-l-4 border transition-all
-                  ${isSelected ? 'bg-white shadow-md border-r border-t border-b border-gray-200' : 'bg-white hover:bg-gray-50 hover:shadow-sm border-r border-t border-b border-gray-100'}
-                  ${c.cardLeft}`}
+                className={`w-full text-left p-3.5 rounded-xl border transition-all
+                  ${isSelected ? 'bg-white shadow-md border-teal-300' : 'bg-white hover:bg-gray-50 hover:shadow-sm border-gray-100'}`}
               >
                 <div className="flex items-center justify-between gap-1">
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${c.badge}`}>{type.formCode}</span>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${typeBadge}`}>{type.formCode}</span>
                   {custom > 0 && (
                     <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">
                       {custom} custom
