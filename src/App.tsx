@@ -21,6 +21,12 @@ import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
 
+// Registration Process Mapping Module
+import {
+  ApplicationProcessMappingPage,
+  ProfessionProcessMappingPage,
+} from './pages/RegistrationProcessMapping';
+
 // Payment System Module
 import {
   DefaultAmountsPage,
@@ -55,6 +61,10 @@ const App = () => (
           <Route path="/proposal-submission" element={<ProposalSubmission />} />
           <Route path="/user-role-mapping/ho" element={<SinglePageHO />} />
           <Route path="/user-role-mapping/sc" element={<SinglePageSC />} />
+          
+          {/* Registration Process Mapping Module */}
+          <Route path="/registration-process-mapping/application" element={<ApplicationProcessMappingPage />} />
+          <Route path="/registration-process-mapping/profession" element={<ProfessionProcessMappingPage />} />
           
           {/* Payment System Module */}
           <Route path="/payment-config/default-amounts" element={<DefaultAmountsPage />} />
