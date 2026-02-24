@@ -4,7 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form2AData, Form2APracticeState, Form2APreviousPermission, purposeOfRegistrationOptions } from "../../types/form2A";
+import {
+  Form2AData,
+  Form2APracticeState,
+  Form2APreviousPermission,
+  purposeOfRegistrationOptions,
+} from "../../types/form2A";
 import { indianStates } from "../../index";
 
 interface Props {
@@ -16,11 +21,11 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
   // Practice State Handlers
   const addPracticeState = () => {
     const newState: Form2APracticeState = {
-      institutionName: '',
-      address: '',
-      state: '',
-      district: '',
-      proofDocument: null
+      institutionName: "",
+      address: "",
+      state: "",
+      district: "",
+      proofDocument: null,
     };
     updateFormData("practiceStates", [...formData.practiceStates, newState]);
   };
@@ -39,7 +44,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
   const handlePracticeFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updatePracticeState(index, 'proofDocument', file);
+      updatePracticeState(index, "proofDocument", file);
     }
   };
 
@@ -47,17 +52,21 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
   const addPreviousPermission = () => {
     const newPermission: Form2APreviousPermission = {
       id: Date.now().toString(),
-      countryName: '',
-      regulatoryBody: '',
-      licenseNumber: '',
-      dateOfInitialRegistration: '',
-      dateOfExpiry: '',
-      certificate: null
+      countryName: "",
+      regulatoryBody: "",
+      licenseNumber: "",
+      dateOfInitialRegistration: "",
+      dateOfExpiry: "",
+      certificate: null,
     };
     updateFormData("previousPermissions", [...formData.previousPermissions, newPermission]);
   };
 
-  const updatePreviousPermission = (index: number, field: keyof Form2APreviousPermission, value: string | File | null) => {
+  const updatePreviousPermission = (
+    index: number,
+    field: keyof Form2APreviousPermission,
+    value: string | File | null,
+  ) => {
     const updated = [...formData.previousPermissions];
     updated[index] = { ...updated[index], [field]: value };
     updateFormData("previousPermissions", updated);
@@ -71,7 +80,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
   const handlePermissionFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updatePreviousPermission(index, 'certificate', file);
+      updatePreviousPermission(index, "certificate", file);
     }
   };
 
@@ -111,7 +120,10 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                   if (checked) {
                     updateFormData("purposeOfRegistration", [...formData.purposeOfRegistration, option.value]);
                   } else {
-                    updateFormData("purposeOfRegistration", formData.purposeOfRegistration.filter(v => v !== option.value));
+                    updateFormData(
+                      "purposeOfRegistration",
+                      formData.purposeOfRegistration.filter((v) => v !== option.value),
+                    );
                   }
                 }}
               />
@@ -137,7 +149,9 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-slate-50 rounded-xl border border-border">
           <div className="space-y-2">
-            <Label>State <span className="text-destructive">*</span></Label>
+            <Label>
+              State <span className="text-destructive">*</span>
+            </Label>
             <Select
               value={formData.stateOfResidenceIndia}
               onValueChange={(value) => updateFormData("stateOfResidenceIndia", value)}
@@ -147,13 +161,17 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
               </SelectTrigger>
               <SelectContent className="max-h-60 bg-white">
                 {indianStates.map((state) => (
-                  <SelectItem key={state} value={state}>{state}</SelectItem>
+                  <SelectItem key={state} value={state}>
+                    {state}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>District <span className="text-destructive">*</span></Label>
+            <Label>
+              District <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="District"
               value={formData.districtOfResidenceIndia}
@@ -217,13 +235,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
             <Building className="w-5 h-5 text-primary" />
             <h3 className="text-lg font-semibold text-foreground">Practice Location(s)</h3>
           </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={addPracticeState}
-            className="gap-2"
-          >
+          <Button type="button" variant="outline" size="sm" onClick={addPracticeState} className="gap-2">
             <Plus className="w-4 h-4" /> Add Location
           </Button>
         </div>
@@ -250,61 +262,71 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>V. State <span className="text-destructive">*</span></Label>
-                <Select
-                  value={ps.state}
-                  onValueChange={(value) => updatePracticeState(index, 'state', value)}
-                >
+                <Label>
+                  V. State <span className="text-destructive">*</span>
+                </Label>
+                <Select value={ps.state} onValueChange={(value) => updatePracticeState(index, "state", value)}>
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
                   <SelectContent className="max-h-60 bg-white">
                     {indianStates.map((state) => (
-                      <SelectItem key={state} value={state}>{state}</SelectItem>
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label>VI. District <span className="text-destructive">*</span></Label>
+                <Label>
+                  VI. District <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   placeholder="District"
                   value={ps.district}
-                  onChange={(e) => updatePracticeState(index, 'district', e.target.value)}
+                  onChange={(e) => updatePracticeState(index, "district", e.target.value)}
                   className="h-11"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>VII. Name of Institution/Hospital/Clinic/Laboratory <span className="text-destructive">*</span></Label>
+                <Label>
+                  VII. Name of Institution/Hospital/Clinic/Laboratory <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   placeholder="Institution Name"
                   value={ps.institutionName}
-                  onChange={(e) => updatePracticeState(index, 'institutionName', e.target.value)}
+                  onChange={(e) => updatePracticeState(index, "institutionName", e.target.value)}
                   className="h-11"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>VIII. Address <span className="text-destructive">*</span></Label>
+                <Label>
+                  VIII. Address <span className="text-destructive">*</span>
+                </Label>
                 <Input
                   placeholder="Full Address"
                   value={ps.address}
-                  onChange={(e) => updatePracticeState(index, 'address', e.target.value)}
+                  onChange={(e) => updatePracticeState(index, "address", e.target.value)}
                   className="h-11"
                 />
               </div>
 
               <div className="md:col-span-2 space-y-2">
-                <Label>IX. Supporting Document-1 (Upload) <span className="text-destructive">*</span></Label>
+                <Label>
+                  IX. Supporting Document-1 (Upload) <span className="text-destructive">*</span>
+                </Label>
                 <p className="text-xs text-muted-foreground mb-2">
                   (Invitation Letter/Admission letter/ Appointment Letter etc.)
                 </p>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${ps.proofDocument ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      ps.proofDocument ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
                     <span className="text-sm text-foreground font-medium">
@@ -354,7 +376,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                       <Input
                         placeholder="Country"
                         value={perm.countryName}
-                        onChange={(e) => updatePreviousPermission(index, 'countryName', e.target.value)}
+                        onChange={(e) => updatePreviousPermission(index, "countryName", e.target.value)}
                         className="h-10"
                       />
                     </td>
@@ -362,7 +384,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                       <Input
                         placeholder="Reg. Body"
                         value={perm.regulatoryBody}
-                        onChange={(e) => updatePreviousPermission(index, 'regulatoryBody', e.target.value)}
+                        onChange={(e) => updatePreviousPermission(index, "regulatoryBody", e.target.value)}
                         className="h-10"
                       />
                     </td>
@@ -370,7 +392,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                       <Input
                         placeholder="License No."
                         value={perm.licenseNumber}
-                        onChange={(e) => updatePreviousPermission(index, 'licenseNumber', e.target.value)}
+                        onChange={(e) => updatePreviousPermission(index, "licenseNumber", e.target.value)}
                         className="h-10"
                       />
                     </td>
@@ -378,7 +400,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                       <Input
                         type="date"
                         value={perm.dateOfInitialRegistration}
-                        onChange={(e) => updatePreviousPermission(index, 'dateOfInitialRegistration', e.target.value)}
+                        onChange={(e) => updatePreviousPermission(index, "dateOfInitialRegistration", e.target.value)}
                         className="h-10"
                       />
                     </td>
@@ -386,13 +408,15 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                       <Input
                         type="date"
                         value={perm.dateOfExpiry}
-                        onChange={(e) => updatePreviousPermission(index, 'dateOfExpiry', e.target.value)}
+                        onChange={(e) => updatePreviousPermission(index, "dateOfExpiry", e.target.value)}
                         className="h-10"
                       />
                     </td>
                     <td className="p-3">
                       <div className="relative">
-                        <div className={`flex items-center gap-2 p-2 rounded border border-dashed ${perm.certificate ? 'bg-primary/5 border-primary' : 'bg-muted/50 border-input'}`}>
+                        <div
+                          className={`flex items-center gap-2 p-2 rounded border border-dashed ${perm.certificate ? "bg-primary/5 border-primary" : "bg-muted/50 border-input"}`}
+                        >
                           <Upload className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                           <span className="text-xs truncate max-w-[150px]">
                             {perm.certificate ? perm.certificate.name : "Upload"}
@@ -438,7 +462,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
               className="w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Previous Permission
+              Add Permission/ License
             </Button>
           </div>
         </div>
