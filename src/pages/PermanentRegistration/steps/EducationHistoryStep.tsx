@@ -21,7 +21,6 @@ const EducationHistoryStep = ({ formData, updateFormData }: Props) => {
   const educationLabels: Record<number, string> = {
     0: 'Matriculation (10th) or Equivalent',
     1: 'Senior Secondary (12th) or Equivalent',
-    2: 'Diploma (if any)',
   };
 
   const addEducationEntry = () => {

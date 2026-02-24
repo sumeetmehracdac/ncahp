@@ -6,5 +6,6 @@ export { default as AcademicQualificationStep2A } from './AcademicQualificationS
 export { default as InternshipStep2A } from './InternshipStep2A';
 export { default as ExperienceStep2A } from './ExperienceStep2A';
 export { default as PracticeStateStep2A } from './PracticeStateStep2A';
+export { default as AdditionalPracticeStep2A } from './AdditionalPracticeStep2A';
 export { default as DocumentsStep2A } from './DocumentsStep2A';
 export { default as DeclarationStep2A } from './DeclarationStep2A';
