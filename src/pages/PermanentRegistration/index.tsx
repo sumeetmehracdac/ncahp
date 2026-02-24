@@ -180,11 +180,15 @@ export interface FormData {
   experienceEvidence: File | null;
   validIdProof: File | null;
 
-  // Screen 9 - Final
+  // Screen 9 - Declaration
   aadhaarConsent: boolean;
   declarationAccepted: boolean;
   isDifferentlyAbled: boolean;
   differentlyAbledCertificate: File | null;
+  permitCancellation: boolean;
+  permitCancellationDetails: string;
+  legalDispute: boolean;
+  legalDisputeDetails: string;
 }
 
 // Mock user data (simulating already registered user)
@@ -327,7 +331,11 @@ const PermanentRegistration = () => {
     aadhaarConsent: false,
     declarationAccepted: false,
     isDifferentlyAbled: false,
-    differentlyAbledCertificate: null
+    differentlyAbledCertificate: null,
+    permitCancellation: false,
+    permitCancellationDetails: '',
+    legalDispute: false,
+    legalDisputeDetails: ''
   });
 
   // Form 2A data

@@ -94,6 +94,8 @@ export interface Form2APreviousPermission {
   countryName: string;
   regulatoryBody: string;
   licenseNumber: string;
+  dateOfInitialRegistration: string;
+  dateOfExpiry: string;
   certificate: File | null;
 }
 
@@ -141,6 +143,9 @@ export interface Form2AData {
   durationOfStayIndia: string;
   expectedStartDate: string;
   expectedEndDate: string;
+  stateOfResidenceIndia: string;
+  districtOfResidenceIndia: string;
+  addressOfResidenceIndia: string;
   practiceStates: Form2APracticeState[];
   previousPermissions: Form2APreviousPermission[];
 
@@ -216,6 +221,9 @@ export const initialForm2AData: Form2AData = {
   durationOfStayIndia: '',
   expectedStartDate: '',
   expectedEndDate: '',
+  stateOfResidenceIndia: '',
+  districtOfResidenceIndia: '',
+  addressOfResidenceIndia: '',
   practiceStates: [
     {
       state: '',

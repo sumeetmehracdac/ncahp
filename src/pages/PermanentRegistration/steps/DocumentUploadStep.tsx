@@ -43,48 +43,6 @@ const DocumentUploadStep = ({ formData, updateFormData }: Props) => {
 
   const documentSlots: DocumentSlot[] = [
     {
-      key: 'provisionalDegree',
-      label: 'Provisional Degree',
-      description: 'Provisional degree certificate issued by the university',
-      icon: <GraduationCap className="w-5 h-5" />,
-      required: false
-    },
-    {
-      key: 'finalDegree',
-      label: 'Final Degree Certificate',
-      description: 'Final degree/diploma certificate for your qualification',
-      icon: <GraduationCap className="w-5 h-5" />,
-      required: true
-    },
-    {
-      key: 'internshipCertificate',
-      label: 'Internship Completion Certificate',
-      description: 'Certificate confirming completion of mandatory internship',
-      icon: <Briefcase className="w-5 h-5" />,
-      required: false
-    },
-    {
-      key: 'transcripts',
-      label: 'Academic Transcripts',
-      description: 'Transcript issued by your institute/university',
-      icon: <FileText className="w-5 h-5" />,
-      required: true
-    },
-    {
-      key: 'curriculumSoftCopy',
-      label: 'Curriculum Soft Copy',
-      description: 'Soft copy of the curriculum followed in your programme',
-      icon: <Book className="w-5 h-5" />,
-      required: false
-    },
-    {
-      key: 'experienceEvidence',
-      label: 'Evidence of Experience',
-      description: 'Work experience certificates (if applicable)',
-      icon: <Briefcase className="w-5 h-5" />,
-      required: false
-    },
-    {
       key: 'validIdProof',
       label: 'Valid ID Proof',
       description: 'Aadhaar / Passport / Voter ID',

@@ -71,6 +71,12 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
       label: "Regular Registration",
       description: "Indian nationals with foreign qualification",
     },
+    {
+      value: "2C",
+      formType: "Form 2C",
+      label: "Temporary Registration",
+      description: "Indian nationals with foreign qualification",
+    },
   ];
 
   const selectedProfession = formData.profession ? getProfessionByName(formData.profession) : null;
