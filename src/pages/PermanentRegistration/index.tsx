@@ -211,7 +211,7 @@ const hasProvisionalOrInterimStatus = false; // Set to true to test blocking
 
 // Step definitions for each form type
 const mainFormSteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
+  { id: 1, title: 'Application Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Education History', icon: GraduationCap, description: 'Prior qualifications' },
   { id: 4, title: 'Healthcare Qualification', icon: Stethoscope, description: 'Allied healthcare degrees' },
@@ -224,7 +224,7 @@ const mainFormSteps = [
 ];
 
 const form2ASteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
+  { id: 1, title: 'Application Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Foreign national details' },
   { id: 3, title: 'Purpose & Practice', icon: Globe, description: 'Purpose of registration & practice location' },
   { id: 4, title: 'Passport & Visa', icon: Plane, description: 'Travel documents' },
@@ -237,7 +237,7 @@ const form2ASteps = [
 ];
 
 const form2BSteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
+  { id: 1, title: 'Application Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 4, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
@@ -248,7 +248,7 @@ const form2BSteps = [
 ];
 
 const form2CSteps = [
-  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
+  { id: 1, title: 'Application Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Purpose of Registration', icon: Globe, description: 'Purpose & duration' },
   { id: 4, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
