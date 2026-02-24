@@ -1,20 +1,10 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Briefcase, 
-  Plus, 
-  Trash2, 
-  Upload,
-  FileCheck,
-  Calendar,
-  MapPin,
-  ClipboardList,
-  Info
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { FormData, InternshipEntry } from '../index';
+import { motion, AnimatePresence } from "framer-motion";
+import { Briefcase, Plus, Trash2, Upload, FileCheck, Calendar, MapPin, ClipboardList, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { FormData, InternshipEntry } from "../index";
 
 interface Props {
   formData: FormData;
@@ -25,33 +15,36 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
   const addInternship = () => {
     const newEntry: InternshipEntry = {
       id: Date.now().toString(),
-      designation: '',
-      organizationName: '',
-      organizationCountry: 'India',
-      organizationAddress: '',
-      startDate: '',
-      completionDate: '',
-      coreDuties: '',
-      certificate: null
+      designation: "",
+      organizationName: "",
+      organizationCountry: "India",
+      organizationAddress: "",
+      startDate: "",
+      completionDate: "",
+      coreDuties: "",
+      certificate: null,
     };
-    updateFormData('internships', [...formData.internships, newEntry]);
+    updateFormData("internships", [...formData.internships, newEntry]);
   };
 
   const removeInternship = (id: string) => {
-    updateFormData('internships', formData.internships.filter(e => e.id !== id));
+    updateFormData(
+      "internships",
+      formData.internships.filter((e) => e.id !== id),
+    );
   };
 
   const updateInternship = (id: string, field: keyof InternshipEntry, value: string | File | null) => {
     updateFormData(
-      'internships',
-      formData.internships.map(e => e.id === id ? { ...e, [field]: value } : e)
+      "internships",
+      formData.internships.map((e) => (e.id === id ? { ...e, [field]: value } : e)),
     );
   };
 
   const handleCertificateUpload = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updateInternship(id, 'certificate', file);
+      updateInternship(id, "certificate", file);
     }
   };
 
@@ -66,7 +59,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
           Internship / Clinical Training
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Enter details of any internship or clinical training you have completed (if applicable).
+          Enter details of any internship or clinical training you have completed (atleast one).
         </p>
       </div>
 
@@ -75,8 +68,10 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
         <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-blue-800">
           <p className="font-medium mb-1">Optional Section</p>
-          <p>If you have completed internship or clinical training as part of your qualification, please add the details here. 
-          You can skip this step if not applicable.</p>
+          <p>
+            If you have completed internship or clinical training as part of your qualification, please add the details
+            here. You can skip this step if not applicable.
+          </p>
         </div>
       </div>
 
@@ -109,9 +104,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                 className="bg-white border border-border rounded-xl p-5 shadow-sm"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-primary">
-                    Internship / Clinical Training #{index + 1}
-                  </span>
+                  <span className="text-sm font-medium text-primary">Internship / Clinical Training #{index + 1}</span>
                   <Button
                     type="button"
                     variant="ghost"
@@ -130,7 +123,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       placeholder="e.g., Intern, Trainee"
                       value={entry.designation}
-                      onChange={(e) => updateInternship(entry.id, 'designation', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "designation", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -141,7 +134,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       placeholder="Hospital/Lab/Institute name"
                       value={entry.organizationName}
-                      onChange={(e) => updateInternship(entry.id, 'organizationName', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "organizationName", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -152,7 +145,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       placeholder="e.g., India"
                       value={entry.organizationCountry}
-                      onChange={(e) => updateInternship(entry.id, 'organizationCountry', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "organizationCountry", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -166,7 +159,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       placeholder="Complete address of the organization"
                       value={entry.organizationAddress}
-                      onChange={(e) => updateInternship(entry.id, 'organizationAddress', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "organizationAddress", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -180,7 +173,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       type="date"
                       value={entry.startDate}
-                      onChange={(e) => updateInternship(entry.id, 'startDate', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "startDate", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -194,7 +187,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Input
                       type="date"
                       value={entry.completionDate}
-                      onChange={(e) => updateInternship(entry.id, 'completionDate', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "completionDate", e.target.value)}
                       className="h-10"
                     />
                   </div>
@@ -208,7 +201,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                     <Textarea
                       placeholder="Describe the main responsibilities and duties during your internship..."
                       value={entry.coreDuties}
-                      onChange={(e) => updateInternship(entry.id, 'coreDuties', e.target.value)}
+                      onChange={(e) => updateInternship(entry.id, "coreDuties", e.target.value)}
                       rows={3}
                       className="resize-none"
                     />
@@ -231,9 +224,7 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
                         variant="outline"
                         size="sm"
                         className={`gap-2 ${
-                          entry.certificate 
-                            ? 'border-green-500 text-green-700 bg-green-50 hover:bg-green-100' 
-                            : ''
+                          entry.certificate ? "border-green-500 text-green-700 bg-green-50 hover:bg-green-100" : ""
                         }`}
                       >
                         {entry.certificate ? (
@@ -279,7 +270,10 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
               Internships entered: <strong className="text-foreground">{formData.internships.length}</strong>
             </span>
             <span className="text-sm text-muted-foreground">
-              Certificates attached: <strong className="text-primary">{formData.internships.filter(e => e.certificate !== null).length}</strong>
+              Certificates attached:{" "}
+              <strong className="text-primary">
+                {formData.internships.filter((e) => e.certificate !== null).length}
+              </strong>
             </span>
           </div>
         </motion.div>
