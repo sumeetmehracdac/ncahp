@@ -35,11 +35,12 @@ import RegistrationTypeStep from './steps/RegistrationTypeStep';
 import PersonalInfoStep from './steps/PersonalInfoStep';
 import EducationHistoryStep from './steps/EducationHistoryStep';
 import HealthcareQualificationStep from './steps/HealthcareQualificationStep';
+import OtherQualificationStep from './steps/OtherQualificationStep';
 import InternshipStep from './steps/InternshipStep';
 import ProfessionalExperienceStep from './steps/ProfessionalExperienceStep';
 import PracticeGeographyStep from './steps/PracticeGeographyStep';
 import DocumentUploadStep from './steps/DocumentUploadStep';
-import ReviewSubmitStep from './steps/ReviewSubmitStep';
+import DeclarationStep1A from './steps/DeclarationStep1A';
 
 // Import Form 2A components
 import {
@@ -49,6 +50,7 @@ import {
   AcademicQualificationStep2A,
   InternshipStep2A,
   ExperienceStep2A,
+  AdditionalPracticeStep2A,
   DocumentsStep2A,
   DeclarationStep2A
 } from './steps/form2A';
@@ -83,10 +85,12 @@ export interface HealthcareQualification {
   qualificationName: string;
   institutionName: string;
   university: string;
+  country: string;
   durationMonths: string;
   admissionDate: string;
   passingDate: string;
   certificate: File | null;
+  transcript: File | null;
 }
 
 export interface InternshipEntry {
@@ -211,34 +215,48 @@ const mainFormSteps = [
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Education History', icon: GraduationCap, description: 'Prior qualifications' },
   { id: 4, title: 'Healthcare Qualification', icon: Stethoscope, description: 'Allied healthcare degrees' },
-  { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
-  { id: 6, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
-  { id: 7, title: 'Practice Location', icon: MapPin, description: 'Geographic intent' },
-  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 9, title: 'Review & Submit', icon: FileText, description: 'Final verification' }
+  { id: 5, title: 'Other Qualification', icon: GraduationCap, description: 'Additional qualifications' },
+  { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
+  { id: 7, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
+  { id: 8, title: 'Practice Location', icon: MapPin, description: 'Geographic intent' },
+  { id: 9, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 10, title: 'Declaration', icon: Shield, description: 'Declaration & submission' }
 ];
 
 const form2ASteps = [
   { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Foreign national details' },
-  { id: 3, title: 'Practice Location', icon: MapPin, description: 'Where you will practice' },
+  { id: 3, title: 'Purpose & Practice', icon: Globe, description: 'Purpose of registration & practice location' },
   { id: 4, title: 'Passport & Visa', icon: Plane, description: 'Travel documents' },
   { id: 5, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 7, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
-  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 8, title: 'Additional Practice', icon: MapPin, description: 'Additional state of practice' },
+  { id: 9, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 10, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const form2BSteps = [
+  { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
+  { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
+  { id: 3, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
+  { id: 4, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
+  { id: 5, title: 'Experience', icon: Briefcase, description: 'Professional history' },
+  { id: 6, title: 'State of Practice', icon: MapPin, description: 'Practice location' },
+  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+];
+
+const form2CSteps = [
   { id: 1, title: 'Registration Type', icon: FileCheck, description: 'Select allied and healthcare profession & type' },
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Purpose of Registration', icon: Globe, description: 'Purpose & duration' },
   { id: 4, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
-  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 7, title: 'State of Practice', icon: MapPin, description: 'Practice location' },
+  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const indianStates = [
@@ -259,7 +277,7 @@ const PermanentRegistration = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [highestStepReached, setHighestStepReached] = useState(1);
   const [isBlocked, setIsBlocked] = useState(hasProvisionalOrInterimStatus);
-  const [activeFormType, setActiveFormType] = useState<'main' | '2A' | '2B'>('main');
+  const [activeFormType, setActiveFormType] = useState<'main' | '2A' | '2B' | '2C'>('main');
 
   // UI/UX Enhancement states
   const [showExitModal, setShowExitModal] = useState(false);
@@ -314,7 +332,7 @@ const PermanentRegistration = () => {
       { id: '3', schoolName: '', board: '', yearOfPassing: '', certificate: null },
     ],
     healthcareQualifications: [
-      { id: '1', qualificationName: '', institutionName: '', university: '', durationMonths: '', admissionDate: '', passingDate: '', certificate: null }
+      { id: '1', qualificationName: '', institutionName: '', university: '', country: '', durationMonths: '', admissionDate: '', passingDate: '', certificate: null, transcript: null }
     ],
     otherQualifications: [],
     internships: [],
@@ -343,6 +361,9 @@ const PermanentRegistration = () => {
 
   // Form 2B data
   const [form2BData, setForm2BData] = useState<Form2BData>(initialForm2BData);
+
+  // Form 2C data (uses Form2B types)
+  const [form2CData, setForm2CData] = useState<Form2BData>({ ...initialForm2BData, registrationType: '2C' });
   // Auto-save effect - saves to localStorage every 30 seconds when there are changes
   // Auto-save effect - DISABLED per user request
   // useEffect(() => {
@@ -534,6 +555,21 @@ const PermanentRegistration = () => {
           email: formData.email,
           phoneNumber: formData.mobile
         }));
+      } else if (value === '2C') {
+        setActiveFormType('2C');
+        setForm2CData(prev => ({
+          ...prev,
+          registrationType: '2C',
+          profession: formData.profession,
+          firstName,
+          middleName,
+          lastName,
+          gender: formData.gender,
+          age: formData.age,
+          dateOfBirth: formData.dateOfBirth,
+          email: formData.email,
+          phoneNumber: formData.mobile
+        }));
       } else {
         setActiveFormType('main');
       }
@@ -550,21 +586,25 @@ const PermanentRegistration = () => {
     setHasUnsavedChanges(true);
   };
 
+  const updateForm2CData = <K extends keyof Form2BData>(field: K, value: Form2BData[K]) => {
+    setForm2CData(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+
   // Get current steps based on form type
   const getCurrentSteps = () => {
     if (activeFormType === '2A') return form2ASteps;
     if (activeFormType === '2B') return form2BSteps;
+    if (activeFormType === '2C') return form2CSteps;
     return mainFormSteps;
   };
 
   const steps = getCurrentSteps();
 
   const canProceed = (): boolean => {
-    if (activeFormType === '2A') {
-      return canProceed2A();
-    } else if (activeFormType === '2B') {
-      return canProceed2B();
-    }
+    if (activeFormType === '2A') return canProceed2A();
+    if (activeFormType === '2B') return canProceed2B();
+    if (activeFormType === '2C') return canProceed2C();
     return canProceedMain();
   };
 
@@ -677,6 +717,11 @@ const PermanentRegistration = () => {
     */
   };
 
+  const canProceed2C = (): boolean => {
+    return true;
+    /* Temporary Validation Bypass */
+  };
+
   const nextStep = () => {
     if (canProceed() && currentStep < steps.length) {
       const newStep = currentStep + 1;
@@ -737,7 +782,7 @@ const PermanentRegistration = () => {
       return <RegistrationTypeStep formData={formData} updateFormData={updateFormData} />;
     }
 
-    // Form 2A steps
+    // Form 2A steps (10 steps)
     if (activeFormType === '2A') {
       switch (currentStep) {
         case 2:
@@ -753,27 +798,29 @@ const PermanentRegistration = () => {
         case 7:
           return <ExperienceStep2A formData={form2AData} updateFormData={updateForm2AData} />;
         case 8:
-          return <DocumentsStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+          return <AdditionalPracticeStep2A formData={form2AData} updateFormData={updateForm2AData} />;
         case 9:
+          return <DocumentsStep2A formData={form2AData} updateFormData={updateForm2AData} />;
+        case 10:
           return <DeclarationStep2A formData={form2AData} updateFormData={updateForm2AData} onSubmit={handleSubmit} />;
         default:
           return null;
       }
     }
 
-    // Form 2B steps
+    // Form 2B steps (8 steps - no Purpose)
     if (activeFormType === '2B') {
       switch (currentStep) {
         case 2:
           return <PersonalInfoStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 3:
-          return <PurposeRegistrationStep2B formData={form2BData} updateFormData={updateForm2BData} />;
-        case 4:
           return <AcademicQualificationStep2B formData={form2BData} updateFormData={updateForm2BData} />;
-        case 5:
+        case 4:
           return <InternshipStep2B formData={form2BData} updateFormData={updateForm2BData} />;
-        case 6:
+        case 5:
           return <ExperienceStep2B formData={form2BData} updateFormData={updateForm2BData} />;
+        case 6:
+          return <PracticeStateStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 7:
           return <DocumentsStep2B formData={form2BData} updateFormData={updateForm2BData} />;
         case 8:
@@ -783,7 +830,31 @@ const PermanentRegistration = () => {
       }
     }
 
-    // Main form steps
+    // Form 2C steps (9 steps - 2B + Purpose)
+    if (activeFormType === '2C') {
+      switch (currentStep) {
+        case 2:
+          return <PersonalInfoStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 3:
+          return <PurposeRegistrationStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 4:
+          return <AcademicQualificationStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 5:
+          return <InternshipStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 6:
+          return <ExperienceStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 7:
+          return <PracticeStateStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 8:
+          return <DocumentsStep2B formData={form2CData} updateFormData={updateForm2CData} />;
+        case 9:
+          return <DeclarationStep2B formData={form2CData} updateFormData={updateForm2CData} onSubmit={handleSubmit} />;
+        default:
+          return null;
+      }
+    }
+
+    // Main form steps (10 steps)
     const commonProps = { formData, updateFormData };
     switch (currentStep) {
       case 2:
@@ -793,15 +864,17 @@ const PermanentRegistration = () => {
       case 4:
         return <HealthcareQualificationStep {...commonProps} />;
       case 5:
-        return <InternshipStep {...commonProps} />;
+        return <OtherQualificationStep {...commonProps} />;
       case 6:
-        return <ProfessionalExperienceStep {...commonProps} />;
+        return <InternshipStep {...commonProps} />;
       case 7:
-        return <PracticeGeographyStep {...commonProps} />;
+        return <ProfessionalExperienceStep {...commonProps} />;
       case 8:
-        return <DocumentUploadStep {...commonProps} />;
+        return <PracticeGeographyStep {...commonProps} />;
       case 9:
-        return <ReviewSubmitStep {...commonProps} onSubmit={handleSubmit} />;
+        return <DocumentUploadStep {...commonProps} />;
+      case 10:
+        return <DeclarationStep1A {...commonProps} onSubmit={handleSubmit} />;
       default:
         return null;
     }
@@ -811,6 +884,7 @@ const PermanentRegistration = () => {
   const getFormTypeLabel = () => {
     if (activeFormType === '2A') return 'Form 2A - Temporary Registration';
     if (activeFormType === '2B') return 'Form 2B - Regular Registration (Foreign Qualification)';
+    if (activeFormType === '2C') return 'Form 2C - Temporary Registration (Foreign Qualification)';
     return 'Permanent Registration';
   };
 
@@ -888,7 +962,7 @@ const PermanentRegistration = () => {
               </h2>
               {activeFormType !== 'main' && (
                 <span className="text-xs text-muted-foreground hidden md:inline">
-                  {activeFormType === '2A' ? '(Foreign nationals)' : '(Indian nationals with foreign qualification)'}
+                  {activeFormType === '2A' ? '(Foreign nationals)' : activeFormType === '2C' ? '(Indian nationals - Temporary)' : '(Indian nationals with foreign qualification)'}
                 </span>
               )}
             </div>

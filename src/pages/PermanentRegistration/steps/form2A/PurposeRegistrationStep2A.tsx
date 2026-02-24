@@ -43,6 +43,8 @@ const PurposeRegistrationStep2A = ({ formData, updateFormData }: Props) => {
       countryName: '',
       regulatoryBody: '',
       licenseNumber: '',
+      dateOfInitialRegistration: '',
+      dateOfExpiry: '',
       certificate: null
     };
     updateFormData("previousPermissions", [...formData.previousPermissions, newPermission]);
