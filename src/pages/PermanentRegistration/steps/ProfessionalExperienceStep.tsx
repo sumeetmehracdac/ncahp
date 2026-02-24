@@ -27,6 +27,7 @@ const ProfessionalExperienceStep = ({ formData, updateFormData }: Props) => {
       id: Date.now().toString(),
       designation: '',
       organizationName: '',
+      organizationCountry: 'India',
       organizationAddress: '',
       startDate: '',
       completionDate: '',
@@ -182,6 +183,17 @@ const ProfessionalExperienceStep = ({ formData, updateFormData }: Props) => {
                       placeholder="Hospital/Clinic/Lab name"
                       value={entry.organizationName}
                       onChange={(e) => updateExperience(entry.id, 'organizationName', e.target.value)}
+                      className="h-10"
+                    />
+                  </div>
+
+                  {/* Organization Country */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground">Country</Label>
+                    <Input
+                      placeholder="e.g., India"
+                      value={entry.organizationCountry}
+                      onChange={(e) => updateExperience(entry.id, 'organizationCountry', e.target.value)}
                       className="h-10"
                     />
                   </div>

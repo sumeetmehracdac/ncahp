@@ -280,7 +280,19 @@ export const initialForm2AData: Form2AData = {
       attestedSyllabus: null
     }
   ],
-  internships: [],
+  internships: [
+    {
+      id: '1',
+      programName: '',
+      organizationNameAddress: '',
+      country: '',
+      startDate: '',
+      completionDate: '',
+      totalHours: '',
+      coreDuties: '',
+      certificate: null
+    }
+  ],
   experiences: [],
   additionalPracticeStates: [],
   documents: {

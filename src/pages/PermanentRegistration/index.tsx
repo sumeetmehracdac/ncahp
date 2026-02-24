@@ -50,7 +50,6 @@ import {
   AcademicQualificationStep2A,
   InternshipStep2A,
   ExperienceStep2A,
-  AdditionalPracticeStep2A,
   DocumentsStep2A,
   DeclarationStep2A
 } from './steps/form2A';
@@ -109,6 +108,7 @@ export interface ExperienceEntry {
   id: string;
   designation: string;
   organizationName: string;
+  organizationCountry: string;
   organizationAddress: string;
   startDate: string;
   completionDate: string;
@@ -215,7 +215,7 @@ const mainFormSteps = [
   { id: 2, title: 'Personal Information', icon: User, description: 'Identity & profile' },
   { id: 3, title: 'Education History', icon: GraduationCap, description: 'Prior qualifications' },
   { id: 4, title: 'Healthcare Qualification', icon: Stethoscope, description: 'Allied healthcare degrees' },
-  { id: 5, title: 'Other Qualification', icon: GraduationCap, description: 'Additional qualifications' },
+  { id: 5, title: 'Additional Qualification', icon: GraduationCap, description: 'Additional qualifications' },
   { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 7, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
   { id: 8, title: 'Practice Location', icon: MapPin, description: 'Geographic intent' },
@@ -231,9 +231,8 @@ const form2ASteps = [
   { id: 5, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 6, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 7, title: 'Experience', icon: Briefcase, description: 'Allied and healthcare professional history' },
-  { id: 8, title: 'Additional Practice', icon: MapPin, description: 'Additional state of practice' },
-  { id: 9, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 10, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const form2BSteps = [
@@ -254,9 +253,8 @@ const form2CSteps = [
   { id: 4, title: 'Academic Qualification', icon: GraduationCap, description: 'Foreign qualifications' },
   { id: 5, title: 'Internship', icon: Briefcase, description: 'Clinical training' },
   { id: 6, title: 'Experience', icon: Briefcase, description: 'Professional history' },
-  { id: 7, title: 'State of Practice', icon: MapPin, description: 'Practice location' },
-  { id: 8, title: 'Documents', icon: Upload, description: 'Upload certificates' },
-  { id: 9, title: 'Declaration', icon: Shield, description: 'Review & submit' }
+  { id: 7, title: 'Documents', icon: Upload, description: 'Upload certificates' },
+  { id: 8, title: 'Declaration', icon: Shield, description: 'Review & submit' }
 ];
 
 const indianStates = [
@@ -335,7 +333,9 @@ const PermanentRegistration = () => {
       { id: '1', qualificationName: '', institutionName: '', university: '', country: '', durationMonths: '', admissionDate: '', passingDate: '', certificate: null, transcript: null }
     ],
     otherQualifications: [],
-    internships: [],
+    internships: [
+      { id: '1', designation: '', organizationName: '', organizationCountry: 'India', organizationAddress: '', startDate: '', completionDate: '', coreDuties: '', certificate: null }
+    ],
     experiences: [],
     practiceInOtherState: false,
     practiceStates: [],
@@ -782,7 +782,7 @@ const PermanentRegistration = () => {
       return <RegistrationTypeStep formData={formData} updateFormData={updateFormData} />;
     }
 
-    // Form 2A steps (10 steps)
+    // Form 2A steps (9 steps - removed Additional Practice)
     if (activeFormType === '2A') {
       switch (currentStep) {
         case 2:
@@ -798,10 +798,8 @@ const PermanentRegistration = () => {
         case 7:
           return <ExperienceStep2A formData={form2AData} updateFormData={updateForm2AData} />;
         case 8:
-          return <AdditionalPracticeStep2A formData={form2AData} updateFormData={updateForm2AData} />;
-        case 9:
           return <DocumentsStep2A formData={form2AData} updateFormData={updateForm2AData} />;
-        case 10:
+        case 9:
           return <DeclarationStep2A formData={form2AData} updateFormData={updateForm2AData} onSubmit={handleSubmit} />;
         default:
           return null;
@@ -830,7 +828,7 @@ const PermanentRegistration = () => {
       }
     }
 
-    // Form 2C steps (9 steps - 2B + Purpose)
+    // Form 2C steps (8 steps - 2B + Purpose, no State of Practice)
     if (activeFormType === '2C') {
       switch (currentStep) {
         case 2:
@@ -844,10 +842,8 @@ const PermanentRegistration = () => {
         case 6:
           return <ExperienceStep2B formData={form2CData} updateFormData={updateForm2CData} />;
         case 7:
-          return <PracticeStateStep2B formData={form2CData} updateFormData={updateForm2CData} />;
-        case 8:
           return <DocumentsStep2B formData={form2CData} updateFormData={updateForm2CData} />;
-        case 9:
+        case 8:
           return <DeclarationStep2B formData={form2CData} updateFormData={updateForm2CData} onSubmit={handleSubmit} />;
         default:
           return null;
@@ -882,10 +878,10 @@ const PermanentRegistration = () => {
 
   // Get form type label for header
   const getFormTypeLabel = () => {
-    if (activeFormType === '2A') return 'Form 2A - Temporary Registration';
-    if (activeFormType === '2B') return 'Form 2B - Regular Registration (Foreign Qualification)';
-    if (activeFormType === '2C') return 'Form 2C - Temporary Registration (Foreign Qualification)';
-    return 'Permanent Registration';
+    if (activeFormType === '2A') return 'Form 2A - Temporary Registration (Foreign nationals with foreign qualification)';
+    if (activeFormType === '2B') return 'Form 2B - Regular Registration (Indian nationals with foreign qualification)';
+    if (activeFormType === '2C') return 'Form 2C - Temporary Registration (Indian nationals with foreign qualification)';
+    return 'Form 1A - Regular Registration (Indian nationals with Indian qualifications)';
   };
 
   return (
