@@ -327,7 +327,6 @@ const PermanentRegistration = () => {
     educationHistory: [
       { id: '1', schoolName: '', board: '', yearOfPassing: '', certificate: null },
       { id: '2', schoolName: '', board: '', yearOfPassing: '', certificate: null },
-      { id: '3', schoolName: '', board: '', yearOfPassing: '', certificate: null },
     ],
     healthcareQualifications: [
       { id: '1', qualificationName: '', institutionName: '', university: '', country: '', durationMonths: '', admissionDate: '', passingDate: '', certificate: null, transcript: null }
