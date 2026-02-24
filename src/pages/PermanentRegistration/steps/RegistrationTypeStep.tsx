@@ -45,19 +45,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
       value: "1A",
       formType: "Form 1A",
       label: "Regular Registration",
-      description: "Indian nationals who have passed a recognised qualification from India on or before 2021.",
-    },
-    {
-      value: "1B",
-      formType: "Form 1B",
-      label: "Provisional Registration",
-      description: "Working allied and healthcare professionals who do not possess any recognized qualification",
-    },
-    {
-      value: "1C",
-      formType: "Form 1C",
-      label: "Interim Registration",
-      description: "Students pursuing a recognized qualification",
+      description: "Indian nationals with Indian qualifications",
     },
     {
       value: "2A",
@@ -77,6 +65,18 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
       label: "Temporary Registration",
       description: "Indian nationals with foreign qualification",
     },
+    {
+      value: "1B",
+      formType: "Form 1B",
+      label: "Provisional Registration",
+      description: "Working allied and healthcare professionals who do not possess any recognized qualification",
+    },
+    {
+      value: "1C",
+      formType: "Form 1C",
+      label: "Interim Registration",
+      description: "Students pursuing a recognized qualification",
+    },
   ];
 
   const selectedProfession = formData.profession ? getProfessionByName(formData.profession) : null;
@@ -89,7 +89,7 @@ const RegistrationTypeStep = ({ formData, updateFormData }: Props) => {
           <FileCheck className="w-8 h-8 text-primary" />
         </div>
         <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Registration Type for Allied and Healthcare Professionals
+          Application Form for Allied and Healthcare Professionals
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
           Select your registration type and the allied or healthcare profession you wish to register for.
