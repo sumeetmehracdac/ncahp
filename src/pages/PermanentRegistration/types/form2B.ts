@@ -224,7 +224,19 @@ export const initialForm2BData: Form2BData = {
       syllabus: null
     }
   ],
-  internships: [],
+  internships: [
+    {
+      id: '1',
+      programName: '',
+      organizationNameAddress: '',
+      country: '',
+      startDate: '',
+      completionDate: '',
+      totalHours: '',
+      coreDuties: '',
+      certificate: null
+    }
+  ],
   experiences: [],
   practiceInOtherState: false,
   practiceStates: [],

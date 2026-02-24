@@ -126,6 +126,53 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
         </div>
       </div>
 
+      {/* State of Residence in India */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <MapPin className="w-5 h-5 text-primary" />
+          <h3 className="text-lg font-semibold text-foreground">State of Residence in India</h3>
+        </div>
+        <p className="text-sm text-muted-foreground -mt-2 mb-2">
+          State of residence in India will be considered as state of registration
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-slate-50 rounded-xl border border-border">
+          <div className="space-y-2">
+            <Label>State <span className="text-destructive">*</span></Label>
+            <Select
+              value={formData.stateOfResidenceIndia}
+              onValueChange={(value) => updateFormData("stateOfResidenceIndia", value)}
+            >
+              <SelectTrigger className="h-11">
+                <SelectValue placeholder="Select state" />
+              </SelectTrigger>
+              <SelectContent className="max-h-60 bg-white">
+                {indianStates.map((state) => (
+                  <SelectItem key={state} value={state}>{state}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>District <span className="text-destructive">*</span></Label>
+            <Input
+              placeholder="District"
+              value={formData.districtOfResidenceIndia}
+              onChange={(e) => updateFormData("districtOfResidenceIndia", e.target.value)}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Address (optional)</Label>
+            <Input
+              placeholder="Address"
+              value={formData.addressOfResidenceIndia}
+              onChange={(e) => updateFormData("addressOfResidenceIndia", e.target.value)}
+              className="h-11"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* II, III, IV. Duration & Dates */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 mb-2">
@@ -282,7 +329,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
         <div className="flex items-center gap-2 mb-2">
           <Globe className="w-5 h-5 text-primary" />
           <h3 className="text-lg font-semibold text-foreground">
-            X. Previous Permissions/Licenses from Other Countries
+            I. Please list the Countries to which had already received similar Permission/ License?
           </h3>
         </div>
 
@@ -294,6 +341,8 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                   <th className="px-4 py-3 text-left font-medium">Country Name</th>
                   <th className="px-4 py-3 text-left font-medium">Name of Regulatory Body</th>
                   <th className="px-4 py-3 text-left font-medium">License Number</th>
+                  <th className="px-4 py-3 text-left font-medium">Date of Initial Registration/License</th>
+                  <th className="px-4 py-3 text-left font-medium">Date of Expiry of Registration/License</th>
                   <th className="px-4 py-3 text-left font-medium">Upload Certificate</th>
                   <th className="px-4 py-3 text-center font-medium">Action</th>
                 </tr>
@@ -322,6 +371,22 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                         placeholder="License No."
                         value={perm.licenseNumber}
                         onChange={(e) => updatePreviousPermission(index, 'licenseNumber', e.target.value)}
+                        className="h-10"
+                      />
+                    </td>
+                    <td className="p-3">
+                      <Input
+                        type="date"
+                        value={perm.dateOfInitialRegistration}
+                        onChange={(e) => updatePreviousPermission(index, 'dateOfInitialRegistration', e.target.value)}
+                        className="h-10"
+                      />
+                    </td>
+                    <td className="p-3">
+                      <Input
+                        type="date"
+                        value={perm.dateOfExpiry}
+                        onChange={(e) => updatePreviousPermission(index, 'dateOfExpiry', e.target.value)}
                         className="h-10"
                       />
                     </td>
@@ -356,7 +421,7 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
                 ))}
                 {formData.previousPermissions.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                    <td colSpan={7} className="p-8 text-center text-muted-foreground">
                       No previous permissions added.
                     </td>
                   </tr>
