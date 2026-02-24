@@ -100,14 +100,11 @@ const EducationHistoryStep = ({ formData, updateFormData }: Props) => {
               className="bg-white border border-border rounded-xl p-4 shadow-sm"
             >
               {/* Row Label for predefined entries */}
-              {index < 3 && (
+              {index < 2 && (
                 <div className="mb-3 pb-2 border-b border-border">
                   <span className="text-sm font-medium text-primary">
                     {educationLabels[index]} {index === 0 && <span className="text-destructive">*</span>}
                   </span>
-                  {index > 0 && (
-                    <span className="ml-2 text-xs text-muted-foreground">(Optional)</span>
-                  )}
                 </div>
               )}
 

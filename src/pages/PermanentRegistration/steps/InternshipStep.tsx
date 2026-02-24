@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, Plus, Trash2, Upload, FileCheck, Calendar, MapPin, ClipboardList, Info } from "lucide-react";
+import { Briefcase, Plus, Trash2, Upload, FileCheck, Calendar, MapPin, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,17 +63,6 @@ const InternshipStep = ({ formData, updateFormData }: Props) => {
         </p>
       </div>
 
-      {/* Info Banner */}
-      <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200">
-        <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-        <div className="text-sm text-blue-800">
-          <p className="font-medium mb-1">Optional Section</p>
-          <p>
-            If you have completed internship or clinical training as part of your qualification, please add the details
-            here. You can skip this step if not applicable.
-          </p>
-        </div>
-      </div>
 
       {/* Internship Entries */}
       {formData.internships.length === 0 ? (

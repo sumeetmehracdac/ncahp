@@ -138,59 +138,6 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
         </div>
       </div>
 
-      {/* State of Residence in India */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <MapPin className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold text-foreground">State of Residence in India</h3>
-        </div>
-        <p className="text-sm text-muted-foreground -mt-2 mb-2">
-          State of residence in India will be considered as state of registration
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-slate-50 rounded-xl border border-border">
-          <div className="space-y-2">
-            <Label>
-              State <span className="text-destructive">*</span>
-            </Label>
-            <Select
-              value={formData.stateOfResidenceIndia}
-              onValueChange={(value) => updateFormData("stateOfResidenceIndia", value)}
-            >
-              <SelectTrigger className="h-11">
-                <SelectValue placeholder="Select state" />
-              </SelectTrigger>
-              <SelectContent className="max-h-60 bg-white">
-                {indianStates.map((state) => (
-                  <SelectItem key={state} value={state}>
-                    {state}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-2">
-            <Label>
-              District <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              placeholder="District"
-              value={formData.districtOfResidenceIndia}
-              onChange={(e) => updateFormData("districtOfResidenceIndia", e.target.value)}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>Address (optional)</Label>
-            <Input
-              placeholder="Address"
-              value={formData.addressOfResidenceIndia}
-              onChange={(e) => updateFormData("addressOfResidenceIndia", e.target.value)}
-              className="h-11"
-            />
-          </div>
-        </div>
-      </div>
-
       {/* II, III, IV. Duration & Dates */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 mb-2">
