@@ -14,25 +14,29 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
   const addQualification = () => {
     const newQual: Form2AAcademicQualification = {
       id: Date.now().toString(),
-      qualificationName: '',
-      institutionName: '',
-      university: '',
-      courseName: '', // Kept for interface compatibility, but might be redundant if separate from Qual Name
-      country: '',
-      durationMonths: '',
-      admissionYear: '',
-      passingYear: '',
-      modeOfLearning: '',
-      mediumOfInstruction: '',
-      regulatoryAuthority: '',
+      qualificationName: "",
+      institutionName: "",
+      university: "",
+      courseName: "", // Kept for interface compatibility, but might be redundant if separate from Qual Name
+      country: "",
+      durationMonths: "",
+      admissionYear: "",
+      passingYear: "",
+      modeOfLearning: "",
+      mediumOfInstruction: "",
+      regulatoryAuthority: "",
       certificate: null,
       transcript: null,
-      attestedSyllabus: null
+      attestedSyllabus: null,
     };
     updateFormData("academicQualifications", [...formData.academicQualifications, newQual]);
   };
 
-  const updateQualification = (index: number, field: keyof Form2AAcademicQualification, value: string | File | null) => {
+  const updateQualification = (
+    index: number,
+    field: keyof Form2AAcademicQualification,
+    value: string | File | null,
+  ) => {
     const updated = [...formData.academicQualifications];
     updated[index] = { ...updated[index], [field]: value };
     updateFormData("academicQualifications", updated);
@@ -45,7 +49,11 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
     }
   };
 
-  const handleFileChange = (index: number, field: 'certificate' | 'transcript' | 'attestedSyllabus', e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    index: number,
+    field: "certificate" | "transcript" | "attestedSyllabus",
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       updateQualification(index, field, file);
@@ -70,10 +78,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
       {/* Qualifications List */}
       <div className="space-y-6">
         {formData.academicQualifications.map((qual, index) => (
-          <div
-            key={qual.id}
-            className="bg-slate-50 rounded-xl p-6 border border-border space-y-4"
-          >
+          <div key={qual.id} className="bg-slate-50 rounded-xl p-6 border border-border space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-primary" />
@@ -101,18 +106,18 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 <Input
                   placeholder="e.g., Bachelor of Medical Lab Technology"
                   value={qual.qualificationName}
-                  onChange={(e) => updateQualification(index, 'qualificationName', e.target.value)}
+                  onChange={(e) => updateQualification(index, "qualificationName", e.target.value)}
                   className="h-11"
                 />
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Name of Institution <span className="text-destructive">*</span>
+                  Enter here <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   placeholder="Institution name"
                   value={qual.institutionName}
-                  onChange={(e) => updateQualification(index, 'institutionName', e.target.value)}
+                  onChange={(e) => updateQualification(index, "institutionName", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -123,18 +128,19 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 <Input
                   placeholder="University name"
                   value={qual.university}
-                  onChange={(e) => updateQualification(index, 'university', e.target.value)}
+                  onChange={(e) => updateQualification(index, "university", e.target.value)}
                   className="h-11"
                 />
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">
-                  Name of regulatory authority recognising the university and the program <span className="text-destructive">*</span>
+                  Name of regulatory authority recognising the university and the program{" "}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   placeholder="Regulatory Authority"
                   value={qual.regulatoryAuthority}
-                  onChange={(e) => updateQualification(index, 'regulatoryAuthority', e.target.value)}
+                  onChange={(e) => updateQualification(index, "regulatoryAuthority", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -145,7 +151,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 <Input
                   placeholder="Country"
                   value={qual.country}
-                  onChange={(e) => updateQualification(index, 'country', e.target.value)}
+                  onChange={(e) => updateQualification(index, "country", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -157,7 +163,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   type="number"
                   placeholder="e.g., 48"
                   value={qual.durationMonths}
-                  onChange={(e) => updateQualification(index, 'durationMonths', e.target.value)}
+                  onChange={(e) => updateQualification(index, "durationMonths", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -167,7 +173,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 </Label>
                 <Select
                   value={qual.modeOfLearning}
-                  onValueChange={(value) => updateQualification(index, 'modeOfLearning', value)}
+                  onValueChange={(value) => updateQualification(index, "modeOfLearning", value)}
                 >
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select (Yes/No)" />
@@ -185,7 +191,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 <Input
                   placeholder="e.g., English"
                   value={qual.mediumOfInstruction}
-                  onChange={(e) => updateQualification(index, 'mediumOfInstruction', e.target.value)}
+                  onChange={(e) => updateQualification(index, "mediumOfInstruction", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -197,7 +203,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   type="number"
                   placeholder="YYYY"
                   value={qual.admissionYear}
-                  onChange={(e) => updateQualification(index, 'admissionYear', e.target.value)}
+                  onChange={(e) => updateQualification(index, "admissionYear", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -209,7 +215,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   type="number"
                   placeholder="YYYY"
                   value={qual.passingYear}
-                  onChange={(e) => updateQualification(index, 'passingYear', e.target.value)}
+                  onChange={(e) => updateQualification(index, "passingYear", e.target.value)}
                   className="h-11"
                 />
               </div>
@@ -221,8 +227,9 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 </Label>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.certificate ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      qual.certificate ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
                     <span className="text-sm text-foreground font-medium truncate">
@@ -232,7 +239,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange(index, 'certificate', e)}
+                    onChange={(e) => handleFileChange(index, "certificate", e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>
@@ -248,8 +255,9 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 </p>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.transcript ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      qual.transcript ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
                     <span className="text-sm text-foreground font-medium truncate">
@@ -259,7 +267,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange(index, 'transcript', e)}
+                    onChange={(e) => handleFileChange(index, "transcript", e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>
@@ -275,8 +283,9 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                 </p>
                 <div className="relative">
                   <div
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${qual.attestedSyllabus ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 border-dashed transition-all ${
+                      qual.attestedSyllabus ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
                   >
                     <Upload className="w-5 h-5 text-muted-foreground" />
                     <span className="text-sm text-foreground font-medium truncate">
@@ -286,7 +295,7 @@ const AcademicQualificationStep2A = ({ formData, updateFormData }: Props) => {
                   <input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange(index, 'attestedSyllabus', e)}
+                    onChange={(e) => handleFileChange(index, "attestedSyllabus", e)}
                     className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>
