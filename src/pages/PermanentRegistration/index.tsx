@@ -526,7 +526,8 @@ const PermanentRegistration = () => {
       const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
       const middleName = nameParts.length > 2 ? nameParts.slice(1, -1).join(' ') : '';
 
-      if (value === '2A') {
+      // Form 2B (Temporary - Foreign nationals) uses Form2A components internally
+      if (value === '2B') {
         setActiveFormType('2A');
         setForm2AData(prev => ({
           ...prev,
@@ -540,7 +541,8 @@ const PermanentRegistration = () => {
           email: formData.email,
           phoneNumber: formData.mobile
         }));
-      } else if (value === '2B') {
+      // Form 1B (Regular - Indian with foreign qual) uses Form2B components internally
+      } else if (value === '1B') {
         setActiveFormType('2B');
         setForm2BData(prev => ({
           ...prev,
@@ -554,11 +556,12 @@ const PermanentRegistration = () => {
           email: formData.email,
           phoneNumber: formData.mobile
         }));
-      } else if (value === '2C') {
+      // Form 2A (Temporary - Indian with foreign qual) uses Form2C components internally
+      } else if (value === '2A') {
         setActiveFormType('2C');
         setForm2CData(prev => ({
           ...prev,
-          registrationType: '2C',
+          registrationType: '2A',
           profession: formData.profession,
           firstName,
           middleName,
@@ -877,10 +880,13 @@ const PermanentRegistration = () => {
 
   // Get form type label for header
   const getFormTypeLabel = () => {
-    if (activeFormType === '2A') return 'Form 2A - Temporary Registration (Foreign nationals with foreign qualification)';
-    if (activeFormType === '2B') return 'Form 2B - Regular Registration (Indian nationals with foreign qualification)';
-    if (activeFormType === '2C') return 'Form 2C - Temporary Registration (Indian nationals with foreign qualification)';
-    return 'Form 1A - Regular Registration (Indian nationals with Indian qualifications)';
+    const rt = formData.registrationType;
+    if (rt === '1B') return 'Form 1B - Regular Registration (Indian nationals with foreign qualification)';
+    if (rt === '1C') return 'Form 1C - Provisional Registration';
+    if (rt === '2A') return 'Form 2A - Temporary Registration (Indian nationals with foreign qualification)';
+    if (rt === '2B') return 'Form 2B - Temporary Registration (Foreign nationals with foreign qualification)';
+    if (rt === '3A') return 'Form 3A - Interim Registration';
+    return 'Form 1A - Regular Registration (Indian nationals with Indian qualification)';
   };
 
   return (
