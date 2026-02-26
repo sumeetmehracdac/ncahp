@@ -953,40 +953,9 @@ const PermanentRegistration = () => {
         </div>
       </header>
 
-      {/* Tier 1: Application Type Breadcrumb Banner */}
+      {/* Horizontal Step Tracker */}
       <div className="sticky top-16 z-40">
-        <div className="bg-primary/5 border-b border-primary/10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm">
-                <FileCheck className="w-4 h-4 text-primary" />
-                <span className="text-muted-foreground">Application Type:</span>
-                <span className="font-semibold text-foreground">{getFormTypeLabel()}</span>
-                {currentStep > 1 && (
-                  <button
-                    onClick={() => setCurrentStep(1)}
-                    className="ml-2 text-xs text-primary hover:text-primary-dark underline underline-offset-2 transition-colors"
-                  >
-                    Change
-                  </button>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                {lastSaved && (
-                  <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    Saved {lastSaved.toLocaleTimeString()}
-                  </span>
-                )}
-                <span className="text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-full">
-                  Step {currentStep} of {steps.length}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tier 2: Horizontal Step Tracker */}
+        {/* Step Tracker */}
         <div className="bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
             <div className="relative flex items-center gap-1">
@@ -1067,29 +1036,33 @@ const PermanentRegistration = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" ref={formContentRef}>
 
-        {/* Tier 3: Current Step Context Card */}
+        {/* Step Context Card */}
         {currentStep > 1 && (
           <motion.div
             key={`step-header-${activeFormType}-${currentStep}`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-4 bg-gradient-to-r from-primary/5 via-white to-accent/5 rounded-xl border border-border p-4 flex items-center gap-4"
+            className="mb-4 bg-gradient-to-r from-primary/5 via-white to-accent/5 rounded-xl border border-border p-5 text-center"
           >
-            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
               {(() => {
                 const currentStepData = steps.find(s => s.id === currentStep);
                 const StepIcon = currentStepData?.icon || FileCheck;
-                return <StepIcon className="w-5 h-5 text-primary" />;
+                return <StepIcon className="w-5.5 h-5.5 text-primary" />;
               })()}
             </div>
-            <div className="min-w-0">
-              <h2 className="text-lg font-display font-semibold text-foreground">
-                {steps.find(s => s.id === currentStep)?.title}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                {steps.find(s => s.id === currentStep)?.description}
-              </p>
-            </div>
+            <h2 className="text-xl font-display font-bold text-foreground mb-1">
+              {steps.find(s => s.id === currentStep)?.title}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-2">
+              {getFormTypeLabel()}
+            </p>
+            <button
+              onClick={() => setCurrentStep(1)}
+              className="text-xs text-primary hover:text-primary-dark underline underline-offset-2 transition-colors"
+            >
+              Change Application Type
+            </button>
           </motion.div>
         )}
 
