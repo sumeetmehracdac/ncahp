@@ -38,15 +38,6 @@ const InternshipStep2B = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <Briefcase className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Details of Internship/Clinical Training (Supervised Clinical Practice)/Field Work etc.
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">Add details of your internship or clinical training.</p>
-      </div>
 
       <div className="space-y-6">
         {formData.internships.length === 0 ? (

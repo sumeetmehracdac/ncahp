@@ -60,18 +60,6 @@ const PassportVisaStep2A = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <CreditCard className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Screen-4: Passport & Visa Details
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Provide your travel document details and emergency contact information.
-        </p>
-      </div>
 
       {/* I. Passport Details */}
       <div className="space-y-4">
