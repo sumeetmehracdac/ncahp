@@ -40,17 +40,6 @@ const OtherQualificationStep = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <GraduationCap className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Additional Qualifications
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Add any additional relevant qualifications you may have (optional).
-        </p>
-      </div>
 
       {formData.otherQualifications.length === 0 ? (
         <div className="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-border">

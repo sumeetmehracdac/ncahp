@@ -953,8 +953,26 @@ const PermanentRegistration = () => {
         </div>
       </header>
 
-      {/* Horizontal Step Tracker */}
+      {/* Tier 1: Application Type Strip + Step Tracker */}
       <div className="sticky top-16 z-40">
+        {/* Application Type Strip */}
+        {currentStep > 1 && (
+          <div className="bg-primary/5 border-b border-primary/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm">
+                <FileCheck className="w-3.5 h-3.5 text-primary" />
+                <span className="font-semibold text-foreground">{getFormTypeLabel()}</span>
+              </div>
+              <button
+                onClick={() => setCurrentStep(1)}
+                className="text-xs text-primary hover:text-primary-dark underline underline-offset-2 transition-colors"
+              >
+                Change
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Step Tracker */}
         <div className="bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
@@ -1042,27 +1060,31 @@ const PermanentRegistration = () => {
             key={`step-header-${activeFormType}-${currentStep}`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-4 bg-gradient-to-r from-primary/5 via-white to-accent/5 rounded-xl border border-border p-5 text-center"
+            className="mb-4 bg-gradient-to-r from-primary/5 via-white to-accent/5 rounded-xl border border-border px-5 py-2.5 flex items-center justify-between gap-4"
           >
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
-              {(() => {
-                const currentStepData = steps.find(s => s.id === currentStep);
-                const StepIcon = currentStepData?.icon || FileCheck;
-                return <StepIcon className="w-5.5 h-5.5 text-primary" />;
-              })()}
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                {(() => {
+                  const currentStepData = steps.find(s => s.id === currentStep);
+                  const StepIcon = currentStepData?.icon || FileCheck;
+                  return <StepIcon className="w-4 h-4 text-primary" />;
+                })()}
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-sm font-display font-bold text-foreground leading-tight">
+                  {steps.find(s => s.id === currentStep)?.title}
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  {steps.find(s => s.id === currentStep)?.description}
+                </p>
+              </div>
             </div>
-            <h2 className="text-xl font-display font-bold text-foreground mb-1">
-              {steps.find(s => s.id === currentStep)?.title}
-            </h2>
-            <p className="text-sm text-muted-foreground mb-2">
-              {getFormTypeLabel()}
-            </p>
-            <button
-              onClick={() => setCurrentStep(1)}
-              className="text-xs text-primary hover:text-primary-dark underline underline-offset-2 transition-colors"
-            >
-              Change Application Type
-            </button>
+            <div className="hidden md:block text-right flex-shrink-0">
+              <ul className="text-[11px] text-muted-foreground space-y-0.5 list-disc list-inside">
+                <li>All documents must be self-attested</li>
+                <li>Fields marked * are mandatory</li>
+              </ul>
+            </div>
           </motion.div>
         )}
 

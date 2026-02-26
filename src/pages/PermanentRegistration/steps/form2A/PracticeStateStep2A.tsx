@@ -91,18 +91,6 @@ const PracticeStateStep2A = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <MapPin className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Practice Details & History
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Provide details about your purpose, intended practice location in India, and previous registrations.
-        </p>
-      </div>
 
       {/* I. Purpose of Registration */}
       <div className="space-y-4">

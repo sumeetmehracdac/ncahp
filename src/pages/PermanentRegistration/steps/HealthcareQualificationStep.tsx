@@ -42,17 +42,6 @@ const HealthcareQualificationStep = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <Stethoscope className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Essential Allied Healthcare Qualification
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Enter details of your allied and healthcare qualification for which registration is applied.
-        </p>
-      </div>
 
       <div className="mb-4 p-4 bg-primary/5 rounded-xl border border-primary/20">
         <p className="text-sm text-foreground">

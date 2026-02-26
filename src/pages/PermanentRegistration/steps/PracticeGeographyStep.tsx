@@ -81,18 +81,6 @@ const PracticeGeographyStep = ({ formData, updateFormData }: Props) => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center pb-6 border-b border-border">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4">
-          <MapPin className="w-8 h-8 text-primary" />
-        </div>
-        <h2 className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-2">
-          Practice Location Intent
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Declare if you intend to practice your profession in states other than your state of residence.
-        </p>
-      </div>
 
       {/* Current State of Registration */}
       <div className="bg-slate-50 rounded-xl p-5 border border-border">
