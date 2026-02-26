@@ -953,106 +953,145 @@ const PermanentRegistration = () => {
         </div>
       </header>
 
-      {/* Sticky Progress Tracker - floats below header */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg md:text-xl font-display font-semibold text-foreground">
-                {getFormTypeLabel()}
-              </h2>
-              {activeFormType !== 'main' && (
-                <span className="text-xs text-muted-foreground hidden md:inline">
-                  {activeFormType === '2A' ? '(Foreign nationals)' : activeFormType === '2C' ? '(Indian nationals - Temporary)' : '(Indian nationals with foreign qualification)'}
+      {/* Tier 1: Application Type Breadcrumb Banner */}
+      <div className="sticky top-16 z-40">
+        <div className="bg-primary/5 border-b border-primary/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm">
+                <FileCheck className="w-4 h-4 text-primary" />
+                <span className="text-muted-foreground">Application Type:</span>
+                <span className="font-semibold text-foreground">{getFormTypeLabel()}</span>
+                {currentStep > 1 && (
+                  <button
+                    onClick={() => setCurrentStep(1)}
+                    className="ml-2 text-xs text-primary hover:text-primary-dark underline underline-offset-2 transition-colors"
+                  >
+                    Change
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                {lastSaved && (
+                  <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    Saved {lastSaved.toLocaleTimeString()}
+                  </span>
+                )}
+                <span className="text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                  Step {currentStep} of {steps.length}
                 </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              {lastSaved && (
-                <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  Saved {lastSaved.toLocaleTimeString()}
-                </span>
-              )}
-              <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                Step {currentStep} of {steps.length}
-              </span>
-            </div>
-          </div>
-
-          {/* Step Progress Bar */}
-          <div className="relative flex items-center gap-1">
-            {/* Left scroll arrow */}
-            {canScrollLeft && (
-              <button
-                onClick={() => scrollProgressBar('left')}
-                className="flex-shrink-0 w-8 h-8 mr-2 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm hover:bg-muted transition-colors"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-4 h-4 text-muted-foreground" />
-              </button>
-            )}
-
-            <div
-              ref={progressBarRef}
-              onScroll={checkProgressBarScroll}
-              className="flex-1 overflow-x-auto pb-1 scrollbar-hide"
-            >
-              <div className="flex items-center min-w-max gap-1 px-1" role="navigation" aria-label="Form progress">
-                {steps.map((step, index) => {
-                  const isActive = step.id === currentStep;
-                  const isCompleted = step.id < currentStep;
-                  const isVisited = true; // step.id <= highestStepReached;
-                  const canNavigate = true; // step.id <= highestStepReached && step.id !== currentStep;
-                  const StepIcon = step.icon;
-
-                  return (
-                    <div key={step.id} className="flex items-center">
-                      <button
-                        onClick={() => canNavigate && setCurrentStep(step.id)}
-                        disabled={!canNavigate && step.id !== currentStep}
-                        aria-label={`Step ${step.id}: ${step.title}${isCompleted ? ' (completed)' : isActive ? ' (current)' : isVisited ? ' (visited)' : ''}`}
-                        aria-current={isActive ? 'step' : undefined}
-                        className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-1 ${isActive
-                          ? 'bg-accent text-white shadow-md shadow-accent/25'
-                          : isVisited
-                            ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
-                            : 'bg-muted text-muted-foreground cursor-not-allowed'
-                          }`}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4" />
-                        ) : (
-                          <StepIcon className="w-4 h-4" />
-                        )}
-                        <span className="text-xs font-medium hidden lg:block">{step.title}</span>
-                      </button>
-
-                      {index < steps.length - 1 && (
-                        <div className={`w-6 h-0.5 mx-0.5 ${step.id < highestStepReached ? 'bg-primary' : 'bg-border'
-                          }`} />
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Right scroll arrow */}
-            {canScrollRight && (
-              <button
-                onClick={() => scrollProgressBar('right')}
-                className="flex-shrink-0 w-8 h-8 ml-2 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm hover:bg-muted transition-colors"
-                aria-label="Scroll right"
+        {/* Tier 2: Horizontal Step Tracker */}
+        <div className="bg-white/95 backdrop-blur-sm border-b border-border shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+            <div className="relative flex items-center gap-1">
+              {/* Left scroll arrow */}
+              {canScrollLeft && (
+                <button
+                  onClick={() => scrollProgressBar('left')}
+                  className="flex-shrink-0 w-7 h-7 mr-1 flex items-center justify-center rounded-md bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                </button>
+              )}
+
+              <div
+                ref={progressBarRef}
+                onScroll={checkProgressBarScroll}
+                className="flex-1 overflow-x-auto pb-0.5 scrollbar-hide"
               >
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
-              </button>
-            )}
+                <div className="flex items-center min-w-max gap-0.5 px-0.5" role="navigation" aria-label="Form progress">
+                  {steps.map((step, index) => {
+                    const isActive = step.id === currentStep;
+                    const isCompleted = step.id < currentStep;
+                    const canNavigate = true;
+
+                    return (
+                      <div key={step.id} className="flex items-center">
+                        <button
+                          onClick={() => canNavigate && setCurrentStep(step.id)}
+                          disabled={!canNavigate && step.id !== currentStep}
+                          aria-label={`Step ${step.id}: ${step.title}${isCompleted ? ' (completed)' : isActive ? ' (current)' : ''}`}
+                          aria-current={isActive ? 'step' : undefined}
+                          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-1 ${
+                            isActive
+                              ? 'bg-accent text-white shadow-md shadow-accent/25'
+                              : isCompleted
+                                ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
+                                : 'bg-muted/60 text-muted-foreground hover:bg-muted cursor-pointer'
+                          }`}
+                        >
+                          {isCompleted ? (
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                          ) : (
+                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                              isActive ? 'bg-white/20' : 'bg-muted'
+                            }`}>
+                              {step.id}
+                            </span>
+                          )}
+                          <span className="hidden md:block">{step.title}</span>
+                        </button>
+
+                        {index < steps.length - 1 && (
+                          <div className={`w-4 h-0.5 mx-0.5 ${
+                            step.id < currentStep ? 'bg-primary' : 'bg-border'
+                          }`} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Right scroll arrow */}
+              {canScrollRight && (
+                <button
+                  onClick={() => scrollProgressBar('right')}
+                  className="flex-shrink-0 w-7 h-7 ml-1 flex items-center justify-center rounded-md bg-white border border-border shadow-sm hover:bg-muted transition-colors"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" ref={formContentRef}>
+
+        {/* Tier 3: Current Step Context Card */}
+        {currentStep > 1 && (
+          <motion.div
+            key={`step-header-${activeFormType}-${currentStep}`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 bg-gradient-to-r from-primary/5 via-white to-accent/5 rounded-xl border border-border p-4 flex items-center gap-4"
+          >
+            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+              {(() => {
+                const currentStepData = steps.find(s => s.id === currentStep);
+                const StepIcon = currentStepData?.icon || FileCheck;
+                return <StepIcon className="w-5 h-5 text-primary" />;
+              })()}
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-lg font-display font-semibold text-foreground">
+                {steps.find(s => s.id === currentStep)?.title}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {steps.find(s => s.id === currentStep)?.description}
+              </p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Step Content */}
         <AnimatePresence mode="wait">
