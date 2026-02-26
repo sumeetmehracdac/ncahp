@@ -1079,8 +1079,8 @@ const PermanentRegistration = () => {
                 </p>
               </div>
             </div>
-            <div className="hidden md:block text-right flex-shrink-0">
-              <ul className="text-[11px] text-muted-foreground space-y-0.5 list-disc list-inside">
+            <div className="hidden md:block flex-shrink-0">
+              <ul className="text-[11px] text-muted-foreground space-y-0.5 list-disc pl-4">
                 <li>All documents must be self-attested</li>
                 <li>Fields marked * are mandatory</li>
               </ul>
