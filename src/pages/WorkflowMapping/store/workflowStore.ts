@@ -181,7 +181,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         version: conflict?.resolution === 'new_version' ? `${parseFloat(source.version) + 0.1}` : source.version,
       };
       
-      if (existingIdx >= 0 && conflict?.resolution !== 'skip') {
+      if (existingIdx >= 0 && conflict?.resolution !== 'skip' as string) {
         newWorkflows[existingIdx] = newWf;
       } else {
         newWorkflows.push(newWf);
