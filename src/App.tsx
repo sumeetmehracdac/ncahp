@@ -76,6 +76,10 @@ const App = () => (
           <Route path="/payment-config/stakeholder-relaxations" element={<StakeholderRelaxationsPage />} />
           <Route path="/payment-config/relaxation-applications" element={<RelaxationApplicationsPage />} />
           
+          {/* Workflow Mapping Module */}
+          <Route path="/workflows" element={<WorkflowCatalog />} />
+          <Route path="/workflows/:id/editor" element={<WorkflowEditor />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
