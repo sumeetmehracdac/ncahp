@@ -36,6 +36,9 @@ import {
   RelaxationApplicationsPage,
 } from "./pages/PaymentConfig";
 
+// Workflow Mapping Module
+import { WorkflowCatalog, WorkflowEditor } from "./pages/WorkflowMapping";
+
 const queryClient = new QueryClient();
 
 const App = () => (
