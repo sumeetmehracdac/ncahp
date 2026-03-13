@@ -62,5 +62,5 @@ export interface CopyConflict {
   applicationTypeId: string;
   applicationTypeName: string;
   existingStatus: 'none' | 'draft' | 'published';
-  resolution: 'create' | 'overwrite' | 'new_version' | 'skip';
+  resolution: 'create' | 'overwrite' | 'new_version' | 'skip' | null;
 }

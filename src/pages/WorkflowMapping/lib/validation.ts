@@ -36,7 +36,7 @@ export function validateWorkflow(workflow: Workflow): ValidationIssue[] {
   for (const step of workflow.steps) {
     if (step.type === 'end') continue;
     const hasOutgoing = workflow.transitions.some(t => t.fromStepId === step.id);
-    if (!hasOutgoing && step.type !== 'end') {
+    if (!hasOutgoing) {
       issues.push({
         id: `v-orphan-out-${step.id}`,
         severity: step.type === 'start' ? 'error' : 'warning',
