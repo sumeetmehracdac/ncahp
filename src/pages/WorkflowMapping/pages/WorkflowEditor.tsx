@@ -91,8 +91,8 @@ const WorkflowEditor = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(flowEdges);
 
   // Sync when flowNodes/flowEdges change
-  useMemo(() => { setNodes(flowNodes); }, [flowNodes]);
-  useMemo(() => { setEdges(flowEdges); }, [flowEdges]);
+  useEffect(() => { setNodes(flowNodes); }, [flowNodes, setNodes]);
+  useEffect(() => { setEdges(flowEdges); }, [flowEdges, setEdges]);
 
   const onConnect = useCallback((connection: Connection) => {
     if (!workflow || !connection.source || !connection.target) return;
