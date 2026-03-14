@@ -267,54 +267,56 @@ const WorkflowEditor = () => {
         {/* Center Canvas */}
         <div className="flex-1 flex flex-col">
           <div ref={reactFlowWrapper} className="flex-1 relative">
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              onNodeClick={onNodeClick}
-              onEdgeClick={onEdgeClick}
-              onPaneClick={onPaneClick}
-              onNodeDragStop={onNodeDragStop}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              nodeTypes={nodeTypes}
-              edgeTypes={edgeTypes}
-              fitView
-              snapToGrid
-              snapGrid={[16, 16]}
-              className="bg-muted"
-            >
-              <Background variant={BackgroundVariant.Dots} gap={16} size={1} className="opacity-40" />
-              <Controls position="bottom-left" className="!shadow-md !rounded-lg !border !border-border" />
-              <MiniMap
-                position="bottom-left"
-                style={{ left: 60, bottom: 10 }}
-                className="!rounded-lg !border !border-border !shadow-md"
-                maskColor="rgba(0,0,0,0.1)"
-              />
+            <ReactFlowProvider>
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                onNodeClick={onNodeClick}
+                onEdgeClick={onEdgeClick}
+                onPaneClick={onPaneClick}
+                onNodeDragStop={onNodeDragStop}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                fitView
+                snapToGrid
+                snapGrid={[16, 16]}
+                className="bg-muted"
+              >
+                <Background variant={BackgroundVariant.Dots} gap={16} size={1} className="opacity-40" />
+                <Controls position="bottom-left" className="!shadow-md !rounded-lg !border !border-border" />
+                <MiniMap
+                  position="bottom-left"
+                  style={{ left: 60, bottom: 10 }}
+                  className="!rounded-lg !border !border-border !shadow-md"
+                  maskColor="rgba(0,0,0,0.1)"
+                />
 
-              {/* Swimlane labels */}
-              <Panel position="top-left" className="!m-0">
-                <div className="flex flex-col">
-                  {swimlanes.map(lane => (
-                    <div
-                      key={lane.role.id}
-                      className="px-3 py-1 text-[10px] font-semibold border-b border-border/30"
-                      style={{
-                        height: lane.height,
-                        backgroundColor: lane.role.color + '20',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {lane.role.name}
-                    </div>
-                  ))}
-                </div>
-              </Panel>
-            </ReactFlow>
+                {/* Swimlane labels */}
+                <Panel position="top-left" className="!m-0">
+                  <div className="flex flex-col">
+                    {swimlanes.map(lane => (
+                      <div
+                        key={lane.role.id}
+                        className="px-3 py-1 text-[10px] font-semibold border-b border-border/30"
+                        style={{
+                          height: lane.height,
+                          backgroundColor: lane.role.color + '20',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        {lane.role.name}
+                      </div>
+                    ))}
+                  </div>
+                </Panel>
+              </ReactFlow>
+            </ReactFlowProvider>
           </div>
 
           {/* Bottom Rules Table */}
