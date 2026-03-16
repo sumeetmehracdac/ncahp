@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { ApplicationType, Workflow, Step, Transition, ValidationIssue, CopyConflict } from '../types';
-import { applicationTypes, sampleWorkflows } from '../data/mockData';
+import { applicationTypes, sampleWorkflows, defaultRoles, defaultActions } from '../data/mockData';
 import { validateWorkflow } from '../lib/validation';
 
 interface WorkflowState {
@@ -208,11 +208,11 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           applicationTypeId: appTypeId,
           version: '0.1',
           status: 'draft',
-          roles: [],
+          roles: defaultRoles,
           steps: [
-            { id: 'step-start', type: 'start', name: 'Start', roleId: '', position: { x: 100, y: 200 } },
+            { id: 'step-start', type: 'start', name: 'Start', roleId: defaultRoles[0]?.id || '', position: { x: 100, y: 200 } },
           ],
-          actions: [],
+          actions: defaultActions,
           transitions: [],
         };
     
