@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { ApplicationType, Workflow, Step, Transition, ValidationIssue, CopyConflict } from '../types';
-import { applicationTypes, sampleWorkflows } from '../data/mockData';
+import { applicationTypes, sampleWorkflows, defaultRoles, defaultActions } from '../data/mockData';
 import { validateWorkflow } from '../lib/validation';
 
 interface WorkflowState {
