@@ -1,232 +1,210 @@
 import { create } from 'zustand';
-import { ApplicationType, Workflow, Step, Transition, ValidationIssue, CopyConflict } from '../types';
-import { applicationTypes, sampleWorkflows, defaultRoles, defaultActions } from '../data/mockData';
-import { validateWorkflow } from '../lib/validation';
+import { ApplicationType, Role, ActionDef, Workflow, WorkflowStep, StepAction } from '../types';
+import {
+  applicationTypes as initialAppTypes,
+  roles as initialRoles,
+  actionDefs as initialActions,
+  workflows as initialWorkflows,
+} from '../data/mockData';
+
+const genId = (prefix: string) =>
+  `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
 interface WorkflowState {
-  // Data
   applicationTypes: ApplicationType[];
+  roles: Role[];
+  actionDefs: ActionDef[];
   workflows: Workflow[];
-  
-  // Editor state
-  activeWorkflowId: string | null;
-  selectedElementId: string | null;
-  selectedElementType: 'step' | 'transition' | null;
-  isDirty: boolean;
-  validationIssues: ValidationIssue[];
-  
-  // UI state
-  showRulesTable: boolean;
-  showValidation: boolean;
-  
-  // Actions
-  setActiveWorkflow: (id: string | null) => void;
-  selectElement: (id: string | null, type: 'step' | 'transition' | null) => void;
-  
-  getActiveWorkflow: () => Workflow | undefined;
-  getWorkflowByAppType: (appTypeId: string) => Workflow | undefined;
-  
-  addStep: (workflowId: string, step: Step) => void;
-  updateStep: (workflowId: string, stepId: string, updates: Partial<Step>) => void;
+
+  ensureWorkflow: (appTypeId: string) => void;
+  updateStep: (workflowId: string, stepId: string, updates: Partial<WorkflowStep>) => void;
+  updateStepActions: (workflowId: string, stepId: string, actions: StepAction[]) => void;
+  addStep: (workflowId: string) => string;
   removeStep: (workflowId: string, stepId: string) => void;
-  
-  addTransition: (workflowId: string, transition: Transition) => void;
-  updateTransition: (workflowId: string, transitionId: string, updates: Partial<Transition>) => void;
-  removeTransition: (workflowId: string, transitionId: string) => void;
-  
-  runValidation: (workflowId: string) => void;
-  
-  saveWorkflow: (workflowId: string) => void;
   publishWorkflow: (workflowId: string) => void;
-  
-  copyWorkflow: (sourceId: string, targetAppTypeIds: string[], conflicts: CopyConflict[]) => void;
-  createWorkflow: (appTypeId: string, fromTemplateId?: string) => string;
-  
-  toggleRulesTable: () => void;
-  toggleValidation: () => void;
+  copyWorkflow: (sourceAppTypeId: string, targetAppTypeIds: string[]) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set, get) => ({
-  applicationTypes,
-  workflows: sampleWorkflows,
-  
-  activeWorkflowId: null,
-  selectedElementId: null,
-  selectedElementType: null,
-  isDirty: false,
-  validationIssues: [],
-  
-  showRulesTable: false,
-  showValidation: false,
-  
-  setActiveWorkflow: (id) => set({ activeWorkflowId: id, selectedElementId: null, selectedElementType: null, validationIssues: [] }),
-  
-  selectElement: (id, type) => set({ selectedElementId: id, selectedElementType: type }),
-  
-  getActiveWorkflow: () => {
-    const state = get();
-    return state.workflows.find(w => w.id === state.activeWorkflowId);
-  },
-  
-  getWorkflowByAppType: (appTypeId) => {
-    return get().workflows.find(w => w.applicationTypeId === appTypeId);
-  },
-  
-  addStep: (workflowId, step) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId ? { ...w, steps: [...w.steps, step] } : w
-    ),
-    isDirty: true,
-  })),
-  
-  updateStep: (workflowId, stepId, updates) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId
-        ? { ...w, steps: w.steps.map(s => s.id === stepId ? { ...s, ...updates } : s) }
-        : w
-    ),
-    isDirty: true,
-  })),
-  
-  removeStep: (workflowId, stepId) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId
-        ? {
-            ...w,
-            steps: w.steps.filter(s => s.id !== stepId),
-            transitions: w.transitions.filter(t => t.fromStepId !== stepId && t.toStepId !== stepId),
-          }
-        : w
-    ),
-    isDirty: true,
-  })),
-  
-  addTransition: (workflowId, transition) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId ? { ...w, transitions: [...w.transitions, transition] } : w
-    ),
-    isDirty: true,
-  })),
-  
-  updateTransition: (workflowId, transitionId, updates) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId
-        ? { ...w, transitions: w.transitions.map(t => t.id === transitionId ? { ...t, ...updates } : t) }
-        : w
-    ),
-    isDirty: true,
-  })),
-  
-  removeTransition: (workflowId, transitionId) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId
-        ? { ...w, transitions: w.transitions.filter(t => t.id !== transitionId) }
-        : w
-    ),
-    isDirty: true,
-  })),
-  
-  runValidation: (workflowId) => {
-    const workflow = get().workflows.find(w => w.id === workflowId);
-    if (!workflow) return;
-    const issues = validateWorkflow(workflow);
-    set({ validationIssues: issues });
-  },
-  
-  saveWorkflow: (workflowId) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId ? { ...w, status: 'draft' as const } : w
-    ),
-    applicationTypes: state.applicationTypes.map(at => {
-      const wf = state.workflows.find(w => w.id === workflowId);
-      if (wf && at.id === wf.applicationTypeId) {
-        return { ...at, hasWorkflow: true, status: 'draft' as const, updatedAt: new Date().toISOString().split('T')[0], updatedBy: 'Admin' };
-      }
-      return at;
-    }),
-    isDirty: false,
-  })),
-  
-  publishWorkflow: (workflowId) => set(state => ({
-    workflows: state.workflows.map(w =>
-      w.id === workflowId ? { ...w, status: 'published' as const } : w
-    ),
-    applicationTypes: state.applicationTypes.map(at => {
-      const wf = state.workflows.find(w => w.id === workflowId);
-      if (wf && at.id === wf.applicationTypeId) {
-        return { ...at, hasWorkflow: true, status: 'published' as const, updatedAt: new Date().toISOString().split('T')[0], updatedBy: 'Admin' };
-      }
-      return at;
-    }),
-    isDirty: false,
-  })),
-  
-  copyWorkflow: (sourceId, targetAppTypeIds, conflicts) => set(state => {
-    const source = state.workflows.find(w => w.id === sourceId);
-    if (!source) return state;
-    
-    const newWorkflows = [...state.workflows];
-    const newAppTypes = [...state.applicationTypes];
-    
-    for (const targetId of targetAppTypeIds) {
-      const conflict = conflicts.find(c => c.applicationTypeId === targetId);
-      if (conflict?.resolution === 'skip') continue;
-      
-      const existingIdx = newWorkflows.findIndex(w => w.applicationTypeId === targetId);
-      const newWf: Workflow = {
-        ...source,
-        id: `wf-copy-${targetId}-${Date.now()}`,
-        applicationTypeId: targetId,
-        status: 'draft',
-        version: conflict?.resolution === 'new_version' ? `${parseFloat(source.version) + 0.1}` : source.version,
-      };
-      
-      if (existingIdx >= 0 && conflict?.resolution !== 'skip' as string) {
-        newWorkflows[existingIdx] = newWf;
-      } else {
-        newWorkflows.push(newWf);
-      }
-      
-      const atIdx = newAppTypes.findIndex(at => at.id === targetId);
-      if (atIdx >= 0) {
-        newAppTypes[atIdx] = { ...newAppTypes[atIdx], hasWorkflow: true, status: 'draft', updatedAt: new Date().toISOString().split('T')[0], updatedBy: 'Admin' };
-      }
-    }
-    
-    return { workflows: newWorkflows, applicationTypes: newAppTypes };
-  }),
-  
-  createWorkflow: (appTypeId, fromTemplateId) => {
-    const state = get();
-    const template = fromTemplateId ? state.workflows.find(w => w.id === fromTemplateId) : undefined;
-    const newId = `wf-new-${Date.now()}`;
-    
-    const newWorkflow: Workflow = template
-      ? { ...template, id: newId, applicationTypeId: appTypeId, status: 'draft', version: '0.1' }
-      : {
+  applicationTypes: initialAppTypes,
+  roles: initialRoles,
+  actionDefs: initialActions,
+  workflows: initialWorkflows,
+
+  ensureWorkflow: (appTypeId) => {
+    const existing = get().workflows.find((w) => w.applicationTypeId === appTypeId);
+    if (existing) return;
+
+    const roles = get().roles;
+    const newId = genId('wf');
+    const startStepId = genId('step');
+
+    set((state) => ({
+      workflows: [
+        ...state.workflows,
+        {
           id: newId,
           applicationTypeId: appTypeId,
+          status: 'draft' as const,
           version: '0.1',
-          status: 'draft',
-          roles: defaultRoles,
+          updatedAt: new Date().toISOString().slice(0, 10),
           steps: [
-            { id: 'step-start', type: 'start', name: 'Start', roleId: defaultRoles[0]?.id || '', position: { x: 100, y: 200 } },
+            {
+              id: startStepId,
+              name: 'Application Submission',
+              type: 'start' as const,
+              roleId: roles[0]?.id || '',
+              description: 'Applicant submits the application form',
+              order: 1,
+              actions: [],
+            },
           ],
-          actions: defaultActions,
-          transitions: [],
-        };
-    
-    set(state => ({
-      workflows: [...state.workflows, newWorkflow],
-      applicationTypes: state.applicationTypes.map(at =>
-        at.id === appTypeId ? { ...at, hasWorkflow: true, status: 'draft' as const, updatedAt: new Date().toISOString().split('T')[0], updatedBy: 'Admin' } : at
+        },
+      ],
+      applicationTypes: state.applicationTypes.map((at) =>
+        at.id === appTypeId ? { ...at, workflowStatus: 'draft' as const } : at
       ),
-      activeWorkflowId: newId,
     }));
-    
-    return newId;
   },
-  
-  toggleRulesTable: () => set(state => ({ showRulesTable: !state.showRulesTable })),
-  toggleValidation: () => set(state => ({ showValidation: !state.showValidation })),
+
+  updateStep: (workflowId, stepId, updates) =>
+    set((state) => ({
+      workflows: state.workflows.map((w) =>
+        w.id === workflowId
+          ? {
+              ...w,
+              steps: w.steps.map((s) => (s.id === stepId ? { ...s, ...updates } : s)),
+              updatedAt: new Date().toISOString().slice(0, 10),
+            }
+          : w
+      ),
+    })),
+
+  updateStepActions: (workflowId, stepId, actions) =>
+    set((state) => ({
+      workflows: state.workflows.map((w) =>
+        w.id === workflowId
+          ? {
+              ...w,
+              steps: w.steps.map((s) => (s.id === stepId ? { ...s, actions } : s)),
+              updatedAt: new Date().toISOString().slice(0, 10),
+            }
+          : w
+      ),
+    })),
+
+  addStep: (workflowId) => {
+    const stepId = genId('step');
+    const workflow = get().workflows.find((w) => w.id === workflowId);
+    const maxOrder = workflow ? Math.max(...workflow.steps.map((s) => s.order), 0) : 0;
+    const roles = get().roles;
+
+    set((state) => ({
+      workflows: state.workflows.map((w) =>
+        w.id === workflowId
+          ? {
+              ...w,
+              steps: [
+                ...w.steps,
+                {
+                  id: stepId,
+                  name: 'New Step',
+                  type: 'process' as const,
+                  roleId: roles[1]?.id || roles[0]?.id || '',
+                  description: '',
+                  order: maxOrder + 1,
+                  actions: [],
+                },
+              ],
+              updatedAt: new Date().toISOString().slice(0, 10),
+            }
+          : w
+      ),
+    }));
+
+    return stepId;
+  },
+
+  removeStep: (workflowId, stepId) =>
+    set((state) => ({
+      workflows: state.workflows.map((w) =>
+        w.id === workflowId
+          ? {
+              ...w,
+              steps: w.steps
+                .filter((s) => s.id !== stepId)
+                .map((s) => ({
+                  ...s,
+                  actions: s.actions.filter((a) => a.targetStepId !== stepId),
+                })),
+              updatedAt: new Date().toISOString().slice(0, 10),
+            }
+          : w
+      ),
+    })),
+
+  publishWorkflow: (workflowId) =>
+    set((state) => {
+      const wf = state.workflows.find((w) => w.id === workflowId);
+      if (!wf) return state;
+      const now = new Date().toISOString().slice(0, 10);
+      return {
+        workflows: state.workflows.map((w) =>
+          w.id === workflowId
+            ? { ...w, status: 'published' as const, version: '1.0', updatedAt: now }
+            : w
+        ),
+        applicationTypes: state.applicationTypes.map((at) =>
+          at.id === wf.applicationTypeId
+            ? { ...at, workflowStatus: 'published' as const, updatedAt: now }
+            : at
+        ),
+      };
+    }),
+
+  copyWorkflow: (sourceAppTypeId, targetAppTypeIds) =>
+    set((state) => {
+      const sourceWf = state.workflows.find((w) => w.applicationTypeId === sourceAppTypeId);
+      if (!sourceWf) return state;
+
+      const existingWorkflows = state.workflows.filter(
+        (w) => !targetAppTypeIds.includes(w.applicationTypeId)
+      );
+
+      const newWorkflows = [...existingWorkflows];
+
+      targetAppTypeIds.forEach((targetId) => {
+        const newWfId = genId('wf');
+        const stepIdMap = new Map<string, string>();
+
+        sourceWf.steps.forEach((step) => {
+          stepIdMap.set(step.id, genId('step'));
+        });
+
+        newWorkflows.push({
+          id: newWfId,
+          applicationTypeId: targetId,
+          steps: sourceWf.steps.map((step) => ({
+            ...step,
+            id: stepIdMap.get(step.id)!,
+            actions: step.actions.map((a) => ({
+              ...a,
+              targetStepId: stepIdMap.get(a.targetStepId) || '',
+            })),
+          })),
+          status: 'draft' as const,
+          version: '0.1',
+          updatedAt: new Date().toISOString().slice(0, 10),
+        });
+      });
+
+      return {
+        workflows: newWorkflows,
+        applicationTypes: state.applicationTypes.map((at) =>
+          targetAppTypeIds.includes(at.id)
+            ? { ...at, workflowStatus: 'draft' as const, updatedAt: new Date().toISOString().slice(0, 10) }
+            : at
+        ),
+      };
+    }),
 }));
