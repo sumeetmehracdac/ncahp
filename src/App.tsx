@@ -37,7 +37,7 @@ import {
 } from "./pages/PaymentConfig";
 
 // Workflow Mapping Module
-import { WorkflowCatalog, WorkflowEditor } from "./pages/WorkflowMapping";
+import { WorkflowCatalog, WorkflowDesigner } from "./pages/WorkflowMapping";
 
 const queryClient = new QueryClient();
 
@@ -78,7 +78,7 @@ const App = () => (
           
           {/* Workflow Mapping Module */}
           <Route path="/workflows" element={<WorkflowCatalog />} />
-          <Route path="/workflows/:id/editor" element={<WorkflowEditor />} />
+          <Route path="/workflows/:id" element={<WorkflowDesigner />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
