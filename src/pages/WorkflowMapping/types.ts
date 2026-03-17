@@ -2,10 +2,9 @@ export interface ApplicationType {
   id: string;
   name: string;
   category: string;
-  hasWorkflow: boolean;
-  status: 'none' | 'draft' | 'published';
+  description: string;
+  workflowStatus: 'none' | 'draft' | 'published';
   updatedAt: string;
-  updatedBy: string;
 }
 
 export interface Role {
@@ -14,53 +13,32 @@ export interface Role {
   color: string;
 }
 
-export interface Step {
-  id: string;
-  type: 'start' | 'task' | 'decision' | 'end';
-  name: string;
-  roleId: string;
-  description?: string;
-  category?: 'internal' | 'external' | 'system' | 'notification';
-  position: { x: number; y: number };
-}
-
-export interface Action {
+export interface ActionDef {
   id: string;
   name: string;
+  type: 'positive' | 'negative' | 'neutral';
 }
 
-export interface Transition {
-  id: string;
-  fromStepId: string;
+export interface StepAction {
   actionId: string;
-  toStepId: string;
-  condition?: string;
-  sla?: string;
-  notification?: string;
+  targetStepId: string;
+}
+
+export interface WorkflowStep {
+  id: string;
+  name: string;
+  type: 'start' | 'process' | 'terminal';
+  roleId: string;
+  description: string;
+  order: number;
+  actions: StepAction[];
 }
 
 export interface Workflow {
   id: string;
   applicationTypeId: string;
-  version: string;
-  roles: Role[];
-  steps: Step[];
-  actions: Action[];
-  transitions: Transition[];
+  steps: WorkflowStep[];
   status: 'draft' | 'published';
-}
-
-export interface ValidationIssue {
-  id: string;
-  severity: 'error' | 'warning';
-  message: string;
-  elementId?: string;
-  elementType?: 'step' | 'transition';
-}
-
-export interface CopyConflict {
-  applicationTypeId: string;
-  applicationTypeName: string;
-  existingStatus: 'none' | 'draft' | 'published';
-  resolution: 'create' | 'overwrite' | 'new_version' | 'skip' | null;
+  version: string;
+  updatedAt: string;
 }
