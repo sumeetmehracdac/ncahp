@@ -37,7 +37,7 @@ import {
 } from "./pages/PaymentConfig";
 
 // Workflow Mapping Module
-import { WorkflowCatalog, WorkflowEditor } from "./pages/WorkflowMapping";
+import { WorkflowCatalog, WorkflowDesigner } from "./pages/WorkflowMapping";
 
 const queryClient = new QueryClient();
 
