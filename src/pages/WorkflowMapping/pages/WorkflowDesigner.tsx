@@ -31,7 +31,6 @@ const WorkflowDesigner = () => {
     if (id && !workflow) ensureWorkflow(id);
   }, [id, workflow, ensureWorkflow]);
 
-  // Auto-select first step on load
   useEffect(() => {
     if (workflow && workflow.steps.length > 0 && !selectedStepId) {
       const sorted = [...workflow.steps].sort((a, b) => a.order - b.order);
@@ -66,31 +65,36 @@ const WorkflowDesigner = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-20 bg-card/80 backdrop-blur-lg border-b border-border">
-        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4 min-w-0">
+    <div className="min-h-screen bg-muted/50">
+      {/* Header - Teal branded */}
+      <header className="sticky top-0 z-20 bg-primary text-primary-foreground shadow-md">
+        <div className="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate('/workflows')}
-              className="shrink-0"
+              className="shrink-0 text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
+            <div className="h-6 w-px bg-white/20" />
             <div className="min-w-0">
-              <h1 className="text-base font-semibold text-foreground truncate">
+              <h1 className="text-sm font-semibold truncate">
                 {appType.name}
               </h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <Badge
-                  variant={workflow.status === 'published' ? 'default' : 'secondary'}
-                  className="text-[10px]"
+                  className={cn(
+                    'text-[9px] border-0',
+                    workflow.status === 'published'
+                      ? 'bg-emerald-400/20 text-emerald-100'
+                      : 'bg-accent/30 text-accent-foreground'
+                  )}
                 >
                   {workflow.status}
                 </Badge>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-primary-foreground/50">
                   v{workflow.version}
                 </span>
               </div>
@@ -98,14 +102,28 @@ const WorkflowDesigner = () => {
           </div>
           <div className="flex items-center gap-2">
             {workflow.steps.length > 1 && (
-              <Button variant="ghost" size="sm" onClick={() => setCopyOpen(true)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setCopyOpen(true)}
+                className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10"
+              >
                 <Copy className="w-4 h-4 mr-1.5" /> Copy
               </Button>
             )}
-            <Button variant="outline" size="sm" onClick={handleSave}>
-              <Save className="w-4 h-4 mr-1.5" /> Save Draft
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSave}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10"
+            >
+              <Save className="w-4 h-4 mr-1.5" /> Save
             </Button>
-            <Button size="sm" onClick={handlePublish}>
+            <Button
+              size="sm"
+              onClick={handlePublish}
+              className="bg-accent hover:bg-accent/90 text-accent-foreground border-0"
+            >
               <Send className="w-4 h-4 mr-1.5" /> Publish
             </Button>
           </div>
@@ -117,12 +135,12 @@ const WorkflowDesigner = () => {
         <div className="flex gap-8 items-start">
           {/* Left: Pipeline */}
           <div className="w-[340px] shrink-0">
-            <div className="sticky top-24">
+            <div className="sticky top-20">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                <h2 className="text-xs font-semibold text-primary uppercase tracking-wider">
                   Pipeline
                 </h2>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                   {sortedSteps.length} step{sortedSteps.length !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -144,16 +162,21 @@ const WorkflowDesigner = () => {
                           className={cn(
                             'relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-150',
                             isSelected
-                              ? 'border-primary bg-primary/5 shadow-lg shadow-primary/5'
+                              ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
                               : 'border-border bg-card hover:border-primary/30 hover:shadow-md'
                           )}
                           onClick={() => setSelectedStepId(step.id)}
                         >
+                          {/* Left accent strip */}
+                          {isSelected && (
+                            <div className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-primary" />
+                          )}
+
                           <div className="flex items-start gap-3">
                             <div
                               className={cn(
                                 'w-8 h-8 rounded-lg flex items-center justify-center shrink-0',
-                                step.type === 'start' && 'bg-emerald-500/10',
+                                step.type === 'start' && 'bg-emerald-500/15',
                                 step.type === 'terminal' && 'bg-destructive/10',
                                 step.type === 'process' && 'bg-primary/10'
                               )}
@@ -181,9 +204,12 @@ const WorkflowDesigner = () => {
                                   {role?.name || 'Unassigned'}
                                 </span>
                                 {step.type !== 'terminal' && (
-                                  <span className="text-[10px] text-muted-foreground">
-                                    {step.actions.length} action
-                                    {step.actions.length !== 1 ? 's' : ''}
+                                  <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                                    <span className={cn(
+                                      'w-1.5 h-1.5 rounded-full',
+                                      step.actions.length > 0 ? 'bg-accent' : 'bg-muted-foreground/30'
+                                    )} />
+                                    {step.actions.length} action{step.actions.length !== 1 ? 's' : ''}
                                   </span>
                                 )}
                               </div>
@@ -195,8 +221,8 @@ const WorkflowDesigner = () => {
                         {i < sortedSteps.length - 1 && (
                           <div className="flex justify-center py-1">
                             <div className="flex flex-col items-center">
-                              <div className="w-px h-3 bg-border" />
-                              <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/40" />
+                              <div className="w-px h-3 bg-primary/20" />
+                              <ChevronDown className="w-3.5 h-3.5 text-primary/30" />
                             </div>
                           </div>
                         )}
@@ -208,7 +234,7 @@ const WorkflowDesigner = () => {
 
               <Button
                 variant="outline"
-                className="w-full mt-4 h-10 border-dashed"
+                className="w-full mt-4 h-10 border-dashed border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50"
                 onClick={handleAddStep}
               >
                 <Plus className="w-4 h-4 mr-2" /> Add Step
@@ -247,8 +273,8 @@ const WorkflowDesigner = () => {
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center h-[400px] text-center"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-muted/50 flex items-center justify-center mb-4">
-                    <MousePointerClick className="w-7 h-7 text-muted-foreground/50" />
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                    <MousePointerClick className="w-7 h-7 text-primary/40" />
                   </div>
                   <h3 className="text-base font-medium text-foreground">Select a Step</h3>
                   <p className="text-sm text-muted-foreground mt-1 max-w-xs">
