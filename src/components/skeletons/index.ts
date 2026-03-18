@@ -5,3 +5,4 @@ export { default as TableSkeleton } from './TableSkeleton';
 export { default as NewsSectionSkeleton } from './NewsSectionSkeleton';
 export { default as GallerySkeleton } from './GallerySkeleton';
 export { default as CommitteeMappingSkeleton } from './CommitteeMappingSkeleton';
+export { default as NCAHPLoader } from '../ui/NCAHPLoader';
