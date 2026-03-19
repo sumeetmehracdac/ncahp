@@ -20,6 +20,7 @@ import ProposalSubmission from "./pages/ProposalSubmission";
 import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
+import LoaderDemo from "./pages/LoaderDemo";
 
 // Registration Process Mapping Module
 import {
