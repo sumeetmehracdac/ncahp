@@ -612,3 +612,63 @@
   0%, 100% { opacity: 0.5; }
   50%      { opacity: 1; }
 }
+
+/* ===== DNA Helix Loader ===== */
+
+.ncahp-dna-node-left {
+  animation: dnaSwingLeft 1.8s ease-in-out infinite;
+}
+.ncahp-dna-node-right {
+  animation: dnaSwingRight 1.8s ease-in-out infinite;
+}
+
+@keyframes dnaSwingLeft {
+  0%, 100% { cx: 15; r: 4.5; opacity: 1; }
+  50%      { cx: 65; r: 3;   opacity: 0.5; }
+}
+@keyframes dnaSwingRight {
+  0%, 100% { cx: 65; r: 4.5; opacity: 1; }
+  50%      { cx: 15; r: 3;   opacity: 0.5; }
+}
+
+.ncahp-dna-rung line {
+  animation: dnaRungPulse 1.8s ease-in-out infinite;
+}
+@keyframes dnaRungPulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 0.15; }
+}
+
+/* ===== Vitals Monitor Loader ===== */
+
+.ncahp-vitals-trace-hr {
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: vitalsDraw 3s linear infinite;
+}
+.ncahp-vitals-trace-spo2 {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: vitalsDraw 3s linear infinite 0.4s;
+}
+
+@keyframes vitalsDraw {
+  0%   { stroke-dashoffset: 800; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.ncahp-vitals-blink {
+  animation: vitalsBlink 1.2s steps(1) infinite;
+}
+@keyframes vitalsBlink {
+  0%, 70% { opacity: 1; }
+  71%, 100% { opacity: 0.3; }
+}
+
+.ncahp-vitals-sweep {
+  animation: vitalsSweep 3s linear infinite;
+}
+@keyframes vitalsSweep {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(340px); }
+}
