@@ -81,6 +81,9 @@ const App = () => (
           <Route path="/workflows" element={<WorkflowCatalog />} />
           <Route path="/workflows/:id" element={<WorkflowDesigner />} />
           
+          {/* Loader Demo */}
+          <Route path="/loader-demo" element={<LoaderDemo />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
