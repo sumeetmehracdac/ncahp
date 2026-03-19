@@ -20,6 +20,7 @@ import ProposalSubmission from "./pages/ProposalSubmission";
 import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
+import LoaderDemo from "./pages/LoaderDemo";
 
 // Registration Process Mapping Module
 import {
@@ -79,6 +80,9 @@ const App = () => (
           {/* Workflow Mapping Module */}
           <Route path="/workflows" element={<WorkflowCatalog />} />
           <Route path="/workflows/:id" element={<WorkflowDesigner />} />
+          
+          {/* Loader Demo */}
+          <Route path="/loader-demo" element={<LoaderDemo />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
