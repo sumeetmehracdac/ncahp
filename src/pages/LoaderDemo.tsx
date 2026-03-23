@@ -21,7 +21,6 @@ const LoaderDemo = () => {
     switch (type) {
       case 'ecg': return <NCAHPLoader {...props} />;
       case 'dna': return <NCAHPLoaderDNA {...props} />;
-      case 'vitals': return <NCAHPLoaderVitals {...props} />;
     }
   };
 
