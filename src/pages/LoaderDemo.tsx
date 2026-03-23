@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import NCAHPLoader from '@/components/ui/NCAHPLoader';
 import NCAHPLoaderDNA from '@/components/ui/NCAHPLoaderDNA';
-import NCAHPLoaderVitals from '@/components/ui/NCAHPLoaderVitals';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-type LoaderType = 'ecg' | 'dna' | 'vitals';
+type LoaderType = 'ecg' | 'dna';
 
 const loaders: { id: LoaderType; label: string; description: string }[] = [
   { id: 'ecg', label: '① ECG Pulse (Winner)', description: 'Heartbeat trace with scanning dot — the primary loader.' },
   { id: 'dna', label: '② DNA Helix', description: 'Double-strand helix with swinging teal & orange nodes.' },
-  { id: 'vitals', label: '③ Vital Signs Monitor', description: 'Clinical dark-panel with animated HR & SpO₂ waveforms.' },
 ];
 
 const LoaderDemo = () => {
@@ -23,7 +21,6 @@ const LoaderDemo = () => {
     switch (type) {
       case 'ecg': return <NCAHPLoader {...props} />;
       case 'dna': return <NCAHPLoaderDNA {...props} />;
-      case 'vitals': return <NCAHPLoaderVitals {...props} />;
     }
   };
 
