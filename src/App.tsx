@@ -40,6 +40,16 @@ import {
 // Workflow Mapping Module
 import { WorkflowCatalog, WorkflowDesigner } from "./pages/WorkflowMapping";
 
+// Workflow Management Module
+import {
+  WorkflowManagementShell, ActionsMaster, ConditionVariables,
+  RolesCommitteeTypes, StatusMaster, PIStatusMapping,
+  RoleActionPermissions, NextRoleAfterAction, ApprovalMaster,
+  FileViewConfig, WorkflowCopy,
+  MonitoringRouting, MonitoringPermissions, MonitoringApprovalMaster,
+} from "./pages/WorkflowManagement";
+import { Navigate } from "react-router-dom";
+
 const queryClient = new QueryClient();
 
 const App = () => (
