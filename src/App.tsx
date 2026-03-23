@@ -40,6 +40,16 @@ import {
 // Workflow Mapping Module
 import { WorkflowCatalog, WorkflowDesigner } from "./pages/WorkflowMapping";
 
+// Workflow Management Module
+import {
+  WorkflowManagementShell, ActionsMaster, ConditionVariables,
+  RolesCommitteeTypes, StatusMaster, PIStatusMapping,
+  RoleActionPermissions, NextRoleAfterAction, ApprovalMaster,
+  FileViewConfig, WorkflowCopy,
+  MonitoringRouting, MonitoringPermissions, MonitoringApprovalMaster,
+} from "./pages/WorkflowManagement";
+import { Navigate } from "react-router-dom";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -80,6 +90,24 @@ const App = () => (
           {/* Workflow Mapping Module */}
           <Route path="/workflows" element={<WorkflowCatalog />} />
           <Route path="/workflows/:id" element={<WorkflowDesigner />} />
+          
+          {/* Workflow Management Module */}
+          <Route path="/workflow-management" element={<WorkflowManagementShell />}>
+            <Route index element={<Navigate to="actions" replace />} />
+            <Route path="actions" element={<ActionsMaster />} />
+            <Route path="conditions" element={<ConditionVariables />} />
+            <Route path="roles" element={<RolesCommitteeTypes />} />
+            <Route path="statuses" element={<StatusMaster />} />
+            <Route path="pi-status" element={<PIStatusMapping />} />
+            <Route path="permissions" element={<RoleActionPermissions />} />
+            <Route path="routing" element={<NextRoleAfterAction />} />
+            <Route path="approval-master" element={<ApprovalMaster />} />
+            <Route path="file-view" element={<FileViewConfig />} />
+            <Route path="copy" element={<WorkflowCopy />} />
+            <Route path="monitoring/routing" element={<MonitoringRouting />} />
+            <Route path="monitoring/permissions" element={<MonitoringPermissions />} />
+            <Route path="monitoring/approval" element={<MonitoringApprovalMaster />} />
+          </Route>
           
           {/* Loader Demo */}
           <Route path="/loader-demo" element={<LoaderDemo />} />

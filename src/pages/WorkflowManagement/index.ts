@@ -1,0 +1,12 @@
+export { default as WorkflowManagementShell } from './layout/WorkflowManagementShell';
+export { default as ActionsMaster } from './pages/ActionsMaster';
+export { default as ConditionVariables } from './pages/ConditionVariables';
+export { default as RolesCommitteeTypes } from './pages/RolesCommitteeTypes';
+export { default as StatusMaster } from './pages/StatusMaster';
+export { default as PIStatusMapping } from './pages/PIStatusMapping';
+export { default as RoleActionPermissions } from './pages/RoleActionPermissions';
+export { default as NextRoleAfterAction } from './pages/NextRoleAfterAction';
+export { default as ApprovalMaster } from './pages/ApprovalMaster';
+export { default as FileViewConfig } from './pages/FileViewConfig';
+export { default as WorkflowCopy } from './pages/WorkflowCopy';
+export { MonitoringRouting, MonitoringPermissions, MonitoringApprovalMaster } from './pages/MonitoringPages';
