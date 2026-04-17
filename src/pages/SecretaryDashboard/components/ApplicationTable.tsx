@@ -50,7 +50,7 @@ export function ApplicationTable({
             {selectable && (
               <TableHead className="w-10">
                 <Checkbox
-                  checked={allChecked || (someChecked && "indeterminate")}
+                  checked={allChecked ? true : someChecked ? "indeterminate" : false}
                   onCheckedChange={(v) => onToggleAll?.(!!v)}
                   aria-label="Select all"
                 />
