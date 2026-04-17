@@ -4,6 +4,7 @@ import { DEFAULT_FILTERS, FilterState } from "../types-ui";
 import { FilterToolbar } from "./FilterToolbar";
 import { ApplicationTable } from "./ApplicationTable";
 import { ApplicationCard } from "./ApplicationCard";
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -12,9 +13,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Inbox } from "lucide-react";
+import { Inbox, ChevronDown, Eye, Play, UploadCloud, FileText, Download } from "lucide-react";
 import { ReactNode } from "react";
 import { FORM_META } from "../types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Props {
   apps: Application[];
@@ -89,14 +96,18 @@ export function SectionContainer({
   const safePage = Math.min(page, totalPages);
   const pageApps = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
-  const toggleSelect = (id: string) =>
-    setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
-  const toggleAll = (checked: boolean) =>
-    setSelected(checked ? pageApps.map((a) => a.applicationId) : []);
+  const toggleSelect = (id: string, isRadio?: boolean) => {
+    if (isRadio) {
+      setSelected([id]);
+    } else {
+      setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+    }
+  };
   const clearSelection = () => setSelected([]);
 
   // Drop selections that are no longer visible
   const validSelected = selected.filter((id) => filtered.some((a) => a.applicationId === id));
+  const selectedApp = validSelected.length > 0 ? apps.find((a) => a.applicationId === validSelected[0]) : null;
 
   return (
     <div className="space-y-4">
@@ -110,7 +121,95 @@ export function SectionContainer({
         totalAll={apps.length}
       />
 
-      {selectable && bulkBar && validSelected.length > 0 && (
+      {filters.view === "table" && (
+        <div className="flex flex-wrap items-center justify-center gap-2 rounded-lg border border-border bg-card p-2 shadow-sm text-sm">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline"
+                className="flex items-center justify-between gap-2 rounded-sm border px-3 py-1.5 focus:outline-none hover:bg-[#ff9d23] hover:text-white transition-colors min-w-[120px]"
+              >
+                <div className="flex items-center gap-1.5 font-medium"><Eye className="h-4 w-4" /> View</div>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuItem disabled={!selectedApp}>Proceeding</DropdownMenuItem>
+              <DropdownMenuItem disabled={!selectedApp}>Document</DropdownMenuItem>
+              <DropdownMenuItem disabled={!selectedApp}>Meeting Details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                className="flex items-center justify-between gap-2 rounded-sm border px-3 py-1.5 focus:outline-none bg-[#004269] text-white hover:bg-[#003152] min-w-[120px]"
+              >
+                <div className="flex items-center gap-1.5 font-medium"><Play className="h-4 w-4" /> Action</div>
+                <ChevronDown className="h-4 w-4 opacity-70" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="start">
+              {selectedApp ? (
+                <div className="p-1 flex flex-col gap-1 overflow-hidden [&>button]:w-full [&>button]:justify-start">
+                  {renderAction(selectedApp)}
+                </div>
+              ) : (
+                <div className="px-2 py-4 text-sm text-muted-foreground text-center">
+                  Select an application first
+                </div>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline"
+                className="flex items-center justify-between gap-2 rounded-sm border px-3 py-1.5 focus:outline-none hover:bg-muted/50 min-w-[120px]"
+              >
+                <div className="flex items-center gap-1.5 font-medium"><UploadCloud className="h-4 w-4" /> Load</div>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuItem disabled={!selectedApp}>Load Details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline"
+                className="flex items-center justify-between gap-2 rounded-sm border px-3 py-1.5 focus:outline-none hover:bg-muted/50 min-w-[120px]"
+              >
+                <div className="flex items-center gap-1.5 font-medium"><FileText className="h-4 w-4" /> Letters</div>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuItem disabled={!selectedApp}>Generate Letter</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline"
+                className="flex items-center justify-between gap-2 rounded-sm border px-3 py-1.5 focus:outline-none hover:bg-muted/50 min-w-[120px]"
+              >
+                <div className="flex items-center gap-1.5 font-medium"><Download className="h-4 w-4" /> Download</div>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuItem disabled={!selectedApp}>Download PDF</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
+
+      {selectable && bulkBar && validSelected.length > 0 && filters.view !== "table" && (
         <div className="flex items-center justify-between rounded-lg border border-primary/30 bg-primary/5 px-4 py-2.5 shadow-sm">
           <div className="text-sm">
             <span className="font-semibold text-primary">{validSelected.length}</span> selected
@@ -142,13 +241,11 @@ export function SectionContainer({
           apps={pageApps}
           selected={validSelected}
           onToggleSelect={toggleSelect}
-          onToggleAll={toggleAll}
           selectable={selectable}
           showStatus={showStatus}
           showUID={showUID}
           showCertificate={showCertificate}
           showForwardedAt={showForwardedAt}
-          renderAction={renderAction}
         />
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">

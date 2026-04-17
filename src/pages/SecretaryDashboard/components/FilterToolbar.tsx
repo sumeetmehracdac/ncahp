@@ -73,7 +73,7 @@ export function FilterToolbar({ filters, onChange, totalShown, totalAll }: Props
         {/* Form Type multi-select */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="h-10 gap-2">
+            <Button variant="outline" className="h-10 gap-2 hover:bg-[#ff9d23] hover:text-white transition-colors">
               <SlidersHorizontal className="h-4 w-4" />
               Form Type
               {filters.formCodes.length > 0 && (
@@ -117,7 +117,7 @@ export function FilterToolbar({ filters, onChange, totalShown, totalAll }: Props
         {/* Category multi-select */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="h-10 gap-2">
+            <Button variant="outline" className="h-10 gap-2 hover:bg-[#ff9d23] hover:text-white transition-colors">
               Category
               {filters.categories.length > 0 && (
                 <Badge variant="secondary" className="ml-1 h-5 px-1.5">

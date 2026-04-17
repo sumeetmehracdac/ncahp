@@ -50,8 +50,6 @@ export default function SecretaryDashboardPage() {
       <div className="mx-auto max-w-[1400px] space-y-6 px-4 py-6 md:px-6 md:py-8">
         <DashboardHeader />
 
-        <KPIStrip counts={counts} active={active} onSelect={setActive} />
-
         {/* Tab bar — desktop pills */}
         <div className="hidden rounded-xl border border-border bg-card p-1.5 shadow-sm md:block">
           <nav className="relative flex items-center gap-1">
@@ -117,6 +115,8 @@ export default function SecretaryDashboardPage() {
             </SelectContent>
           </Select>
         </div>
+
+        <KPIStrip counts={counts} active={active} onSelect={setActive} />
 
         {/* Section body */}
         <AnimatePresence mode="wait">

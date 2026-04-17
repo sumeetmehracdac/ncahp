@@ -51,15 +51,9 @@ export function ApplicationCard({
 
       <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-xs text-muted-foreground">
         {app.profession && (
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 col-span-2">
             <Briefcase className="h-3 w-3" />
             {app.profession}
-          </span>
-        )}
-        {app.district && (
-          <span className="inline-flex items-center gap-1">
-            <MapPin className="h-3 w-3" />
-            {app.district}
           </span>
         )}
         <span className="inline-flex items-center gap-1 col-span-2">

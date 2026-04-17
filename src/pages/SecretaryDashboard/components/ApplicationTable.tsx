@@ -6,56 +6,39 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Application } from "../types";
 import { FormTypeBadge } from "./FormTypeBadge";
 import { StatusBadge } from "./StatusBadge";
 import { format, formatDistanceToNow } from "date-fns";
-import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface Props {
   apps: Application[];
   selected: string[];
-  onToggleSelect?: (id: string) => void;
-  onToggleAll?: (checked: boolean) => void;
+  onToggleSelect?: (id: string, isRadio?: boolean) => void;
   selectable?: boolean;
   showStatus?: boolean;
   showUID?: boolean;
   showCertificate?: boolean;
   showForwardedAt?: boolean;
-  renderAction: (app: Application) => ReactNode;
 }
 
 export function ApplicationTable({
   apps,
   selected,
   onToggleSelect,
-  onToggleAll,
   selectable = true,
   showStatus = false,
   showUID = false,
   showCertificate = false,
   showForwardedAt = false,
-  renderAction,
 }: Props) {
-  const allChecked = apps.length > 0 && apps.every((a) => selected.includes(a.applicationId));
-  const someChecked = !allChecked && apps.some((a) => selected.includes(a.applicationId));
-
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card">
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/40 hover:bg-muted/40">
-            {selectable && (
-              <TableHead className="w-10">
-                <Checkbox
-                  checked={allChecked ? true : someChecked ? "indeterminate" : false}
-                  onCheckedChange={(v) => onToggleAll?.(!!v)}
-                  aria-label="Select all"
-                />
-              </TableHead>
-            )}
+            {selectable && <TableHead className="w-10"></TableHead>}
             <TableHead className="w-[140px]">Application ID</TableHead>
             <TableHead>Applicant</TableHead>
             <TableHead>Form / Category</TableHead>
@@ -65,7 +48,6 @@ export function ApplicationTable({
             <TableHead className="w-[140px]">
               {showForwardedAt ? "Forwarded" : showCertificate ? "Issued" : "Submitted"}
             </TableHead>
-            <TableHead className="w-[280px] text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -87,9 +69,12 @@ export function ApplicationTable({
               >
                 {selectable && (
                   <TableCell>
-                    <Checkbox
+                    <input
+                      type="radio"
+                      name="application_select"
+                      className="h-4 w-4 cursor-pointer accent-primary"
                       checked={isSelected}
-                      onCheckedChange={() => onToggleSelect?.(app.applicationId)}
+                      onChange={() => onToggleSelect?.(app.applicationId, true)}
                     />
                   </TableCell>
                 )}
@@ -99,7 +84,7 @@ export function ApplicationTable({
                 <TableCell>
                   <div className="font-medium text-foreground">{app.applicantName}</div>
                   <div className="text-xs text-muted-foreground">
-                    {app.profession} · {app.district}
+                    {app.profession}
                   </div>
                 </TableCell>
                 <TableCell>
@@ -146,7 +131,6 @@ export function ApplicationTable({
                     <span className="text-xs text-muted-foreground">—</span>
                   )}
                 </TableCell>
-                <TableCell className="text-right">{renderAction(app)}</TableCell>
               </TableRow>
             );
           })}
