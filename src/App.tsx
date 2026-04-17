@@ -21,6 +21,7 @@ import SinglePageHO from "./pages/UserRoleMapping/SinglePageHO";
 import SinglePageSC from "./pages/UserRoleMapping/SinglePageSC";
 import NotFound from "./pages/NotFound";
 import LoaderDemo from "./pages/LoaderDemo";
+import SecretaryDashboardPage from "./pages/SecretaryDashboard";
 
 // Registration Process Mapping Module
 import {
@@ -109,6 +110,9 @@ const App = () => (
             <Route path="monitoring/approval" element={<MonitoringApprovalMaster />} />
           </Route>
           
+          {/* Secretary Dashboard */}
+          <Route path="/dashboard/secretary-up" element={<SecretaryDashboardPage />} />
+
           {/* Loader Demo */}
           <Route path="/loader-demo" element={<LoaderDemo />} />
           
