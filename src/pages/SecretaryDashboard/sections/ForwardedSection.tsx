@@ -13,6 +13,7 @@ export function ForwardedSection() {
     <SectionContainer
       apps={apps}
       selectable={false}
+      hideActionBar={true}
       showForwardedAt
       renderAction={(app) => (
         <Button

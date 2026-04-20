@@ -18,7 +18,6 @@ export function UIDGeneratedSection() {
       <SectionContainer
         apps={apps}
         showUID
-        selectable={false}
         renderAction={(app) => (
           <Button
             size="sm"

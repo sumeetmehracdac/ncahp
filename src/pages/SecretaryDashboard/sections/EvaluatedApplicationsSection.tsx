@@ -6,12 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Send, Mail, CheckCircle2, XCircle } from "lucide-react";
 import { ConfirmActionDialog } from "../components/ConfirmActionDialog";
 import { toast } from "sonner";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 
 export function EvaluatedApplicationsSection() {
   const recommended = useSecretaryDashboardStore((s) =>
@@ -21,6 +16,8 @@ export function EvaluatedApplicationsSection() {
     s.applications.filter((a) => a.bucket === "evaluated_not_recommended"),
   );
   const moveTo = useSecretaryDashboardStore((s) => s.moveTo);
+
+  const [activeTab, setActiveTab] = useState<"recommended" | "not_recommended">("recommended");
 
   const [forwardConfirm, setForwardConfirm] = useState<{ ids: string[]; label: string } | null>(
     null,
@@ -47,119 +44,125 @@ export function EvaluatedApplicationsSection() {
 
   return (
     <div className="space-y-4">
-      <Accordion
-        type="multiple"
-        defaultValue={["rec", "not"]}
-        className="space-y-3"
-      >
-        {/* Recommended */}
-        <AccordionItem
-          value="rec"
-          className="overflow-hidden rounded-xl border-0 ring-1 ring-emerald-200 bg-card"
-        >
-          <AccordionTrigger className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 px-5 py-3 hover:no-underline">
-            <div className="flex w-full items-center justify-between pr-2">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white">
-                  <CheckCircle2 className="h-5 w-5" />
-                </div>
-                <div className="text-left">
-                  <div className="text-sm font-semibold text-emerald-900">Recommended</div>
-                  <div className="text-xs text-emerald-700">
-                    Forward to Secretary, NCAHP for final approval
-                  </div>
-                </div>
-              </div>
-              <span className="rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-bold text-white">
-                {recommended.length}
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 pb-4 pt-2">
-            <SectionContainer
-              apps={recommended}
-              renderAction={(app: Application) => (
-                <Button
-                  size="sm"
-                  className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90"
-                  onClick={() =>
-                    setForwardConfirm({ ids: [app.applicationId], label: app.applicationId })
-                  }
-                >
-                  <Send className="h-3.5 w-3.5" />
-                  Forward to Secretary NCAHP
-                </Button>
+      {/* Toggle Tabs */}
+      <div className="rounded-xl border border-border bg-card p-1.5 shadow-sm">
+        <nav className="relative flex items-center gap-1">
+          <button
+            onClick={() => setActiveTab("recommended")}
+            className={cn(
+              "relative z-10 flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              activeTab === "recommended"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+            )}
+          >
+            <CheckCircle2 className="h-4 w-4" />
+            <span>Recommended</span>
+            <span
+              className={cn(
+                "ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold",
+                activeTab === "recommended"
+                  ? "bg-primary-foreground/20 text-primary-foreground"
+                  : "bg-muted text-foreground",
               )}
-              bulkBar={(ids) => (
-                <Button
-                  size="sm"
-                  className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90"
-                  onClick={() => setForwardConfirm({ ids, label: `${ids.length} applications` })}
-                >
-                  <Send className="h-3.5 w-3.5" />
-                  Forward Selected
-                </Button>
+            >
+              {recommended.length}
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab("not_recommended")}
+            className={cn(
+              "relative z-10 flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              activeTab === "not_recommended"
+                ? "bg-rose-600 text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+            )}
+          >
+            <XCircle className="h-4 w-4" />
+            <span>Not Recommended</span>
+            <span
+              className={cn(
+                "ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold",
+                activeTab === "not_recommended"
+                  ? "bg-white/20 text-white"
+                  : "bg-muted text-foreground",
               )}
-              emptyHint="No recommended applications."
-            />
-          </AccordionContent>
-        </AccordionItem>
+            >
+              {notRecommended.length}
+            </span>
+          </button>
+        </nav>
+      </div>
 
-        {/* Not Recommended */}
-        <AccordionItem
-          value="not"
-          className="overflow-hidden rounded-xl border-0 ring-1 ring-rose-200 bg-card"
-        >
-          <AccordionTrigger className="bg-gradient-to-r from-rose-50 to-rose-100/50 px-5 py-3 hover:no-underline">
-            <div className="flex w-full items-center justify-between pr-2">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-600 text-white">
-                  <XCircle className="h-5 w-5" />
-                </div>
-                <div className="text-left">
-                  <div className="text-sm font-semibold text-rose-900">Not Recommended</div>
-                  <div className="text-xs text-rose-700">
-                    Issue rejection letter with documented reason
-                  </div>
-                </div>
-              </div>
-              <span className="rounded-full bg-rose-600 px-2.5 py-0.5 text-xs font-bold text-white">
-                {notRecommended.length}
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-4 pb-4 pt-2">
-            <SectionContainer
-              apps={notRecommended}
-              renderAction={(app: Application) => (
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="gap-1.5"
-                  onClick={() =>
-                    setRejectConfirm({ ids: [app.applicationId], label: app.applicationId })
-                  }
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  Send Rejection Letter
-                </Button>
-              )}
-              bulkBar={(ids) => (
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  className="gap-1.5"
-                  onClick={() => setRejectConfirm({ ids, label: `${ids.length} applications` })}
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  Send Rejection (Selected)
-                </Button>
-              )}
-              emptyHint="No rejected evaluations."
-            />
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      {activeTab === "recommended" ? (
+        <div className="rounded-xl border border-emerald-100 bg-card p-4 shadow-sm">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-emerald-900">Recommended for Approval</h3>
+            <p className="text-xs text-emerald-700">Forward these to the Secretary, NCAHP, for final UID and Certificate generation.</p>
+          </div>
+          <SectionContainer
+            apps={recommended}
+            renderAction={(app: Application) => (
+              <Button
+                size="sm"
+                className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90"
+                onClick={() =>
+                  setForwardConfirm({ ids: [app.applicationId], label: app.applicationId })
+                }
+              >
+                <Send className="h-3.5 w-3.5" />
+                Forward to Secretary NCAHP
+              </Button>
+            )}
+            bulkBar={(ids) => (
+              <Button
+                size="sm"
+                className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90"
+                onClick={() => setForwardConfirm({ ids, label: `${ids.length} applications` })}
+              >
+                <Send className="h-3.5 w-3.5" />
+                Forward Selected
+              </Button>
+            )}
+            emptyHint="No recommended applications."
+          />
+        </div>
+      ) : (
+        <div className="rounded-xl border border-rose-100 bg-card p-4 shadow-sm">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-rose-900">Not Recommended (Rejected)</h3>
+            <p className="text-xs text-rose-700">Issue official rejection letters with documented reasons to the applicants.</p>
+          </div>
+          <SectionContainer
+            apps={notRecommended}
+            renderAction={(app: Application) => (
+              <Button
+                size="sm"
+                variant="destructive"
+                className="gap-1.5"
+                onClick={() =>
+                  setRejectConfirm({ ids: [app.applicationId], label: app.applicationId })
+                }
+              >
+                <Mail className="h-3.5 w-3.5" />
+                Send Rejection Letter
+              </Button>
+            )}
+            bulkBar={(ids) => (
+              <Button
+                size="sm"
+                variant="destructive"
+                className="gap-1.5"
+                onClick={() => setRejectConfirm({ ids, label: `${ids.length} applications` })}
+              >
+                <Mail className="h-3.5 w-3.5" />
+                Send Rejection (Selected)
+              </Button>
+            )}
+            emptyHint="No rejected evaluations."
+          />
+        </div>
+      )}
 
       <ConfirmActionDialog
         open={!!forwardConfirm}

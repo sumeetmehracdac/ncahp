@@ -33,6 +33,7 @@ interface Props {
   showCertificate?: boolean;
   showForwardedAt?: boolean;
   emptyHint?: string;
+  hideActionBar?: boolean;
 }
 
 const PAGE_SIZE = 10;
@@ -47,6 +48,7 @@ export function SectionContainer({
   showCertificate,
   showForwardedAt,
   emptyHint = "No applications match your filters.",
+  hideActionBar = false,
 }: Props) {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [page, setPage] = useState(1);
@@ -121,7 +123,7 @@ export function SectionContainer({
         totalAll={apps.length}
       />
 
-      {filters.view === "table" && (
+      {filters.view === "table" && !hideActionBar && (
         <div className="flex flex-wrap items-center justify-center gap-2 rounded-lg border border-border bg-card p-2 shadow-sm text-sm">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

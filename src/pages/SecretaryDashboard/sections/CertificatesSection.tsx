@@ -13,6 +13,7 @@ export function CertificatesSection() {
     <SectionContainer
       apps={apps}
       selectable={false}
+      hideActionBar={true}
       showUID
       showCertificate
       renderAction={(app) => (

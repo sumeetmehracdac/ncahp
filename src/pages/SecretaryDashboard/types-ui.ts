@@ -1,4 +1,4 @@
-export type TabKey = "new" | "evaluated" | "forwarded" | "uid" | "certificate";
+export type TabKey = "new" | "evaluated" | "forwarded" | "uid" | "certificate" | "stats";
 
 export type ViewMode = "table" | "grid";
 

@@ -103,13 +103,22 @@ export const MOCK_APPLICATIONS: Application[] = APP_IDS.map((id, i) => {
   const bucket = BUCKET_PLAN[i] ?? "new";
   const formCode = FORM_CODES[i % FORM_CODES.length];
   const submittedAt = daysAgo((i * 3) % 60 + 1);
+  const getSimulatedProfession = (index: number) => {
+    if (index < 12) return PROFESSIONS[17]; // Physiotherapist
+    if (index < 20) return PROFESSIONS[20]; // Optometrist 
+    if (index < 26) return PROFESSIONS[10]; // Medical Lab Technologist
+    if (index < 30) return PROFESSIONS[1];  // Biotechnologist
+    if (index < 32) return PROFESSIONS[18]; // Dietician
+    return PROFESSIONS[index % PROFESSIONS.length];
+  };
+
   const base: Application = {
     applicationId: id,
     applicantName: NAMES[i % NAMES.length],
     formCode,
     submittedAt,
     bucket,
-    profession: PROFESSIONS[i % PROFESSIONS.length],
+    profession: getSimulatedProfession(i),
   };
 
   if (bucket === "forwarded") {

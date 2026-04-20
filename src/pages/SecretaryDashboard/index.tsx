@@ -9,7 +9,8 @@ import { EvaluatedApplicationsSection } from "./sections/EvaluatedApplicationsSe
 import { ForwardedSection } from "./sections/ForwardedSection";
 import { UIDGeneratedSection } from "./sections/UIDGeneratedSection";
 import { CertificatesSection } from "./sections/CertificatesSection";
-import { Inbox, CheckCircle2, Send, Hash, Award } from "lucide-react";
+import { StatisticsSection } from "./sections/StatisticsSection";
+import { Inbox, CheckCircle2, Send, Hash, Award, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -25,6 +26,7 @@ const TABS: { key: TabKey; label: string; Icon: typeof Inbox }[] = [
   { key: "forwarded", label: "Forwarded to NCAHP", Icon: Send },
   { key: "uid", label: "UID Generated", Icon: Hash },
   { key: "certificate", label: "Certificates", Icon: Award },
+  { key: "stats", label: "Statistics", Icon: BarChart3 },
 ];
 
 export default function SecretaryDashboardPage() {
@@ -132,6 +134,7 @@ export default function SecretaryDashboardPage() {
             {active === "forwarded" && <ForwardedSection />}
             {active === "uid" && <UIDGeneratedSection />}
             {active === "certificate" && <CertificatesSection />}
+            {active === "stats" && <StatisticsSection />}
           </motion.div>
         </AnimatePresence>
       </div>
